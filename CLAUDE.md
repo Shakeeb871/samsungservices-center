@@ -64,6 +64,14 @@ then open `http://127.0.0.1:8099/` and look for "Refused to apply inline style"
 in the console. The same applies to any script: no inline `onclick`, no inline
 `<script>` — `main.js` is an external file for that reason.
 
+**After editing `style.css` or `main.js`, bump the `?v=` on their `<link>` and
+`<script>` in all seven pages.** They are referenced as `style.css?v=2` and
+`main.js?v=2`. A different query string is a different cache key, which is the
+only thing that reliably evicts a copy already sitting in someone's browser or in
+a CDN. `.htaccess` also keeps those two files on a 5-minute revalidating cache
+rather than the year-long `immutable` used for images — see the comment in section
+5 for why immutable on a hand-edited stylesheet breaks the live site invisibly.
+
 **Colours and type come from the tokens in `:root`.** Never hard-code a hex value
 in a rule; add a token. The palette is fixed: `--primary #2189ff`,
 `--secondary #323333`, `--btn #010202`.
