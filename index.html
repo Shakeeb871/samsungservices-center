@@ -35,7 +35,7 @@
 
 <!-- Performance: the hero image is the largest contentful paint on this page -->
 <link rel="preload" as="image" href="assets/img/hero.jpg" fetchpriority="high">
-<link rel="stylesheet" href="assets/css/style.css?v=4">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
 </head>
 <body>
 
@@ -60,6 +60,10 @@
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 1 4 4v7c0 5.1 3.4 9.8 8 11 4.6-1.2 8-5.9 8-11V4l-8-3zm-1 15-3.5-3.5 1.4-1.4L11 13.2l4.6-4.6 1.4 1.4L11 16z"/></symbol>
   <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M21 7H5.5a1.5 1.5 0 0 1 0-3H20V2H5.5A3.5 3.5 0 0 0 2 5.5v13A3.5 3.5 0 0 0 5.5 22H21a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zm-3 8.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 17.3-6.2 3.7 1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M13.2 5.6 11.8 7l4 4H3.5v2h12.3l-4 4 1.4 1.4L19.6 12z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm12 8v10H5V10h14zM7.5 12v2h2v-2h-2zm4.5 0v2h2v-2h-2zm4.5 0v2h2v-2h-2zM7.5 16v2h2v-2h-2zm4.5 0v2h2v-2h-2z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><path d="M10 3a7 7 0 1 0 4.2 12.6l4.6 4.6 1.4-1.4-4.6-4.6A7 7 0 0 0 10 3zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 0 1 5.2 9l1.5 1.5A8 8 0 0 0 12 4zm-5.2 3.5A8 8 0 0 0 12 20v3l4-4-4-4v3a6 6 0 0 1-5.2-9L5.3 7.5z"/></symbol>
   <symbol id="i-fb" viewBox="0 0 24 24"><path d="M13.5 22v-8h2.8l.4-3.2h-3.2V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.4-.2-2.6-.2-2.6 0-4.4 1.6-4.4 4.5v2.3H7v3.2h2.8v8h3.7z"/></symbol>
   <symbol id="i-ig" viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.9c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1s-3.6 0-4.9-.1c-3.2-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-3.2 1.7-4.8 4.9-4.9C8.4 2.2 8.8 2.2 12 2.2zm0 3.3A6.5 6.5 0 1 0 12 18.5 6.5 6.5 0 0 0 12 5.5zm0 10.7A4.2 4.2 0 1 1 12 7.8a4.2 4.2 0 0 1 0 8.4zm6.7-11a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></symbol>
   <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2zm5.1 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1a11 11 0 0 1-5.9-5.2c-.4-.7-.6-1.4-.5-2 0-.5.6-1.5 1.1-1.7.3-.1.6-.1.8 0l.3.1c.2.1.3.3.4.5l.6 1.3c.1.3 0 .5-.1.7l-.4.5c-.2.2-.2.3-.1.5.5 1 1.4 1.9 2.5 2.4.2.1.4.1.5-.1l.6-.6c.2-.2.4-.2.6-.1l1.5.7c.2.1.3.2.3.4.1.3.1.7 0 1z"/></symbol>
@@ -147,9 +151,11 @@
         You approve the quote before any work starts.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-light btn-lg" href="contact.html">Book a repair</a>
+        <a class="btn btn-light btn-lg" href="contact.html">
+          Book a repair <svg class="btn-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
         <a class="btn btn-outline-light btn-lg" href="tel:+971500000000">
-          <svg aria-hidden="true"><use href="#i-phone"></use></svg> Call now
+          Speak to a technician <svg class="btn-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
       </div>
       <ul class="hero-trust">
@@ -160,20 +166,34 @@
     </div>
   </section>
 
-  <!-- ================================================================ INTRO -->
-  <section class="section intro">
-    <div class="container">
-      <h2>Looking for a Samsung service center in Dubai?</h2>
+  <!-- ============================== INTRO — text left, image right -->
+  <section class="split" id="about-us">
+    <div class="split-body">
+      <span class="eyebrow">Engineers, not general handymen</span>
+      <h2>A team you can trust with your appliances</h2>
       <p>
         Our engineers work on Samsung home appliances all day, every day, which is why a
         fault most repair shops need a week to trace is usually named on the first visit.
+      </p>
+      <p>
         We cover front-load and top-load washers, single-door through side-by-side
         refrigerators, condenser and heat-pump dryers, built-in and freestanding
         dishwashers, solo to convection microwaves, and gas or electric cooking ranges.
-        Parts come from Samsung-approved supply, the fault and the fix are written on the
-        invoice, and the labour is warranted for 90 days.
+      </p>
+      <ul class="tick-list">
+        <li><svg aria-hidden="true"><use href="#i-check"></use></svg> Parts from Samsung-approved supply</li>
+        <li><svg aria-hidden="true"><use href="#i-check"></use></svg> The fault and the fix written on your invoice</li>
+        <li><svg aria-hidden="true"><use href="#i-check"></use></svg> 90 days warranty on labour and parts</li>
+      </ul>
+      <p class="split-action">
+        <a class="btn" href="about.html">
+          More about us <svg class="btn-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
       </p>
     </div>
+    <img class="split-media" src="assets/img/about-team.jpg"
+         alt="Samsung appliance engineer at work in the workshop"
+         width="900" height="780" loading="lazy" decoding="async">
   </section>
 
   <!-- ============================================== SERVICES (dark, card grid) -->
@@ -506,35 +526,48 @@
         <h2>How Our Repair Process Works</h2>
       </div>
 
-      <div class="process-band">
-        <ol class="process-grid">
-          <li class="process-step">
-            <span class="process-num" aria-hidden="true">1</span>
-            <h3>Book your slot</h3>
-            <p>Call, WhatsApp or send the form. Weekend slots included.</p>
-          </li>
-          <li class="process-step">
-            <span class="process-num" aria-hidden="true">2</span>
-            <h3>Diagnostic visit</h3>
-            <p>On-time arrival and a full diagnosis, not a guess.</p>
-          </li>
-          <li class="process-step">
-            <span class="process-num" aria-hidden="true">3</span>
-            <h3>Transparent quote</h3>
-            <p>Parts and labour itemised. Nothing starts until you agree.</p>
-          </li>
-          <li class="process-step">
-            <span class="process-num" aria-hidden="true">4</span>
-            <h3>Repair on site</h3>
-            <p>Most jobs are finished on the first visit, at your home.</p>
-          </li>
-          <li class="process-step">
-            <span class="process-num" aria-hidden="true">5</span>
-            <h3>Quality check</h3>
-            <p>We run a full cycle and test the fault before we leave.</p>
-          </li>
-        </ol>
-      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-mark">
+            <span class="step-num">01</span>
+            <span class="step-icon"><svg aria-hidden="true"><use href="#i-calendar"></use></svg></span>
+          </span>
+          <h3>Book your slot</h3>
+          <p>Call, WhatsApp or send the form. Weekend slots included.</p>
+        </li>
+        <li class="step">
+          <span class="step-mark">
+            <span class="step-num">02</span>
+            <span class="step-icon"><svg aria-hidden="true"><use href="#i-search"></use></svg></span>
+          </span>
+          <h3>Diagnostic visit</h3>
+          <p>On-time arrival and a full diagnosis, not a guess at the likely part.</p>
+        </li>
+        <li class="step">
+          <span class="step-mark">
+            <span class="step-num">03</span>
+            <span class="step-icon"><svg aria-hidden="true"><use href="#i-wallet"></use></svg></span>
+          </span>
+          <h3>Transparent quote</h3>
+          <p>Parts and labour itemised. Nothing starts until you agree the figure.</p>
+        </li>
+        <li class="step">
+          <span class="step-mark">
+            <span class="step-num">04</span>
+            <span class="step-icon"><svg aria-hidden="true"><use href="#i-tools"></use></svg></span>
+          </span>
+          <h3>Repair on site</h3>
+          <p>Most jobs are finished on the first visit, at your home.</p>
+        </li>
+        <li class="step">
+          <span class="step-mark">
+            <span class="step-num">05</span>
+            <span class="step-icon"><svg aria-hidden="true"><use href="#i-refresh"></use></svg></span>
+          </span>
+          <h3>Quality check</h3>
+          <p>We run a full cycle and re-test the fault before we leave.</p>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -658,7 +691,9 @@
     <div class="cta-body">
       <p class="kicker">Facing an issue with your Samsung appliance?</p>
       <h2>Request a diagnostic visit and get it fixed with genuine parts.</h2>
-      <a class="btn btn-light" href="contact.html">Book a repair</a>
+      <a class="btn btn-light" href="contact.html">
+        Book a repair <svg class="btn-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
     </div>
     <img src="assets/img/cta.jpg" alt="Samsung washing machine and refrigerator in a modern kitchen" width="1000" height="720" loading="lazy" decoding="async">
   </section>

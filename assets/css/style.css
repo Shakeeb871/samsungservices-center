@@ -9,12 +9,12 @@
    5.  Top bar
    6.  Header & navigation
    7.  Hero
-   8.  Intro
+   8.  Split band (text + image)
    9.  Service cards (dark section)
    10. Why choose us
    11. Explore / detail rows
    12. Service areas
-   13. Process
+   13. Process stepper
    14. FAQ
    15. CTA band
    16. Contact & forms
@@ -208,6 +208,9 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 .btn:active { transform: translateY(0); }
 .btn svg { width: 15px; height: 15px; fill: currentColor; flex: 0 0 auto; }
+/* trailing arrow: nudges forward on hover */
+.btn-arrow { width: 17px !important; height: 17px !important; transition: transform .2s ease; }
+.btn:hover .btn-arrow { transform: translateX(3px); }
 
 .btn-primary { --btn-bg: var(--primary-dark); }
 .btn-primary:hover { --btn-bg: var(--primary-darker); }
@@ -375,17 +378,41 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .hero-trust svg { width: 17px; height: 17px; fill: var(--primary); flex: 0 0 auto; }
 
 /* ==========================================================================
-   8. Intro (cream band with soft blobs)
+   8. Split band — copy on the left, full-bleed image on the right
    ========================================================================== */
-.intro { position: relative; overflow: hidden; background: var(--bg-cream); }
-.intro::before, .intro::after {
-  content: ""; position: absolute; border-radius: 50%;
-  background: rgba(255, 255, 255, .55); pointer-events: none;
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  background: var(--bg-cream);
 }
-.intro::before { width: 420px; height: 420px; top: -120px; left: -160px; }
-.intro::after  { width: 520px; height: 520px; bottom: -220px; right: -180px; }
-.intro .container { position: relative; z-index: 1; }
-.intro p { max-width: 78ch; }
+.split-body {
+  /* keeps the text aligned to the site container while the image bleeds out */
+  width: 100%;
+  max-width: calc(var(--wrap) / 2);
+  margin-left: auto;
+  padding: var(--section-y) clamp(1.75rem, 3vw, 3rem) var(--section-y) 20px;
+}
+.split-body h2 { max-width: 22ch; }
+.split-body p { max-width: 54ch; }
+.split-action { margin-top: 1.75rem; }
+.split-media {
+  width: 100%; height: 100%;
+  min-height: 380px;
+  object-fit: cover;
+  background: var(--bg-soft);
+  /* the one soft corner from the reference design */
+  border-top-left-radius: clamp(2rem, 7vw, 7rem);
+}
+.split.is-flipped { grid-template-columns: 1fr 1fr; }
+.split.is-flipped .split-media { order: -1; border-radius: 0 clamp(2rem, 7vw, 7rem) 0 0; }
+.split.is-flipped .split-body { margin-left: 0; margin-right: auto; padding-inline: clamp(1.75rem, 3vw, 3rem) 20px; }
+
+/* ticked feature list */
+.tick-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+.tick-list li { display: flex; gap: .6rem; align-items: flex-start; margin-bottom: .6rem; font-size: .97rem; }
+.tick-list li:last-child { margin-bottom: 0; }
+.tick-list svg { width: 18px; height: 18px; fill: var(--primary-dark); flex: 0 0 auto; margin-top: .28rem; }
 
 /* ==========================================================================
    9. Service cards (dark section)
@@ -491,33 +518,53 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .areas-action { margin-top: clamp(1.75rem, 3vw, 2.5rem); }
 
 /* ==========================================================================
-   13. Process
+   13. Process stepper — numbered badge over a circular icon, joined by a line
    ========================================================================== */
-.process-band { background: var(--primary); padding: clamp(1rem, 2vw, 1.5rem); border-radius: var(--radius); }
-/* it is an <ol>, so the list styling has to be reset here */
-.process-grid {
+.steps {
+  --step-gap: clamp(.75rem, 2vw, 1.75rem);
+  --step-size: 94px;
+  position: relative;
   display: grid; grid-template-columns: repeat(5, 1fr);
-  gap: clamp(.75rem, 1.5vw, 1.25rem);
+  gap: var(--step-gap);
   list-style: none; margin: 0; padding: 0;
 }
-.process-grid > li { margin: 0; }
-.process-step {
-  position: relative; overflow: hidden;
-  padding: 3.4rem 1.15rem 1.75rem; background: #fff;
-  border-radius: var(--radius);
+/* one continuous connector; the opaque circles hide it between themselves,
+   which reads as the segmented line in the reference.
+   With 5 equal columns the first and last circle centres sit at
+   (100% - 4 gaps) / 10 from each edge. */
+.steps::before {
+  content: "";
+  position: absolute; z-index: 0;
+  top: calc(var(--step-size) / 2 - 1px);
+  left: calc((100% - 4 * var(--step-gap)) / 10);
+  right: calc((100% - 4 * var(--step-gap)) / 10);
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-light), var(--primary), var(--primary-light));
 }
-.process-step::before {       /* dotted corner */
-  content: ""; position: absolute; top: .85rem; right: .85rem;
-  width: 54px; height: 40px; color: var(--line);
-  background-image: var(--dots); background-size: 11px 11px;
+.step { position: relative; z-index: 1; margin: 0; text-align: center; }
+.step-mark {
+  position: relative; display: block;
+  width: var(--step-size); height: var(--step-size);
+  margin: 0 auto 1.4rem;
 }
-.process-num {
-  position: absolute; top: .35rem; left: 1.1rem;
-  font-family: var(--font-display); font-size: 3.1rem; font-weight: 800;
-  line-height: 1; color: var(--primary-tint-2); pointer-events: none;
+.step-icon {
+  display: grid; place-items: center;
+  width: 100%; height: 100%;
+  background: #fff; border: 1px solid var(--line); border-radius: 50%;
+  box-shadow: var(--shadow-sm);
 }
-.process-step h3 { position: relative; font-size: 1.06rem; margin-bottom: .4rem; }
-.process-step p { position: relative; font-size: .92rem; margin: 0; }
+.step-icon svg { width: 34px; height: 34px; fill: var(--primary-dark); }
+.step-num {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  z-index: 2;
+  padding: .12rem .55rem;
+  background: var(--primary-dark); color: #fff;
+  border: 2px solid var(--bg-soft); border-radius: 999px;
+  font-family: var(--font-display); font-size: .7rem; font-weight: 700;
+  letter-spacing: .04em; line-height: 1.5;
+}
+.step h3 { font-size: 1.04rem; margin-bottom: .4rem; }
+.step p { font-size: .92rem; margin: 0; }
 
 /* ==========================================================================
    14. FAQ
@@ -706,16 +753,26 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
    21. Responsive
    ========================================================================== */
 @media (max-width: 1100px) {
+  .steps { grid-template-columns: repeat(3, 1fr); row-gap: 2.5rem; }
+  .steps::before { display: none; }
   .svc-grid { grid-template-columns: repeat(2, 1fr); }
   .svc-invite { grid-column: span 2; }
   .why-grid { grid-template-columns: repeat(2, 1fr); }
-  .process-grid { grid-template-columns: repeat(3, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .nav { gap: 1.35rem; }
   .header-right { gap: 1.25rem; }
 }
 
 @media (max-width: 980px) {
+  .split, .split.is-flipped { grid-template-columns: 1fr; }
+  .split-body, .split.is-flipped .split-body {
+    max-width: var(--wrap); margin: 0 auto;
+    padding: var(--section-y) 20px clamp(2rem, 4vw, 3rem);
+  }
+  .split-media, .split.is-flipped .split-media {
+    order: 0; min-height: 0; aspect-ratio: 16 / 10; max-height: 420px;
+    border-radius: clamp(1.5rem, 6vw, 3rem) 0 0 0;
+  }
   .detail-row, .detail-row.is-flipped { grid-template-columns: 1fr; }
   .detail-row.is-flipped > img { order: 0; }
   .detail-row > img { min-height: 220px; aspect-ratio: 16 / 9; }
@@ -757,9 +814,10 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 }
 
 @media (max-width: 720px) {
+  .steps { grid-template-columns: repeat(2, 1fr); }
   .topbar-list { gap: 1rem; row-gap: .25rem; font-size: .82rem; }
   .topbar-list li:nth-child(3) { display: none; }
-  .svc-grid, .why-grid, .process-grid, .stat-grid, .form-row { grid-template-columns: 1fr; }
+  .svc-grid, .why-grid, .stat-grid, .form-row { grid-template-columns: 1fr; }
   .svc-invite { grid-column: span 1; padding-block: 1rem; }
   .svc-body { margin-inline: .75rem; }
   .faq-body { padding-left: 1.35rem; }
@@ -770,6 +828,12 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 }
 
 @media (max-width: 460px) {
+  /* single column: the badge reads better beside the text than above it */
+  .steps { grid-template-columns: 1fr; row-gap: 1.75rem; }
+  .step { display: grid; grid-template-columns: 68px 1fr; gap: 0 1.1rem; text-align: left; }
+  .step-mark { --step-size: 68px; grid-row: span 2; margin: 0; }
+  .step-icon svg { width: 26px; height: 26px; }
+  .step h3 { margin-bottom: .25rem; }
   .topbar-social { display: none; }
   .btn { width: 100%; }
   .svc-body .btn, .areas-action .btn, .cta-body .btn { width: auto; }

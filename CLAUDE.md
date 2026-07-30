@@ -14,8 +14,8 @@ strict CSP in `.htaccess` would block it and the host is shared cPanel.
 ## Layout
 
 ```
-index.html            Home: hero, intro, 7 service cards, why-us, 7 detail rows,
-                      areas, 5-step process, FAQ, CTA band
+index.html            Home: hero, split band, 7 service cards, why-us, 7 detail
+                      rows, areas, 5-step stepper, FAQ, CTA band
 services.html         All 7 services, one section each (#washing-machine, #top-load,
                       #refrigerator, #microwave, #dishwasher, #cooking-range, #dryer)
 areas.html            Coverage by emirate
@@ -100,6 +100,22 @@ cannot re-centre anything. Do not add `text-align: center` to new components.
 **Buttons are small and quiet**: `.62rem 1.25rem`, `.88rem`, weight 600, 1px
 border, 4px radius, and a 1px lift on hover. `.btn-sm` and `.btn-lg` sit either
 side. Do not scale them up for emphasis — use position and whitespace instead.
+Primary calls to action carry a trailing arrow:
+`<svg class="btn-arrow"><use href="#i-arrow"></use></svg>` inside the `.btn`.
+
+**Two components have geometry worth knowing before you touch them:**
+
+- `.split` is a two-column band whose image bleeds to the viewport edge while the
+  copy stays aligned to the site container. That alignment comes from
+  `.split-body { max-width: calc(var(--wrap) / 2); margin-left: auto }` — not from
+  a `.container`, so do not wrap the body in one. `.split.is-flipped` mirrors it.
+- `.steps` draws one continuous connector line via `.steps::before`, and the
+  opaque circles sit on top of it, which is what makes it read as separate
+  segments. Its `left`/`right` inset is
+  `calc((100% - 4 * var(--step-gap)) / 10)`, which is the exact centre of the
+  first and last circle **only for five equal columns**. The line is therefore
+  hidden below 1100px, where the grid drops to three columns. If you change the
+  number of steps, redo that maths or leave the line off.
 
 **The header is white, the top bar and footer are black.** Anything added to the
 header needs dark-on-light colours; anything added to the top bar or footer needs
