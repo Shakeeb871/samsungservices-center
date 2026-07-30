@@ -43,9 +43,35 @@ is no include system. When you change one, change all seven — and keep the ico
 sprite in sync, since `<use href="#i-name">` only resolves against the sprite on
 that same page.
 
+**Never use an inline `style` attribute, and never an inline `<style>` block.**
+The CSP in `.htaccess` sets `style-src 'self'`, which silently drops both — the
+page looks right locally (no CSP on `file://`) and breaks the moment it is served
+from Apache. This already happened once. Add a rule or a modifier class in
+`style.css` instead; there are `.mt-*` / `.mb-*` utilities for one-off spacing.
+To check before pushing, serve the folder with the real header:
+
+```bash
+python3 -c "
+import http.server,os
+CSP=\"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'\"
+class H(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header('Content-Security-Policy', CSP); super().end_headers()
+http.server.HTTPServer(('127.0.0.1',8099),H).serve_forever()"
+```
+
+then open `http://127.0.0.1:8099/` and look for "Refused to apply inline style"
+in the console. The same applies to any script: no inline `onclick`, no inline
+`<script>` — `main.js` is an external file for that reason.
+
 **Colours and type come from the tokens in `:root`.** Never hard-code a hex value
 in a rule; add a token. The palette is fixed: `--primary #2189ff`,
 `--secondary #323333`, `--btn #010202`.
+
+**The header is white, the top bar and footer are black.** Anything added to the
+header needs dark-on-light colours; anything added to the top bar or footer needs
+light-on-dark. The logo PNG has a dark mark, so it sits bare on the white header
+but keeps a white plate in the footer (`.footer-logo`).
 
 **`#2189ff` is not a text colour on white** — it measures 3.45:1, below WCAG AA.
 Use `--primary-dark` (#0a6ede, 4.89:1) for links, eyebrows, and any button
