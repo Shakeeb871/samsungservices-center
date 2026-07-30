@@ -16,7 +16,7 @@ strict CSP in `.htaccess` would block it and the host is shared cPanel.
 ```
 index.html            Home: hero, split band, 7 service cards, why-us, 7 detail
                       rows, areas, 5-step stepper, FAQ, CTA band
-services.html         All 7 services, one section each (#washing-machine, #top-load,
+services.html         All 7 services, one section each (#washing-machine, #ac-repair,
                       #refrigerator, #microwave, #dishwasher, #cooking-range, #dryer)
 areas.html            Coverage by emirate
 about.html            Story, pillars, stats, why-us
