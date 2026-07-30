@@ -39,6 +39,14 @@ DirectoryIndex index.html index.php
   Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
+# ---- DEVELOPMENT PHASE: keep the whole site out of search engines ----
+# Covers every response, including PDFs and images that a meta tag cannot reach.
+# DELETE this whole block at launch (and the noindex meta tags in the .html files).
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
+</IfModule>
+# ----------------------------------------------------------------------
+
 Options -Indexes
 
 # Keep repo/dev files out of the web root if they ever get copied there

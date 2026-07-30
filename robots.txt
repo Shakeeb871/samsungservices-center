@@ -1,5 +1,18 @@
+# ============================================================
+# DEVELOPMENT PHASE — site must stay out of search results.
+#
+# Crawling is deliberately ALLOWED here. Blocking with "Disallow: /"
+# would stop crawlers from ever reading the noindex directive, so
+# already-known URLs could stay in the index. The noindex comes from
+# the <meta name="robots"> tag on every page plus the X-Robots-Tag
+# header in .htaccess.
+#
+# AT LAUNCH: remove the noindex meta tags from all .html pages,
+# remove the X-Robots-Tag block from .htaccess, then uncomment the
+# Sitemap line below and update the host.
+# ============================================================
+
 User-agent: *
 Allow: /
 
-# Update the host below to your live domain before launch
-Sitemap: https://example.com/sitemap.xml
+# Sitemap: https://example.com/sitemap.xml

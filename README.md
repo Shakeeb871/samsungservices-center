@@ -3,8 +3,12 @@
 Starter website template for a Samsung appliance repair and service business.
 Plain HTML/CSS/JS — no build step, works on any shared cPanel host.
 
-**Status:** dummy template. All copy, phone numbers and email addresses are
-placeholders.
+**Status:** dummy template, development phase. All copy, phone numbers and email
+addresses are placeholders, and the site is **blocked from search engines** — see
+[Search engine blocking](#3-search-engine-blocking-development-phase) below before launch.
+
+Branding uses `assets/img/logo.png` (600×180 transparent PNG) in the header and
+footer; `favicon.ico` and the touch icon are generated from the shield mark in it.
 
 ## Pages
 
@@ -103,3 +107,45 @@ claude
 
 Keep `CLAUDE.md` current — when the structure or deploy path changes, update it in
 the same commit.
+
+---
+
+## 3. Search engine blocking (development phase)
+
+The site is deliberately kept out of Google and other search engines while it is
+being built. Two layers do this:
+
+| Where | What |
+| --- | --- |
+| every `.html` `<head>` | `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">` |
+| `.htaccess` | `Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"` |
+
+The header layer matters because it covers files a meta tag cannot reach — images,
+PDFs, anything non-HTML.
+
+**Why `robots.txt` still says `Allow: /`.** This looks backwards but is correct.
+`Disallow: /` blocks crawling, and a crawler that cannot fetch the page never sees
+the noindex — so any URL Google already knows about can sit in the index
+indefinitely, sometimes shown as a bare title with no description. Allowing the
+crawl lets Google read the noindex and drop the page properly.
+
+**If you need a hard lock** (nothing public at all, not even to someone with the
+URL), use cPanel → **Directory Privacy** on the document root and set a username
+and password. That returns 401 to everyone, crawlers included.
+
+**Verify it is working** — once deployed, run:
+
+```bash
+curl -I https://your-domain.com/
+# look for: x-robots-tag: noindex, nofollow, ...
+```
+
+**At launch, remove all of it in one commit:**
+
+1. delete the `<meta name="robots" ...>` line from `index.html`, `about.html`, `contact.html`
+2. delete the `X-Robots-Tag` block from `.htaccess`
+3. uncomment the `Sitemap:` line in `robots.txt` and set the real host
+4. update the URLs in `sitemap.xml`
+5. deploy, then submit the sitemap in Google Search Console
+
+Missing step 1 or 2 is the usual reason a new site never ranks — check both.

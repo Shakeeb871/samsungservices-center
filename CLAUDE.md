@@ -16,10 +16,27 @@ about.html            About page
 contact.html          Booking form (demo handler only — not wired to email)
 assets/css/style.css  All styles. Design tokens live in :root at the top.
 assets/js/main.js     Mobile nav, footer year, contact-form placeholder
-.htaccess             Apache rules: pretty URLs, gzip, caching, headers
+assets/img/logo.png   Brand logo, 600x180 transparent PNG (header + footer)
+favicon.ico           Generated from the shield mark in the logo
+.htaccess             Apache rules: pretty URLs, gzip, caching, headers, noindex
 .cpanel.yml           cPanel Git Version Control deployment tasks
-robots.txt            Update the Sitemap host before launch
+robots.txt            Crawl-allowed on purpose — see the noindex note below
 ```
+
+## Search engines: currently blocked
+
+The site is in development and must not appear in search results. Three things
+enforce that, and they must be removed **together** at launch:
+
+1. `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">` in the
+   `<head>` of every `.html` page
+2. the `X-Robots-Tag` block in `.htaccess`
+3. the commented-out `Sitemap:` line in `robots.txt` (uncomment it at launch)
+
+`robots.txt` intentionally allows crawling. Do **not** change it to `Disallow: /` —
+a blocked crawler never reads the noindex, so URLs already known to Google would
+stay indexed. If a hard lock is needed instead, use cPanel → Directory Privacy.
+Any new page added during development needs the noindex meta tag too.
 
 ## Conventions
 
@@ -49,5 +66,6 @@ cPanel shows for the domain.
 ## Before going live
 
 Replace: phone numbers (`000 000 0000`), `hello@example.com`, the `tel:` links,
-the `Sitemap:` host in `robots.txt`, and all placeholder body copy. Uncomment the
-HTTPS redirect in `.htaccess` once the SSL certificate is issued.
+the `Sitemap:` host in `robots.txt` and `sitemap.xml`, and all placeholder body
+copy. Uncomment the HTTPS redirect in `.htaccess` once the SSL certificate is
+issued, and lift the three noindex blocks listed above.
