@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact &amp; Booking — Samsung Services Center</title>
+  <meta name="description" content="Book a Samsung appliance technician. Dummy starter template contact form.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-mark">S</span>
+        <span class="logo-text">Samsung <strong>Services Center</strong></span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="siteNav">
+        <a href="index.html">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a class="btn btn-sm" href="tel:+000000000">Call Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1>Book a technician</h1>
+      <p class="lede">Tell us the appliance and the fault. We reply within working hours.</p>
+
+      <form class="form" id="bookingForm" novalidate>
+        <div class="field">
+          <label for="name">Your name</label>
+          <input type="text" id="name" name="name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="appliance">Appliance</label>
+          <select id="appliance" name="appliance">
+            <option>Air conditioner</option>
+            <option>Refrigerator</option>
+            <option>Washing machine</option>
+            <option>Television</option>
+            <option>Microwave oven</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">What is the fault?</label>
+          <textarea id="message" name="message" rows="5" placeholder="Model number and symptoms help us quote accurately."></textarea>
+        </div>
+        <button class="btn" type="submit">Send request</button>
+        <p class="form-note muted" id="formNote">This is a demo form. Hook it up to your mail handler or cPanel form endpoint.</p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p class="footer-brand">Samsung Services Center</p>
+        <p class="muted">Independent repair &amp; service provider. Dummy template — update all details before going live.</p>
+      </div>
+      <div>
+        <p class="footer-head">Contact</p>
+        <p class="muted">Phone: 000 000 0000<br>Email: hello@example.com</p>
+      </div>
+      <div>
+        <p class="footer-head">Pages</p>
+        <p class="muted"><a href="index.html">Home</a> · <a href="about.html">About</a></p>
+      </div>
+    </div>
+    <div class="container">
+      <p class="copyright">&copy; <span id="year">2026</span> Samsung Services Center. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

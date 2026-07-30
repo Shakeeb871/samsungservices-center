@@ -1,0 +1,21 @@
+---
+# cPanel Git Version Control deployment.
+#
+# cPanel runs these tasks as your cPanel user when you click
+# "Deploy HEAD Commit" in WHM/cPanel > Files > Git Version Control.
+#
+# DEPLOYPATH = the document root of the domain this site should serve from.
+#   Primary domain ...... $HOME/public_html/
+#   Addon/subdomain ..... $HOME/public_html/samsungservices/   (or the path cPanel shows)
+# Change the line below if this repo is not for the primary domain.
+deployment:
+  tasks:
+    - export DEPLOYPATH=$HOME/public_html/
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R index.html $DEPLOYPATH
+    - /bin/cp -R about.html $DEPLOYPATH
+    - /bin/cp -R contact.html $DEPLOYPATH
+    - /bin/cp -R robots.txt $DEPLOYPATH
+    - /bin/cp -R sitemap.xml $DEPLOYPATH
+    - /bin/cp -R .htaccess $DEPLOYPATH
+    - /bin/cp -R assets $DEPLOYPATH

@@ -1,0 +1,26 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Local env & secrets — never commit these
+.env
+.env.*
+*.pem
+
+# Archives & backups
+*.zip
+*.tar
+*.tar.gz
+*.sql
+*.bak
+
+# Logs
+*.log
+error_log
+
+# Dependencies (if you add a build step later)
+node_modules/
+vendor/
