@@ -1,55 +1,155 @@
-# Samsung Services Center — basic Apache config for cPanel shared hosting
+# ==========================================================================
+# Samsung Services Center — Apache configuration for cPanel shared hosting
+#
+# Sections: 1 defaults  2 URLs  3 errors  4 compression  5 caching
+#           6 security headers  7 search-engine blocking (development)
+#           8 file protection
+# ==========================================================================
 
+# ---- 1. Defaults --------------------------------------------------------
 DirectoryIndex index.html index.php
+Options -Indexes -MultiViews
+ServerSignature Off
 
-# Serve pretty URLs: /about -> /about.html
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+  AddType image/svg+xml            .svg
+  AddType image/webp               .webp
+  AddType image/avif               .avif
+  AddType application/manifest+json .webmanifest
+  AddType font/woff2               .woff2
+  AddType application/xml          .xml
+</IfModule>
+
+# ---- 2. URLs ------------------------------------------------------------
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteBase /
 
-  # Force HTTPS (uncomment once your SSL certificate is active in cPanel)
+  # Force HTTPS — uncomment once the SSL certificate is active in cPanel
   # RewriteCond %{HTTPS} !=on
-  # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+  # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-  # Drop the .html extension
-  RewriteCond %{REQUEST_FILENAME}.html -f
+  # Canonical host: pick ONE and uncomment it, so www and non-www do not
+  # serve duplicate content to search engines.
+  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  # RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+  # Extension-less URLs resolve: /about -> /about.html
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
   RewriteRule ^([^.]+)$ $1.html [L]
+
+  # NOTE ON CANONICAL URL FORM
+  # The pages link to each other and declare <link rel="canonical"> WITH the
+  # .html extension, so that is the one canonical form and internal clicks
+  # never pass through a redirect. The rule above only means a clean URL
+  # someone typed or linked still works.
+  #
+  # To switch the site to clean URLs instead, do all three together:
+  #   1. change every internal href from page.html to /page
+  #   2. change every rel=canonical and the sitemap.xml entries to match
+  #   3. uncomment the 301 below
+  # Uncommenting it on its own would put a redirect on every internal link.
+  # RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  # RewriteRule ^ /%1 [R=301,L,NE]
+
+  # Remove a trailing slash from file paths
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
 </IfModule>
 
-# Compression
+# ---- 3. Error documents -------------------------------------------------
+ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+
+# ---- 4. Compression -----------------------------------------------------
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain text/xml \
+    application/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+    application/javascript application/json application/manifest+json image/svg+xml \
+    application/xml application/rss+xml font/woff2
 </IfModule>
 
-# Browser caching
+# ---- 5. Caching ---------------------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
-  ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType text/html "access plus 1 hour"
+  ExpiresDefault                              "access plus 1 month"
+  ExpiresByType text/html                     "access plus 0 seconds"
+  ExpiresByType text/css                      "access plus 1 year"
+  ExpiresByType application/javascript        "access plus 1 year"
+  ExpiresByType image/jpeg                    "access plus 1 year"
+  ExpiresByType image/png                     "access plus 1 year"
+  ExpiresByType image/webp                    "access plus 1 year"
+  ExpiresByType image/avif                    "access plus 1 year"
+  ExpiresByType image/svg+xml                 "access plus 1 year"
+  ExpiresByType image/x-icon                  "access plus 1 year"
+  ExpiresByType font/woff2                    "access plus 1 year"
+  ExpiresByType application/manifest+json     "access plus 1 week"
+  ExpiresByType text/xml                      "access plus 1 hour"
 </IfModule>
 
-# Basic hardening
 <IfModule mod_headers.c>
-  Header set X-Content-Type-Options "nosniff"
-  Header set X-Frame-Options "SAMEORIGIN"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  # Long-lived, versioned assets. Rename the file (style.v2.css) when you
+  # change it, otherwise browsers will hold the old copy for a year.
+  <FilesMatch "\.(css|js|jpg|jpeg|png|webp|avif|svg|ico|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|webmanifest|xml)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
 </IfModule>
 
-# ---- DEVELOPMENT PHASE: keep the whole site out of search engines ----
-# Covers every response, including PDFs and images that a meta tag cannot reach.
-# DELETE this whole block at launch (and the noindex meta tags in the .html files).
 <IfModule mod_headers.c>
-  Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
+  Header unset ETag
 </IfModule>
-# ----------------------------------------------------------------------
+FileETag None
 
-Options -Indexes
+# ---- 6. Security headers ------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
 
-# Keep repo/dev files out of the web root if they ever get copied there
-<FilesMatch "^(\.git|\.gitignore|\.cpanel\.yml|CLAUDE\.md|README\.md)">
+  # The site is fully self-hosted, so the policy can stay strict. Add hosts
+  # here if you later load analytics, fonts or a maps embed.
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'"
+
+  # HSTS — only enable AFTER HTTPS is confirmed working, it is hard to undo
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  Header unset X-Powered-By
+  Header unset Server
+</IfModule>
+
+# ---- 7. Search-engine blocking (DEVELOPMENT PHASE) ----------------------
+# Covers every response, including images and PDFs that a meta tag cannot
+# reach. DELETE this block at launch, together with the <meta name="robots">
+# lines in the .html files. See README.md section 3.
+<IfModule mod_headers.c>
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
+</IfModule>
+# ------------------------------------------------------------------------
+
+# ---- 8. File protection -------------------------------------------------
+# Repo and tooling files, in case they are ever copied into the web root
+<FilesMatch "^(\.|composer\.|package.*\.json$|.*\.(md|yml|yaml|log|sql|bak|ini|sh)$)">
   Require all denied
 </FilesMatch>
+<FilesMatch "^(robots\.txt|sitemap\.xml|site\.webmanifest|favicon\.ico)$">
+  Require all granted
+</FilesMatch>
+
+# Block access to version control directories
+RedirectMatch 404 /\.git
+
+# Limit request methods to what a static site needs
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_METHOD} !^(GET|HEAD|POST|OPTIONS)$
+  RewriteRule ^ - [F,L]
+</IfModule>

@@ -2,21 +2,29 @@
 # cPanel Git Version Control deployment.
 #
 # cPanel runs these tasks as your cPanel user when you click
-# "Deploy HEAD Commit" in WHM/cPanel > Files > Git Version Control.
+# "Deploy HEAD Commit" in cPanel > Files > Git Version Control.
 #
-# DEPLOYPATH = the document root of the domain this site should serve from.
+# DEPLOYPATH = the document root of the domain this site serves from.
 #   Primary domain ...... $HOME/public_html/
-#   Addon/subdomain ..... $HOME/public_html/samsungservices/   (or the path cPanel shows)
-# Change the line below if this repo is not for the primary domain.
+#   Addon/subdomain ..... $HOME/public_html/samsungservices/  (whatever cPanel shows)
+# Change the export line below if this repo is not for the primary domain.
+#
+# Only site files are copied — README.md, CLAUDE.md, .git and .cpanel.yml
+# itself deliberately stay out of the web root.
 deployment:
   tasks:
     - export DEPLOYPATH=$HOME/public_html/
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R index.html $DEPLOYPATH
     - /bin/cp -R about.html $DEPLOYPATH
+    - /bin/cp -R services.html $DEPLOYPATH
+    - /bin/cp -R areas.html $DEPLOYPATH
+    - /bin/cp -R blog.html $DEPLOYPATH
     - /bin/cp -R contact.html $DEPLOYPATH
+    - /bin/cp -R 404.html $DEPLOYPATH
     - /bin/cp -R robots.txt $DEPLOYPATH
     - /bin/cp -R sitemap.xml $DEPLOYPATH
+    - /bin/cp -R site.webmanifest $DEPLOYPATH
     - /bin/cp -R favicon.ico $DEPLOYPATH
     - /bin/cp -R .htaccess $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH

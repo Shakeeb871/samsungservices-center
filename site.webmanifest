@@ -1,0 +1,16 @@
+{
+  "name": "Samsung Services Center",
+  "short_name": "Samsung Service",
+  "description": "Samsung appliance repair across Dubai, Abu Dhabi, Sharjah and the Northern Emirates.",
+  "lang": "en-AE",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#010202",
+  "background_color": "#ffffff",
+  "icons": [
+    { "src": "/assets/img/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/assets/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/assets/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "maskable" }
+  ]
+}
