@@ -100,6 +100,63 @@
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
+  /* ------------------------------------------------------------ FAQ accordion
+     <details> cannot be transitioned in every browser yet, so the height is
+     animated with the Web Animations API instead. The element stays a real
+     <details>, so it still works — just without the slide — if this script
+     never runs, and it is left alone entirely under prefers-reduced-motion.
+     NOTE: this block must stay above the booking-form section, which returns
+     early on pages that have no form. */
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var FAQ_MS = 280;
+  var FAQ_EASE = 'cubic-bezier(.4, 0, .2, 1)';
+
+  Array.prototype.forEach.call(document.querySelectorAll('.faq-item'), function (item) {
+    var summary = item.querySelector('summary');
+    var body = item.querySelector('.faq-body');
+    if (!summary || !body) return;
+
+    var anim = null;
+    var state = '';           // 'opening' | 'closing' | ''
+
+    function settle(open) {
+      item.open = open;
+      anim = null;
+      state = '';
+      item.style.height = '';
+      item.style.overflow = '';
+    }
+
+    function animateTo(endPx, open) {
+      var startPx = item.offsetHeight;
+      if (anim) anim.cancel();
+      item.style.overflow = 'hidden';
+      anim = item.animate(
+        { height: [startPx + 'px', endPx + 'px'] },
+        { duration: FAQ_MS, easing: FAQ_EASE }
+      );
+      anim.onfinish = function () { settle(open); };
+      anim.oncancel = function () { state = ''; };
+    }
+
+    summary.addEventListener('click', function (e) {
+      if (reduceMotion.matches) return;     // let the browser open it instantly
+      e.preventDefault();
+
+      if (state === 'closing' || !item.open) {
+        state = 'opening';
+        item.style.height = item.offsetHeight + 'px';
+        item.open = true;
+        window.requestAnimationFrame(function () {
+          animateTo(summary.offsetHeight + body.offsetHeight, true);
+        });
+      } else {
+        state = 'closing';
+        animateTo(summary.offsetHeight, false);
+      }
+    });
+  });
+
   /* --------------------------------------------------------- booking form */
   var form = document.getElementById('bookingForm');
   if (!form) return;

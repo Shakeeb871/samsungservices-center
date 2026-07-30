@@ -25,7 +25,8 @@ blog.html             Post listing (placeholder entries)
 404.html              Error page, wired via ErrorDocument in .htaccess
 
 assets/css/style.css  Whole design system. 22 numbered sections, tokens in :root
-assets/js/main.js     Mobile nav, dropdown, header shadow, footer year, form validation
+assets/js/main.js     Mobile nav, dropdown, header shadow, footer year,
+                      FAQ accordion animation, form validation
 assets/img/           logo.png, hero.jpg, service-*.jpg, cta.jpg, og-image.jpg, icons
 assets/fonts/README   How to self-host SamsungOne / Samsung Sharp Sans
 favicon.ico           Generated from the shield mark in the logo
@@ -103,12 +104,24 @@ side. Do not scale them up for emphasis — use position and whitespace instead.
 Primary calls to action carry a trailing arrow:
 `<svg class="btn-arrow"><use href="#i-arrow"></use></svg>` inside the `.btn`.
 
+**Nothing on this site is a circle.** Every icon tile, badge, social chip and
+floating action uses `--radius-icon` (7px). Do not write `border-radius: 50%` or
+`999px` — the only round things left are the 6–8px bullet dots in list markers.
+This is a standing rule, not a one-off for a single section.
+
 **Two components have geometry worth knowing before you touch them:**
 
 - `.split` is a two-column band whose image bleeds to the viewport edge while the
   copy stays aligned to the site container. That alignment comes from
   `.split-body { max-width: calc(var(--wrap) / 2); margin-left: auto }` — not from
   a `.container`, so do not wrap the body in one. `.split.is-flipped` mirrors it.
+- The FAQ is a real `<details>` element. `<details>` still cannot be transitioned
+  in every browser, so `main.js` animates its height with the Web Animations API
+  and calls `preventDefault()` on the summary click. Two consequences: that block
+  **must stay above the booking-form section in `main.js`**, which returns early
+  on pages with no form, and the accordion must keep working with the script
+  absent — so never move the open/close state out of the `open` attribute.
+  `prefers-reduced-motion` skips the animation entirely.
 - `.steps` draws one continuous connector line via `.steps::before`, and the
   opaque circles sit on top of it, which is what makes it read as separate
   segments. Its `left`/`right` inset is
