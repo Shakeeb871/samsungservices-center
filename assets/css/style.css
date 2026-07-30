@@ -31,14 +31,21 @@
    ========================================================================== */
 :root {
   /* brand palette */
-  --primary: #2189ff;
-  --primary-dark: #0a6ede;
+  --primary: #2189ff;        /* accents, icons, large fills */
+  --primary-dark: #0a6ede;   /* blue SURFACES that carry white text, and links */
   --primary-darker: #0857b0;
+  --primary-light: #7fbaff;  /* blue accent ON a dark surface (6.3:1 on #323333) */
   --primary-tint: #eaf3ff;
   --primary-tint-2: #d5e7ff;
-  --secondary: #323333;
-  --btn: #010202;
+  --secondary: #323333;      /* every dark surface: sections, footer, page heads */
+  --btn: #010202;            /* buttons only */
   --btn-hover: var(--primary-dark);
+
+  /* text on the dark (#323333) surfaces */
+  --on-dark: #c9ccd0;
+  --on-dark-soft: #bcc0c4;
+  --on-dark-muted: #9a9ea2;
+  --hover-grey: #f2f3f5;     /* dropdown / list hover */
 
   /* neutrals */
   --ink: #323333;
@@ -157,12 +164,13 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .section { padding-block: var(--section-y); }
 .section-soft { background: var(--bg-soft); }
 .section-cream { background: var(--bg-cream); }
-.section-dark { background: var(--btn); color: #b9bdc0; }
+.section-dark { background: var(--secondary); color: var(--on-dark); }
 .section-dark :is(h1, h2, h3, h4) { color: #fff; }
 .section-dark a:not(.btn) { color: #fff; }
 
-.section-head { max-width: 780px; margin-bottom: clamp(2rem, 4vw, 3rem); }
-.section-head.center { margin-inline: auto; text-align: center; }
+/* Headings and copy are left-aligned across the whole site — no centred
+   section heads, no justified paragraphs. */
+.section-head { max-width: 820px; margin-bottom: clamp(2rem, 4vw, 3rem); }
 .section-head > p { font-size: 1.03rem; }
 .section-head > p:last-child { margin-bottom: 0; }
 
@@ -173,7 +181,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   letter-spacing: .16em; text-transform: uppercase;
   color: var(--primary-dark); margin-bottom: .7rem;
 }
-.section-dark .eyebrow { color: var(--primary); }
+.section-dark .eyebrow { color: var(--primary-light); }
 .lede { font-size: clamp(1rem, 1.4vw, 1.14rem); }
 .muted { color: var(--muted); }
 
@@ -183,11 +191,11 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .btn {
   --btn-bg: var(--btn);
   --btn-fg: #fff;
-  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
-  padding: .95rem 1.75rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+  padding: .62rem 1.25rem;
   background: var(--btn-bg); color: var(--btn-fg);
-  border: 2px solid var(--btn-bg); border-radius: var(--radius);
-  font: inherit; font-weight: 700; font-size: .97rem;
+  border: 1px solid var(--btn-bg); border-radius: var(--radius);
+  font: inherit; font-weight: 600; font-size: .88rem; line-height: 1.45;
   text-align: center; text-decoration: none; cursor: pointer;
   transition: background .2s ease, border-color .2s ease, color .2s ease,
               transform .2s ease, box-shadow .2s ease;
@@ -195,11 +203,11 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .btn:hover {
   --btn-bg: var(--btn-hover);
   color: #fff;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 .btn:active { transform: translateY(0); }
-.btn svg { width: 18px; height: 18px; fill: currentColor; flex: 0 0 auto; }
+.btn svg { width: 15px; height: 15px; fill: currentColor; flex: 0 0 auto; }
 
 .btn-primary { --btn-bg: var(--primary-dark); }
 .btn-primary:hover { --btn-bg: var(--primary-darker); }
@@ -211,25 +219,28 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .btn-outline-light:hover { --btn-bg: #fff; --btn-fg: var(--btn); border-color: #fff; }
 .btn-wa { --btn-bg: var(--wa); border-color: var(--wa); }
 .btn-wa:hover { --btn-bg: #1eb455; border-color: #1eb455; }
-.btn-sm { padding: .6rem 1.15rem; font-size: .89rem; }
-.btn-lg { padding: 1.1rem 2.2rem; font-size: 1.05rem; }
+.btn-sm { padding: .48rem 1rem; font-size: .82rem; }
+.btn-lg { padding: .78rem 1.6rem; font-size: .95rem; }
 .btn-block { width: 100%; }
 
 /* ==========================================================================
    5. Top bar
    ========================================================================== */
-.topbar { background: var(--btn); color: #9ea2a6; font-size: .855rem; border-bottom: 1px solid rgba(255,255,255,.08); }
-.topbar a { color: #d8dbde; text-decoration: none; }
-.topbar a:hover { color: var(--primary); }
+/* brand-blue strip. Only pure white clears AA on #0a6ede, so nothing here is dimmed. */
+.topbar { background: var(--primary-dark); color: #fff; font-size: .855rem; }
+.topbar a { color: #fff; text-decoration: none; }
+.topbar a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; min-height: 44px; flex-wrap: wrap; }
 .topbar-list { display: flex; align-items: center; gap: 1.75rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
 .topbar-list li { display: flex; align-items: center; gap: .5rem; margin: 0; }
-.topbar-list svg { width: 15px; height: 15px; fill: var(--primary); flex: 0 0 auto; }
+.topbar-list svg { width: 15px; height: 15px; fill: #fff; opacity: .85; flex: 0 0 auto; }
 .social { display: flex; align-items: center; gap: .5rem; list-style: none; margin: 0; padding: 0; }
 .social li { margin: 0; }
-.social a { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.09); transition: background .18s ease; }
-.social a:hover { background: var(--primary); }
-.social svg { width: 14px; height: 14px; fill: #e8eaec; }
+.social a { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.16); transition: background .18s ease, color .18s ease; }
+.social a:hover { background: #fff; }
+.social svg { width: 14px; height: 14px; fill: currentColor; }
+.topbar .social a { color: #fff; }
+.topbar .social a:hover { color: var(--primary-dark); }
 
 /* ==========================================================================
    6. Header & navigation
@@ -292,18 +303,18 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   display: block; padding: .6rem .85rem; border-radius: var(--radius);
   color: var(--ink); font-size: .93rem; font-weight: 600; text-decoration: none;
 }
-.subnav a:hover { background: var(--primary-tint); color: var(--primary-darker); }
+.subnav a:hover { background: var(--hover-grey); color: var(--ink); }
 
 .header-cta { display: flex; align-items: center; gap: .75rem; }
 .header-phone {
   display: inline-flex; align-items: center; gap: .6rem;
   background: var(--btn); color: #fff;
-  padding: .68rem 1.25rem; border-radius: var(--radius);
-  font-weight: 700; font-size: .94rem; text-decoration: none; white-space: nowrap;
+  padding: .52rem 1rem; border-radius: var(--radius);
+  font-weight: 600; font-size: .88rem; text-decoration: none; white-space: nowrap;
   transition: background .18s ease, color .18s ease;
 }
 .header-phone:hover { background: var(--primary-dark); color: #fff; }
-.header-phone svg { width: 16px; height: 16px; fill: currentColor; flex: 0 0 auto; }
+.header-phone svg { width: 14px; height: 14px; fill: currentColor; flex: 0 0 auto; }
 
 .nav-toggle {
   display: none; width: 44px; height: 44px; padding: 10px;
@@ -323,7 +334,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   display: grid; place-items: center;
   min-height: clamp(460px, 72vh, 720px);
   padding-block: clamp(3.5rem, 8vw, 6rem);
-  text-align: center; color: #fff;
+  text-align: left; color: #fff;
   background: var(--secondary);
 }
 .hero-bg {
@@ -332,9 +343,10 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
+  /* tinted with the brand blue rather than flat black */
   background:
-    radial-gradient(120% 90% at 50% 40%, rgba(1, 2, 2, .55) 0%, rgba(1, 2, 2, .78) 100%),
-    linear-gradient(180deg, rgba(1, 2, 2, .35), rgba(1, 2, 2, .7));
+    radial-gradient(110% 90% at 78% 18%, rgba(10, 110, 222, .32) 0%, transparent 62%),
+    linear-gradient(180deg, rgba(50, 51, 51, .72) 0%, rgba(40, 41, 43, .86) 100%);
 }
 .hero h1 { color: #fff; margin-bottom: .4em; text-shadow: 0 2px 20px rgba(0, 0, 0, .35); }
 .hero-sub {
@@ -342,11 +354,13 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   font-size: clamp(1.1rem, 2.1vw, 1.6rem); font-weight: 700;
   color: #fff; margin-bottom: 1rem;
 }
-.hero p { color: rgba(255, 255, 255, .88); max-width: 62ch; margin-inline: auto; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; margin-top: 2rem; }
+.hero .container { display: flex; flex-direction: column; align-items: flex-start; }
+.hero h1 { max-width: 20ch; }
+.hero p { color: rgba(255, 255, 255, .9); max-width: 62ch; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.9rem; }
 .hero-trust {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem 1.6rem;
-  list-style: none; margin: 2.25rem 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: .6rem 1.6rem;
+  list-style: none; margin: 2.1rem 0 0; padding: 0;
   font-size: .93rem; font-weight: 600; color: #fff;
 }
 .hero-trust li { display: flex; align-items: center; gap: .45rem; margin: 0; }
@@ -355,7 +369,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 /* ==========================================================================
    8. Intro (cream band with soft blobs)
    ========================================================================== */
-.intro { position: relative; overflow: hidden; background: var(--bg-cream); text-align: center; }
+.intro { position: relative; overflow: hidden; background: var(--bg-cream); }
 .intro::before, .intro::after {
   content: ""; position: absolute; border-radius: 50%;
   background: rgba(255, 255, 255, .55); pointer-events: none;
@@ -363,7 +377,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .intro::before { width: 420px; height: 420px; top: -120px; left: -160px; }
 .intro::after  { width: 520px; height: 520px; bottom: -220px; right: -180px; }
 .intro .container { position: relative; z-index: 1; }
-.intro p { max-width: 78ch; margin-inline: auto; text-align: justify; hyphens: auto; }
+.intro p { max-width: 78ch; }
 
 /* ==========================================================================
    9. Service cards (dark section)
@@ -392,17 +406,16 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 /* the card is a light surface inside .section-dark, so re-assert text colours */
 .svc-body { color: var(--body); }
-.svc-body h3 { position: relative; text-align: center; margin-bottom: .75rem; color: var(--ink); }
+.svc-body h3 { position: relative; margin-bottom: .75rem; color: var(--ink); padding-right: 4.5rem; }
 .svc-body p { font-size: .95rem; }
 .svc-body strong { color: var(--ink); }
-.svc-body .btn { margin-top: auto; align-self: center; }
-.svc-body .btn { font-size: .88rem; padding: .8rem 1.35rem; }
+.svc-body .btn { margin-top: auto; align-self: flex-start; font-size: .82rem; padding: .5rem 1.05rem; }
 
 /* "interested in a repair?" filler that sits in the last grid row */
 .svc-invite {
   grid-column: span 2;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 1.25rem; text-align: center; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  gap: 1.1rem; padding: 2rem 0;
 }
 .svc-invite h2 { margin: 0; }
 
@@ -414,7 +427,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .why-inner {
   position: relative; overflow: hidden;
   height: 100%; padding: 2rem 1.35rem 1.85rem;
-  background: #fff; text-align: center;
+  background: #fff;
 }
 .why-inner::before {          /* hatched corner */
   content: ""; position: absolute; top: 0; right: 0;
@@ -426,7 +439,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 .why-icon {
   position: relative; display: grid; place-items: center;
-  width: 54px; height: 54px; margin: 0 auto 1.1rem;
+  width: 48px; height: 48px; margin: 0 0 1rem;
 }
 .why-icon svg { width: 38px; height: 38px; fill: var(--primary-dark); }
 .why-inner h3 { position: relative; font-size: 1.12rem; margin-bottom: .5rem; }
@@ -467,12 +480,12 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .area-card li { position: relative; padding-left: 1.15rem; margin-bottom: .6rem; font-size: .96rem; }
 .area-card li::before { content: ""; position: absolute; left: 0; top: .68em; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
 .area-card li:last-child { margin-bottom: 0; }
-.areas-action { text-align: center; margin-top: clamp(1.75rem, 3vw, 2.5rem); }
+.areas-action { margin-top: clamp(1.75rem, 3vw, 2.5rem); }
 
 /* ==========================================================================
    13. Process
    ========================================================================== */
-.process-band { background: var(--btn); padding: clamp(1rem, 2vw, 1.5rem); }
+.process-band { background: var(--primary); padding: clamp(1rem, 2vw, 1.5rem); border-radius: var(--radius); }
 /* it is an <ol>, so the list styling has to be reset here */
 .process-grid {
   display: grid; grid-template-columns: repeat(5, 1fr);
@@ -482,7 +495,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .process-grid > li { margin: 0; }
 .process-step {
   position: relative; overflow: hidden;
-  padding: 3.4rem 1.15rem 1.75rem; background: #fff; text-align: center;
+  padding: 3.4rem 1.15rem 1.75rem; background: #fff;
   border-radius: var(--radius);
 }
 .process-step::before {       /* dotted corner */
@@ -534,9 +547,10 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .cta-body {
   display: flex; flex-direction: column; justify-content: center;
   padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 5vw, 4rem);
-  background: var(--primary-tint);
+  background: var(--primary-dark); color: #fff;
 }
-.cta-body .kicker { font-size: 1rem; font-weight: 600; color: var(--secondary); margin-bottom: .4rem; }
+.cta-body h2 { color: #fff; }
+.cta-body .kicker { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: .4rem; }
 .cta-body h2 {
   font-family: var(--font-serif); font-weight: 600; letter-spacing: -.01em;
   font-size: clamp(1.75rem, 3.6vw, 2.85rem); line-height: 1.15; margin-bottom: 1.6rem;
@@ -583,57 +597,59 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 /* ==========================================================================
    17. Footer
    ========================================================================== */
-.site-footer { background: var(--btn); color: #9ea2a6; padding-block: clamp(2.5rem, 5vw, 4rem) 1.5rem; font-size: .95rem; }
+.site-footer { background: var(--secondary); color: var(--on-dark-soft); padding-block: clamp(2.5rem, 5vw, 4rem) 1.5rem; font-size: .95rem; }
 .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1.3fr 1.2fr; gap: clamp(1.75rem, 3vw, 3rem); }
 .footer-logo { height: 44px; width: auto; background: #fff; padding: 7px 12px; border-radius: var(--radius); margin-bottom: 1.25rem; }
 .footer-head { color: #fff; font-size: 1.06rem; margin-bottom: 1.15rem; }
 .footer-list { list-style: none; padding: 0; margin: 0; }
 .footer-list li { margin-bottom: .62rem; }
-.footer-list a { color: #9ea2a6; text-decoration: none; transition: color .16s ease, padding-left .16s ease; }
+.footer-list a { color: var(--on-dark-soft); text-decoration: none; transition: color .16s ease, padding-left .16s ease; }
 .footer-list a:hover { color: #fff; padding-left: 4px; }
 .footer-contact { list-style: none; padding: 0; margin: 0; }
 .footer-contact li { display: flex; gap: .7rem; margin-bottom: .85rem; }
-.footer-contact svg { width: 16px; height: 16px; fill: var(--primary); flex: 0 0 auto; margin-top: .35rem; }
-.footer-contact a { color: #d8dbde; text-decoration: none; }
+.footer-contact svg { width: 16px; height: 16px; fill: var(--primary-light); flex: 0 0 auto; margin-top: .35rem; }
+.footer-contact a { color: #fff; text-decoration: none; }
 .footer-contact a:hover { color: #fff; }
 .site-footer .social { margin-top: 1.4rem; }
+.site-footer .social a { color: #fff; }
+.site-footer .social a:hover { color: var(--primary-dark); }
 .footer-bottom {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem;
   margin-top: clamp(2rem, 4vw, 3rem); padding-top: 1.5rem;
   border-top: 1px solid var(--line-dark); font-size: .87rem;
 }
 .footer-bottom p { margin: 0; }
-.footer-bottom a { color: #9ea2a6; text-decoration: none; }
+.footer-bottom a { color: var(--on-dark-soft); text-decoration: none; }
 .footer-bottom a:hover { color: #fff; }
-.footer-legal { max-width: 78ch; margin-top: 1rem; font-size: .82rem; color: #74777a; }
+.footer-legal { max-width: 78ch; margin-top: 1rem; font-size: .82rem; color: var(--on-dark-muted); }
 
 /* ==========================================================================
    18. Floating actions
    ========================================================================== */
 .floaties { position: fixed; right: 16px; bottom: 16px; z-index: 90; display: flex; flex-direction: column; gap: .65rem; }
 .floatie {
-  display: grid; place-items: center; width: 54px; height: 54px;
+  display: grid; place-items: center; width: 48px; height: 48px;
   border-radius: 50%; text-decoration: none;
   box-shadow: 0 10px 26px rgba(1, 2, 2, .28);
   transition: transform .18s ease;
 }
 .floatie:hover { transform: scale(1.09); }
-.floatie svg { width: 27px; height: 27px; fill: #fff; }
+.floatie svg { width: 23px; height: 23px; fill: #fff; }
 .floatie-wa { background: var(--wa); }
 .floatie-call { background: var(--primary-dark); }
 
 /* ==========================================================================
    19. Inner page header
    ========================================================================== */
-.page-head { background: var(--btn); color: #b9bdc0; padding-block: clamp(2.5rem, 5vw, 4rem); }
+.page-head { background: var(--secondary); color: var(--on-dark); padding-block: clamp(2.5rem, 5vw, 4rem); }
 .page-head h1 { color: #fff; margin-bottom: .5rem; }
 .page-head p { max-width: 68ch; margin: 0; }
 .crumbs { margin-bottom: .9rem; font-size: .88rem; }
 .crumbs ol { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: 0; padding: 0; }
-.crumbs li { display: flex; align-items: center; gap: .4rem; margin: 0; color: #85898d; }
-.crumbs li + li::before { content: "/"; color: #5d6165; }
-.crumbs a { color: #d8dbde; text-decoration: none; }
-.crumbs a:hover { color: var(--primary); }
+.crumbs li { display: flex; align-items: center; gap: .4rem; margin: 0; color: var(--on-dark-muted); }
+.crumbs li + li::before { content: "/"; color: var(--on-dark-muted); opacity: .6; }
+.crumbs a { color: var(--on-dark-soft); text-decoration: none; }
+.crumbs a:hover { color: #fff; }
 
 /* generic content cards used on inner pages */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: var(--gap); }
@@ -652,9 +668,9 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 .form-hint { font-size: .94rem; }
 .card-icon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 1.1rem; background: var(--primary-tint); border-radius: var(--radius); }
 .card-icon svg { width: 24px; height: 24px; fill: var(--primary-dark); }
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); text-align: center; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
 .stat strong { display: block; font-family: var(--font-display); font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 800; line-height: 1.1; color: #fff; }
-.stat span { font-size: .94rem; }
+.stat span { font-size: .94rem; color: var(--on-dark); }
 
 /* ==========================================================================
    20. Utilities
@@ -664,7 +680,8 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
   margin: -1px; padding: 0; overflow: hidden;
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
 }
-.text-center { text-align: center; }
+/* left alignment is the site-wide rule; kept only so old markup cannot recentre */
+.text-center { text-align: left; }
 /* spacing utilities — the CSP forbids inline style attributes, so anything
    that would have been style="margin-…" needs a class here instead */
 .mt-0 { margin-top: 0; }
@@ -736,7 +753,6 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
   .svc-grid, .why-grid, .process-grid, .stat-grid, .form-row { grid-template-columns: 1fr; }
   .svc-invite { grid-column: span 1; padding-block: 1rem; }
   .svc-body { margin-inline: .75rem; }
-  .intro p { text-align: left; text-align-last: auto; }
   .faq-body { padding-left: 1.35rem; }
   .footer-grid { grid-template-columns: 1fr; gap: 1.75rem; }
   .floatie { width: 48px; height: 48px; }

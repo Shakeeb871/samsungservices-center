@@ -73,8 +73,33 @@ rather than the year-long `immutable` used for images — see the comment in sec
 5 for why immutable on a hand-edited stylesheet breaks the live site invisibly.
 
 **Colours and type come from the tokens in `:root`.** Never hard-code a hex value
-in a rule; add a token. The palette is fixed: `--primary #2189ff`,
-`--secondary #323333`, `--btn #010202`.
+in a rule; add a token. The palette is fixed and each colour has one job:
+
+| Token | Value | Where it goes |
+| --- | --- | --- |
+| `--primary` | `#2189ff` | icons, accents, the process band, active-nav underline |
+| `--primary-dark` | `#0a6ede` | blue **surfaces** that carry white text (top bar, CTA band) and all links |
+| `--primary-light` | `#7fbaff` | a blue accent sitting **on** a dark surface (eyebrows in dark sections) |
+| `--secondary` | `#323333` | every dark surface: dark sections, footer, inner page heads |
+| `--btn` | `#010202` | **buttons only** — nothing else |
+
+`#010202` is the button colour, not a background colour. Dark surfaces are
+`--secondary`. Getting this backwards makes the whole site read as black, which is
+the opposite of the brand.
+
+`--primary` (#2189ff) is only 3.45:1 on white and 3.67:1 on `--secondary`, so it
+must never carry small text on either. Use `--primary-dark` on white and
+`--primary-light` on dark. Text on the `#323333` surfaces uses `--on-dark`,
+`--on-dark-soft` and `--on-dark-muted`, all of which clear AA.
+
+**Everything is left-aligned.** No centred section heads, no centred hero, no
+justified paragraphs, no centred cards. There is no `.center` modifier any more,
+and `.text-center` is deliberately defined as `text-align: left` so stale markup
+cannot re-centre anything. Do not add `text-align: center` to new components.
+
+**Buttons are small and quiet**: `.62rem 1.25rem`, `.88rem`, weight 600, 1px
+border, 4px radius, and a 1px lift on hover. `.btn-sm` and `.btn-lg` sit either
+side. Do not scale them up for emphasis — use position and whitespace instead.
 
 **The header is white, the top bar and footer are black.** Anything added to the
 header needs dark-on-light colours; anything added to the top bar or footer needs
