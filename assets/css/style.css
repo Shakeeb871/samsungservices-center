@@ -401,11 +401,10 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   min-height: 380px;
   object-fit: cover;
   background: var(--bg-soft);
-  /* the one soft corner from the reference design */
-  border-top-left-radius: clamp(2rem, 7vw, 7rem);
+  border-radius: 0;
 }
 .split.is-flipped { grid-template-columns: 1fr 1fr; }
-.split.is-flipped .split-media { order: -1; border-radius: 0 clamp(2rem, 7vw, 7rem) 0 0; }
+.split.is-flipped .split-media { order: -1; border-radius: 0; }
 .split.is-flipped .split-body { margin-left: 0; margin-right: auto; padding-inline: clamp(1.75rem, 3vw, 3rem) 20px; }
 
 /* ticked feature list */
@@ -457,28 +456,20 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 /* ==========================================================================
    10. Why choose us
    ========================================================================== */
-.why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
-.why-card { background: var(--primary-tint); padding: 14px; height: 100%; }
-.why-inner {
-  position: relative; overflow: hidden;
-  height: 100%; padding: 2rem 1.35rem 1.85rem;
-  background: #fff;
-}
-.why-inner::before {          /* hatched corner */
-  content: ""; position: absolute; top: 0; right: 0;
-  width: 120px; height: 120px; color: var(--line);
-  background-image: var(--hatch);
-  -webkit-mask-image: linear-gradient(225deg, #000 45%, transparent 46%);
-          mask-image: linear-gradient(225deg, #000 45%, transparent 46%);
-  pointer-events: none;
-}
+.why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.75rem, 3vw, 2.75rem); }
+/* No frame, no border, no radius — the tinted icon tile carries the structure.
+   The hatched corner went with the frame; it read as stray texture without it. */
+.why-card { height: 100%; }
+.why-inner { height: 100%; }
 .why-icon {
-  position: relative; display: grid; place-items: center;
-  width: 48px; height: 48px; margin: 0 0 1rem;
+  display: grid; place-items: center;
+  width: 56px; height: 56px; margin: 0 0 1.15rem;
+  background: var(--primary-tint);
+  border-radius: 7px;
 }
-.why-icon svg { width: 38px; height: 38px; fill: var(--primary-dark); }
-.why-inner h3 { position: relative; font-size: 1.12rem; margin-bottom: .5rem; }
-.why-inner p { position: relative; font-size: .93rem; margin: 0; }
+.why-icon svg { width: 28px; height: 28px; fill: var(--primary-dark); }
+.why-inner h3 { font-size: 1.12rem; margin-bottom: .5rem; }
+.why-inner p { font-size: .93rem; margin: 0; }
 
 /* ==========================================================================
    11. Explore / detail rows
@@ -771,7 +762,7 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
   }
   .split-media, .split.is-flipped .split-media {
     order: 0; min-height: 0; aspect-ratio: 16 / 10; max-height: 420px;
-    border-radius: clamp(1.5rem, 6vw, 3rem) 0 0 0;
+    border-radius: 0;
   }
   .detail-row, .detail-row.is-flipped { grid-template-columns: 1fr; }
   .detail-row.is-flipped > img { order: 0; }
