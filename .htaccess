@@ -13,6 +13,13 @@ ServerSignature Off
 
 AddDefaultCharset UTF-8
 <IfModule mod_mime.c>
+  # text/css and application/javascript are declared explicitly on purpose.
+  # Section 6 sets X-Content-Type-Options: nosniff, which makes the browser
+  # REFUSE a stylesheet served with the wrong Content-Type instead of guessing.
+  # On a host with a broken mime.types that combination renders the site
+  # completely unstyled, and the only clue is a console warning.
+  AddType text/css                 .css
+  AddType application/javascript   .js
   AddType image/svg+xml            .svg
   AddType image/webp               .webp
   AddType image/avif               .avif
