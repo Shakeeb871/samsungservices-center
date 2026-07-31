@@ -150,6 +150,13 @@ link dropped into a dark section needs the override that `.page-head p a` and
 `.section-dark a:not(.btn)` provide. Text on the `#323333` surfaces uses `--on-dark`,
 `--on-dark-soft` and `--on-dark-muted`, all of which clear AA.
 
+**"Not sure which one it is?" is a `<p class="svc-invite-title">`, not a heading.**
+It is set at `<h2>` size on purpose, but it introduces the card grid rather than
+titling a section of its own — as an `<h2>` it was a heading with nothing
+beneath it, which is a hole in the document outline. Because it is a `<p>` it
+does not pick up `.section-dark`'s white heading colour, so the rule sets
+`color: #fff` explicitly. Anything similar should follow the same pattern.
+
 **Everything is left-aligned.** No centred section heads, no centred hero, no
 justified paragraphs, no centred cards. There is no `.center` modifier any more,
 and `.text-center` is deliberately defined as `text-align: left` so stale markup
@@ -197,8 +204,8 @@ Two kinds of image, treated differently:
 **The hero overlay is contrast-critical.** `.hero::after` is weighted to the left
 on desktop so the photograph stays visible on the right, and switches to a
 vertical wash below 900px where the copy spans the full width. Both were measured
-against the actual hero image with the text hidden: worst case 7.22:1 on desktop
-and 8.28:1 on mobile, against a 4.5:1 minimum. **Re-measure whenever the hero
+against the actual hero image with the text hidden: worst case 10.22:1 on desktop
+and 8.19:1 on mobile, against a 4.5:1 minimum. **Re-measure whenever the hero
 photo or the hero copy changes** — not just the photo. Lengthening the copy
 pushes it further across the picture and dropped the desktop figure to 4.61:1,
 which is why the 38% and 68% stops in `.hero::after` are darker than they were.
