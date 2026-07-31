@@ -505,6 +505,8 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .detail-body h4 { margin: 1.9rem 0 .5rem; color: var(--ink); }
 .detail-body h4:first-of-type { margin-top: 0; }
 .detail-body > p { font-size: .98rem; }
+/* the one-line direct answer that opens a service section */
+.detail-body > p.lede { font-size: 1.08rem; font-weight: 600; color: var(--ink); }
 /* These were buttons until the call-to-action buttons came out. As plain text
    an inline link is only its line-height tall — 17px, under the 24px WCAG 2.2
    minimum — so the block padding is doing real work here, not decoration. */
@@ -769,6 +771,119 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 .card-icon svg { width: 24px; height: 24px; fill: var(--primary-dark); }
 
 /* ==========================================================================
+   18b. Team, job examples and reviews — the first-hand-experience blocks
+   ========================================================================== */
+/* An unmissable banner while a section still holds placeholder people, jobs
+   or reviews. Publishing invented technicians or invented reviews is worse
+   than publishing an obviously unfinished section, so this is loud on purpose
+   and disappears the moment team.py's DATA_IS_REAL is set. */
+.draft-note {
+  margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+  padding: .9rem 1.1rem;
+  background: #fff6e5;
+  border-left: 4px solid #b76e00;
+  border-radius: var(--radius);
+  color: #6b4300; font-size: .93rem;
+}
+.draft-note code { font-size: .88em; background: rgba(0,0,0,.06); padding: .1em .35em; border-radius: 3px; }
+
+.team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); }
+.person {
+  display: flex; flex-direction: column;
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+}
+.person-head h3 { margin-bottom: .2rem; }
+.person-role { font-size: .9rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 1.1rem; }
+.person-quote {
+  margin: 0 0 1.4rem; padding-left: 1rem;
+  border-left: 3px solid var(--primary);
+  color: var(--ink); font-size: .97rem;
+}
+.person-detail + .person-detail { margin-top: 1rem; }
+.person-detail h4 {
+  font-family: var(--font-sans); font-size: .79rem; font-weight: 800;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: .45rem;
+}
+.person-detail ul { list-style: none; margin: 0; padding: 0; font-size: .93rem; }
+.person-detail li { margin-bottom: .25rem; }
+
+.job-grid, .review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+.job, .review {
+  padding: clamp(1.4rem, 2.4vw, 1.9rem);
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+}
+.job-meta {
+  font-size: .8rem; font-weight: 700; letter-spacing: .04em;
+  color: var(--primary-dark); margin-bottom: 1rem;
+}
+.job dl { margin: 0; font-size: .94rem; }
+.job dt {
+  font-family: var(--font-sans); font-size: .79rem; font-weight: 800;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  margin-top: .9rem;
+}
+.job dt:first-child { margin-top: 0; }
+.job dd { margin: .2rem 0 0; }
+.job-figures {
+  margin: 1.2rem 0 0; padding-top: .9rem;
+  border-top: 1px solid var(--line);
+  font-size: .9rem; color: var(--muted);
+}
+.job-cost { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+
+.review-stars { margin-bottom: .8rem; font-size: 1.05rem; color: #c77700; letter-spacing: .08em; }
+.review blockquote { margin: 0 0 1.1rem; font-size: .97rem; color: var(--ink); }
+.review-by { margin: 0; font-size: .86rem; color: var(--muted); }
+
+/* ==========================================================================
+   19b. Legal pages — a long numbered document with its own contents list
+   ========================================================================== */
+.legal { display: grid; grid-template-columns: 260px 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+/* the contents list follows the reader down the page on a wide screen; the
+   offset clears the sticky header so a jumped-to clause is not hidden by it */
+.legal-toc { position: sticky; top: calc(var(--header-h) + 24px); }
+.legal-toc-title {
+  font-family: var(--font-sans); font-size: .78rem; font-weight: 800;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--primary-dark); margin-bottom: .8rem;
+}
+.legal-toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+.legal-toc li { margin-bottom: .1rem; counter-increment: toc; }
+.legal-toc a {
+  display: block; padding: .35rem 0 .35rem 2.1rem;
+  position: relative; font-size: .92rem; text-decoration: none; color: var(--body);
+  border-left: 2px solid var(--line); margin-left: -2px;
+}
+.legal-toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  position: absolute; left: .9rem; color: var(--muted);
+  font-size: .78rem; font-weight: 700;
+}
+.legal-toc a:hover { color: var(--primary-dark); border-left-color: var(--primary); background: var(--bg-soft); }
+
+.legal-body { max-width: 68ch; }
+.legal-clause + .legal-clause { margin-top: clamp(2.25rem, 4vw, 3.25rem); }
+.legal-clause h2 {
+  display: flex; align-items: baseline; gap: .8rem;
+  font-size: clamp(1.2rem, 2.1vw, 1.6rem); margin-bottom: .9rem;
+}
+.legal-num {
+  flex: 0 0 auto;
+  font-size: .82rem; font-weight: 800; letter-spacing: .04em;
+  color: var(--primary-dark);
+  background: var(--primary-tint);
+  border-radius: var(--radius-icon);
+  padding: .18rem .5rem;
+}
+.legal-clause p { font-size: .98rem; }
+
+/* the "last updated" line under a page-head heading */
+.page-head-meta { margin-top: .9rem; font-size: .9rem; color: var(--on-dark-muted); }
+.page-head-meta time { color: var(--on-dark-soft); font-weight: 600; }
+
+/* ==========================================================================
    20. Utilities
    ========================================================================== */
 .visually-hidden {
@@ -790,6 +905,9 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
   /* the connector is hidden below this width, so the column count is the
      only thing that has to change — --step-count drives the grid. */
   .steps { --step-count: 3; row-gap: 2.5rem; }
+  .legal { grid-template-columns: 1fr; }
+  .job-grid, .review-grid { grid-template-columns: repeat(2, 1fr); }
+  .legal-toc { position: static; }
   .steps::before { display: none; }
   .svc-grid { grid-template-columns: repeat(2, 1fr); }
   .svc-invite { grid-column: span 2; }
@@ -859,7 +977,8 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
   .steps { --step-count: 2; }
   .topbar-list { gap: 1rem; row-gap: .25rem; font-size: .82rem; }
   .topbar-list li:nth-child(3) { display: none; }
-  .svc-grid, .why-grid, .form-row { grid-template-columns: 1fr; }
+  .svc-grid, .why-grid, .form-row,
+  .team-grid, .job-grid, .review-grid { grid-template-columns: 1fr; }
   .svc-invite { grid-column: span 1; padding-block: 1rem; }
   .svc-body { margin-inline: .75rem; }
   .faq-body { padding-left: 1.35rem; }

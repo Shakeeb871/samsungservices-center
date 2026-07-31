@@ -40,7 +40,7 @@ on two pages — checked mechanically by `scratchpad/coverage.py`, not by eye:
 | Promotional blurbs, keywords in `<strong>` | index service cards |
 | Common *appliance* Problems + What We Inspect + Care Tips | index `#explore`, all three per row |
 | Appliance overviews (both paragraphs) | services.html |
-| What Customers Can Expect (6 items) | about.html |
+| What Customers Can Expect (6 items) | about.html, under the team |
 | How Our Appliance Repair Process Works (6 steps) | index `#process` |
 | Samsung Appliance Repair Costs | index `#costs` |
 | Coverage statement | areas.html page head |
@@ -49,6 +49,13 @@ on two pages — checked mechanically by `scratchpad/coverage.py`, not by eye:
 Repeated **labels** — the seven service names, "Explore Samsung Services in the
 UAE" — are navigation, and are expected on more than one page. Repeated
 **sentences** are not.
+
+**Keyword density is measured too.** `scratchpad/density.py` reports how often
+each page says "Samsung". Anything at or above 3% is flagged; services.html hit
+5.9% when every heading and every opening sentence carried the brand, and is
+2.4% now. The brand stays in headings, which is where it earns its place — what
+came out were the body sentences repeating it directly beneath a heading that
+already said it.
 
 **The site must not repeat itself, and there is a tool that measures it.**
 `scratchpad/redundancy.py` reports three things: phrases that recur three or
@@ -75,6 +82,35 @@ they are the one field that is **HTML rather than text** — the target keywords
 carry `<strong>`, so `build_content.py` interpolates them raw instead of
 through `esc()`.
 
+## Placeholders that must not be invented
+
+`scratchpad/team.py` and `scratchpad/legal.py` carry [SQUARE BRACKET] values —
+technician names and certifications, job examples with costs, customer reviews,
+the registered legal name, trade licence, workshop address and the privacy
+contact. **Do not fill any of them with something plausible.**
+
+A named technician with a made-up certification is a false credential. A review
+with a made-up customer name and date is a fake review, which is unlawful to
+publish in most markets and is precisely what an E-E-A-T audit exists to catch.
+Made-up job costs mislead on price.
+
+While they are unfilled, `team.py` has `DATA_IS_REAL = False`, which puts a
+visible amber "Not yet published" banner above each affected section and keeps
+`Review` / `AggregateRating` markup off the page — review schema over invented
+reviews is structured-data spam and can earn a manual action. Set it to `True`
+only once the real details are in.
+
+## Dates are a claim, not a counter
+
+Every page carries a visible "Last updated" line and a `WebPage` node with
+`datePublished` / `dateModified`. Those dates are literals in
+`scratchpad/build_dates.py`, not generated at build time, and the sitemap
+`lastmod` matches them.
+
+Change them when the content actually changes. A date that bumps itself on
+every deploy is not a freshness signal — it is a lie that search engines learn
+to discount.
+
 ## Stack
 
 Hand-written HTML, one CSS file, one JS file. No framework, no build step, no
@@ -86,13 +122,15 @@ strict CSP in `.htaccess` would block it and the host is shared cPanel.
 
 ```
 index.html            Home: hero, about band, 7 service cards, Explore (faults +
-                      diagnosis + care per appliance), areas, 6-step stepper,
-                      costs, FAQ, CTA
+                      diagnosis + care per appliance), recent jobs, reviews,
+                      areas, 6-step stepper, costs, FAQ, CTA
 services.html         Appliance overviews, one section each (#washing-machine,
                       #ac-repair, #refrigerator, #microwave, #dishwasher,
                       #cooking-range, #dryer), each linking into Explore
 areas.html            Coverage by emirate
-about.html            What customers can expect from a repair visit
+about.html            The business, the engineers, and what to expect
+privacy.html          Privacy policy, 10 numbered clauses
+terms.html            Terms of service, 14 numbered clauses
 contact.html          Contact details + validated booking form
 blog.html             Post listing (placeholder entries)
 404.html              Error page, wired via ErrorDocument in .htaccess

@@ -28,7 +28,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/assets/css/style.css?v=32">
+<link rel="stylesheet" href="/assets/css/style.css?v=35">
 </head>
 <body>
 
@@ -276,6 +276,8 @@
           <li><a href="/areas/">Areas we serve</a></li>
           <li><a href="/blog/">Blog</a></li>
           <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of service</a></li>
         </ul>
       </nav>
 
@@ -318,7 +320,7 @@
 
     <div class="footer-bottom">
       <p>&copy; <span id="year">2026</span> Samsung Services Center. All rights reserved.</p>
-      <p><a href="#main">Back to top</a></p>
+      <p>Last updated <time datetime="2026-07-31">31 July 2026</time> · <a href="#main">Back to top</a></p>
     </div>
     <p class="footer-legal">
       “Samsung” is a trademark of Samsung Electronics Co., Ltd., used here to describe the
@@ -342,19 +344,38 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://example.com/"
+      "@type": "WebPage",
+      "@id": "https://example.com/areas/#webpage",
+      "url": "https://example.com/areas/",
+      "name": "Areas We Serve | Samsung Appliance Repair in the UAE",
+      "isPartOf": {
+        "@id": "https://example.com/#website"
+      },
+      "about": {
+        "@id": "https://example.com/#business"
+      },
+      "inLanguage": "en-AE",
+      "datePublished": "2026-07-30",
+      "dateModified": "2026-07-31"
     },
     {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Areas we serve",
-      "item": "https://example.com/areas/"
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://example.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Areas we serve",
+          "item": "https://example.com/areas/"
+        }
+      ]
     }
   ]
 }

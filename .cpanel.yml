@@ -21,6 +21,8 @@ deployment:
     - /bin/cp -R areas.html $DEPLOYPATH
     - /bin/cp -R blog.html $DEPLOYPATH
     - /bin/cp -R contact.html $DEPLOYPATH
+    - /bin/cp -R privacy.html $DEPLOYPATH
+    - /bin/cp -R terms.html $DEPLOYPATH
     - /bin/cp -R 404.html $DEPLOYPATH
     - /bin/cp -R send.php $DEPLOYPATH
     - /bin/cp -R robots.txt $DEPLOYPATH

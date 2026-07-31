@@ -35,7 +35,7 @@
 
 <!-- Performance: the hero image is the largest contentful paint on this page -->
 <link rel="preload" as="image" href="/assets/img/samsung-home-appliances-repair-service-center.webp" fetchpriority="high" type="image/webp">
-<link rel="stylesheet" href="/assets/css/style.css?v=32">
+<link rel="stylesheet" href="/assets/css/style.css?v=35">
 </head>
 <body>
 
@@ -382,6 +382,78 @@
     </div>
   </section>
 
+  <!-- ================================================= JOB EXAMPLES + REVIEWS -->
+  <section class="section" id="recent-jobs">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">From the van</span>
+        <h2>Three Recent Jobs, Start to Invoice</h2>
+        <p>These are real jobs with the customer details removed. Costs are what was invoiced, not an estimate range — your own appliance may cost more or less.</p>
+      </div>
+      <p class="draft-note"><strong>Not yet published:</strong> these are not real jobs and the costs are not real invoices. Everything in [square brackets] below is a placeholder. Set <code>DATA_IS_REAL</code> once the real details are in.</p>
+      <div class="job-grid">
+        <article class="job">
+          <p class="job-meta">[Appliance and model range] &middot; [Area, emirate] &middot; [Month YYYY]</p>
+          <dl>
+            <dt>Reported</dt><dd>[What the customer reported, in their words]</dd>
+            <dt>Found</dt><dd>[What the inspection actually found — the useful part]</dd>
+            <dt>Done</dt><dd>[What was replaced or repaired]</dd>
+          </dl>
+          <p class="job-figures"><span class="job-cost">[AED total invoiced]</span> &middot; [Time on site] on site</p>
+        </article>
+        <article class="job">
+          <p class="job-meta">[Appliance and model range] &middot; [Area, emirate] &middot; [Month YYYY]</p>
+          <dl>
+            <dt>Reported</dt><dd>[Reported symptom]</dd>
+            <dt>Found</dt><dd>[Cause found]</dd>
+            <dt>Done</dt><dd>[Work carried out]</dd>
+          </dl>
+          <p class="job-figures"><span class="job-cost">[AED total invoiced]</span> &middot; [Time on site] on site</p>
+        </article>
+        <article class="job">
+          <p class="job-meta">[Appliance and model range] &middot; [Area, emirate] &middot; [Month YYYY]</p>
+          <dl>
+            <dt>Reported</dt><dd>[Reported symptom]</dd>
+            <dt>Found</dt><dd>[Cause found]</dd>
+            <dt>Done</dt><dd>[Work carried out]</dd>
+          </dl>
+          <p class="job-figures"><span class="job-cost">[AED total invoiced]</span> &middot; [Time on site] on site</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="reviews">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Customer reviews</span>
+        <h2>What Customers Said Afterwards</h2>
+        <p>Reviews left by customers after a completed repair. Each one is published with that customer's permission.</p>
+      </div>
+      <p class="draft-note"><strong>Not yet published:</strong> these are not real reviews. Everything in [square brackets] below is a placeholder. Set <code>DATA_IS_REAL</code> once the real details are in.</p>
+      <div class="review-grid">
+        <article class="review">
+          <p class="review-stars"><span aria-hidden="true">★★★★★</span><span class="visually-hidden">5 out of 5</span></p>
+          <blockquote><p>[The review exactly as the customer wrote it. Do not tidy it up.]</p></blockquote>
+          <p class="review-by">[Customer first name + initial] &middot; [Area, emirate] &middot; [Appliance repaired]
+            &middot; <time datetime="[YYYY-MM-DD]">[YYYY-MM-DD]</time></p>
+        </article>
+        <article class="review">
+          <p class="review-stars"><span aria-hidden="true">★★★★★</span><span class="visually-hidden">5 out of 5</span></p>
+          <blockquote><p>[The review exactly as the customer wrote it.]</p></blockquote>
+          <p class="review-by">[Customer first name + initial] &middot; [Area, emirate] &middot; [Appliance repaired]
+            &middot; <time datetime="[YYYY-MM-DD]">[YYYY-MM-DD]</time></p>
+        </article>
+        <article class="review">
+          <p class="review-stars"><span aria-hidden="true">★★★★☆</span><span class="visually-hidden">4 out of 5</span></p>
+          <blockquote><p>[The review exactly as the customer wrote it.]</p></blockquote>
+          <p class="review-by">[Customer first name + initial] &middot; [Area, emirate] &middot; [Appliance repaired]
+            &middot; <time datetime="[YYYY-MM-DD]">[YYYY-MM-DD]</time></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- ========================================================= SERVICE AREAS -->
   <section class="section" id="areas">
     <div class="container">
@@ -658,6 +730,8 @@
           <li><a href="/areas/">Areas we serve</a></li>
           <li><a href="/blog/">Blog</a></li>
           <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of service</a></li>
         </ul>
       </nav>
 
@@ -700,7 +774,7 @@
 
     <div class="footer-bottom">
       <p>&copy; <span id="year">2026</span> Samsung Services Center. All rights reserved.</p>
-      <p><a href="#main">Back to top</a></p>
+      <p>Last updated <time datetime="2026-07-31">31 July 2026</time> · <a href="#main">Back to top</a></p>
     </div>
     <p class="footer-legal">
       “Samsung” is a trademark of Samsung Electronics Co., Ltd., used here to describe the
@@ -730,6 +804,21 @@
 {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://example.com/#webpage",
+      "url": "https://example.com/",
+      "name": "Samsung Service Center UAE | Authorized Appliance Repair",
+      "isPartOf": {
+        "@id": "https://example.com/#website"
+      },
+      "about": {
+        "@id": "https://example.com/#business"
+      },
+      "inLanguage": "en-AE",
+      "datePublished": "2026-07-30",
+      "dateModified": "2026-07-31"
+    },
     {
       "@type": "WebSite",
       "@id": "https://example.com/#website",
@@ -811,7 +900,7 @@
             "itemOffered": {
               "@type": "Service",
               "name": "Samsung Washing Machine Repair",
-              "description": "We repair Samsung front-load washing machines, top-load washing machines, washer-dryer combinations, smart washing machines and selected EcoBubble and AddWash models."
+              "description": "We repair front-load washing machines, top-load washing machines, washer-dryer combinations, smart washing machines and selected EcoBubble and AddWash models."
             }
           },
           {
@@ -819,7 +908,7 @@
             "itemOffered": {
               "@type": "Service",
               "name": "Samsung Air Conditioner Repair",
-              "description": "We inspect and repair Samsung wall-mounted split air conditioners, window air conditioners and selected ducted systems."
+              "description": "We inspect and repair wall-mounted split air conditioners, window air conditioners and selected ducted systems."
             }
           },
           {
@@ -827,7 +916,7 @@
             "itemOffered": {
               "@type": "Service",
               "name": "Samsung Refrigerator Repair",
-              "description": "We repair Samsung French-door, side-by-side, top-freezer, bottom-freezer, one-door, Family Hub and selected Bespoke refrigerators."
+              "description": "We repair French-door, side-by-side, top-freezer, bottom-freezer, one-door, Family Hub and selected Bespoke refrigerators."
             }
           },
           {
@@ -835,7 +924,7 @@
             "itemOffered": {
               "@type": "Service",
               "name": "Samsung Microwave Oven Repair",
-              "description": "We repair Samsung solo microwave ovens, grill microwave ovens and convection microwave ovens."
+              "description": "We repair solo microwave ovens, grill microwave ovens and convection microwave ovens."
             }
           },
           {
@@ -843,7 +932,7 @@
             "itemOffered": {
               "@type": "Service",
               "name": "Samsung Dishwasher Repair",
-              "description": "We repair Samsung freestanding and built-in dishwashers, including selected smart models."
+              "description": "Samsung dishwashers are covered in both freestanding and built-in forms, smart models included."
             }
           },
           {
@@ -851,7 +940,7 @@
             "itemOffered": {
               "@type": "Service",
               "name": "Samsung Cooking Range and Oven Repair",
-              "description": "We repair selected Samsung freestanding cooking ranges and built-in ovens, including electric, convection and smart models."
+              "description": "We repair selected freestanding cooking ranges and built-in ovens, including electric, convection and smart models."
             }
           },
           {
@@ -859,7 +948,7 @@
             "itemOffered": {
               "@type": "Service",
               "name": "Samsung Dryer Repair",
-              "description": "We repair Samsung standalone tumble dryers, heat-pump dryers, condenser dryers and the drying sections of selected washer-dryer combinations."
+              "description": "We repair standalone tumble dryers, heat-pump dryers, condenser dryers and the drying sections of selected washer-dryer combinations."
             }
           }
         ]
@@ -874,7 +963,7 @@
           "name": "Is Samsung Services Center an authorised Samsung service centre?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Samsung Services Center is an authorized repair center for Samsung home appliances in the UAE, covering the laundry, cooling and kitchen ranges."
+            "text": "Yes — that authorisation covers Samsung home appliances in the UAE, across the laundry, cooling and kitchen ranges."
           }
         },
         {
@@ -914,7 +1003,7 @@
           "name": "What is included in appliance maintenance?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Maintenance depends on the appliance. It may include cleaning accessible filters, checking drainage paths, inspecting door seals, reviewing airflow, checking visible electrical connections and testing basic performance. Maintenance does not guarantee that an unrelated component will not fail in the future."
+            "text": "Maintenance depends on the appliance. It may include cleaning accessible filters, checking drainage paths, inspecting door seals, reviewing airflow, checking visible electrical connections and testing basic performance. It is upkeep, not insurance: a part unrelated to the work can still fail afterwards."
           }
         },
         {
