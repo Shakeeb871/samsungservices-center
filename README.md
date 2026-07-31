@@ -15,10 +15,10 @@ engines**. See [section 3](#3-search-engine-blocking-development-phase) before l
 
 | File | URL | Purpose |
 | --- | --- | --- |
-| `index.html` | `/` | Home — hero, intro, 7 service cards, what to expect, 7 problem lists, coverage, 6-step process, costs, FAQ, CTA |
-| `services.html` | `/services/` | What each service inspects and repairs, plus care tips, anchored (`#washing-machine`, `#refrigerator`, …) |
+| `index.html` | `/` | Home — hero, about band, 7 service cards, Explore (faults, diagnosis and care per appliance), coverage, 6-step process, costs, FAQ, CTA |
+| `services.html` | `/services/` | Appliance overviews, anchored (`#washing-machine`, `#refrigerator`, …), each linking into Explore on the home page |
 | `areas.html` | `/areas/` | Coverage listed emirate by emirate |
-| `about.html` | `/about/` | Who the business is, and what it is not |
+| `about.html` | `/about/` | What customers can expect from a repair visit |
 | `contact.html` | `/contact/` | Contact details and a validated booking form posting to `send.php` |
 | `blog.html` | `/blog/` | Post listing (placeholder entries) |
 | `404.html` | — | Error page, served via `ErrorDocument`; has no URL of its own |

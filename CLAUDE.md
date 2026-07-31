@@ -5,46 +5,56 @@ Static marketing site for a Samsung home-appliance repair business serving the U
 client's own. Contact details, the domain and the imagery are still placeholder
 and must be replaced before launch — see "Before going live".
 
-## The copy is deliberately careful — do not "improve" it
+## The business is a Samsung-authorised repair centre
 
-The client's text qualifies almost everything: parts "should be matched" and may
-be genuine **or compatible**; the three-month warranty applies "only when it is
-stated on the invoice"; testing "does not guarantee that an unrelated component
-will not fail later"; a repair estimate comes **after** inspection.
+The site says so in the hero, and everything else has to agree with it. The
+first draft of the copy described the business as independent and **not**
+authorised by Samsung; the owner has since confirmed it holds Samsung
+authorisation, so those lines were rewritten. Twelve sentences changed, listed
+in `scratchpad/coverage.py` under `SUPERSEDED`. If you touch any of them, keep
+them consistent — a page that claims authorisation in the hero and denies it in
+the FAQ is worse than either position on its own.
 
-An earlier draft of this site promised "genuine parts", "90-day warranty",
-"fixed price before we start" and "same-day slots". All of that is gone, from
-the body copy, the meta descriptions and the JSON-LD (`priceRange` was dropped
-from `LocalBusiness` for the same reason). Do not reintroduce a firmer claim
-than the copy makes, anywhere — including in a meta description, an `alt`, a
-button label or a schema field.
+What that means in practice:
 
-`Samsung Services Center is not affiliated with, authorised by or operated by
-Samsung Electronics.` appears once as `.notice` in the home-page split band, is
-restated in the client's own words on about.html and in the first FAQ, and sits
-in the footer of every page. That is intentional; it is a legal notice, not
-duplicate content.
+- Parts are **genuine Samsung parts**. The earlier "or a compatible
+  replacement" wording is gone from the FAQ and from the parts card.
+- Manufacturer-warranty work is handled under those terms, not referred
+  elsewhere as third-party repair.
+- The footer trademark line describes "Samsung" as a trademark of Samsung
+  Electronics **used here to describe the appliances we are authorised to
+  repair** — it no longer disclaims affiliation.
+
+Everything else in the copy stays as careful as the client wrote it: the
+three-month warranty applies "only when it is stated on the invoice", testing
+"does not guarantee that an unrelated component will not fail later", and a
+repair estimate comes **after** inspection. Do not firm those up.
 
 **Content lives in one place per sentence.** No paragraph of body copy appears
-on two pages — that was checked mechanically, not by eye:
+on two pages — checked mechanically by `scratchpad/coverage.py`, not by eye:
 
 | Source section | Where it lives |
 | --- | --- |
-| Intro, disclaimer | index hero + split band |
-| Our Samsung Home Appliance Repair Services (overview ¶1) | index service cards |
-| …(overview ¶2) | services.html, leading each detail row |
-| What Customers Can Expect (6 items) | index `#why-us` |
-| Common *appliance* Problems (7 lists) | index `#explore` |
-| What We Inspect and Repair + Care Tips (7×) | services.html |
+| Hero copy (authorised repair centre) | index hero |
+| About + intro paragraphs | index split band, under one heading |
+| Promotional blurbs, keywords in `<strong>` | index service cards |
+| Common *appliance* Problems + What We Inspect + Care Tips | index `#explore`, all three per row |
+| Appliance overviews (both paragraphs) | services.html |
+| What Customers Can Expect (6 items) | about.html |
 | How Our Appliance Repair Process Works (6 steps) | index `#process` |
 | Samsung Appliance Repair Costs | index `#costs` |
-| About Samsung Services Center | about.html |
 | Coverage statement | areas.html page head |
 | Frequently Asked Questions (8) | index `#faq` + FAQPage JSON-LD |
 
 Repeated **labels** — the seven service names, "Explore Samsung Services in the
 UAE" — are navigation, and are expected on more than one page. Repeated
 **sentences** are not.
+
+The service-card blurbs are the only marketing prose on the site that is not
+from the client's source document. They live in `content.py` as `promo`, and
+they are the one field that is **HTML rather than text** — the target keywords
+carry `<strong>`, so `build_content.py` interpolates them raw instead of
+through `esc()`.
 
 ## Stack
 
@@ -56,12 +66,14 @@ strict CSP in `.htaccess` would block it and the host is shared cPanel.
 ## Layout
 
 ```
-index.html            Home: hero, split band, 7 service cards, what-to-expect,
-                      7 problem lists, areas, 6-step stepper, costs, FAQ, CTA
-services.html         All 7 services, one section each (#washing-machine, #ac-repair,
-                      #refrigerator, #microwave, #dishwasher, #cooking-range, #dryer)
+index.html            Home: hero, about band, 7 service cards, Explore (faults +
+                      diagnosis + care per appliance), areas, 6-step stepper,
+                      costs, FAQ, CTA
+services.html         Appliance overviews, one section each (#washing-machine,
+                      #ac-repair, #refrigerator, #microwave, #dishwasher,
+                      #cooking-range, #dryer), each linking into Explore
 areas.html            Coverage by emirate
-about.html            Who the business is, and what it is not
+about.html            What customers can expect from a repair visit
 contact.html          Contact details + validated booking form
 blog.html             Post listing (placeholder entries)
 404.html              Error page, wired via ErrorDocument in .htaccess
@@ -174,8 +186,8 @@ Two kinds of image, treated differently:
 **The hero overlay is contrast-critical.** `.hero::after` is weighted to the left
 on desktop so the photograph stays visible on the right, and switches to a
 vertical wash below 900px where the copy spans the full width. Both were measured
-against the actual hero image with the text hidden: worst case 5.49:1 on desktop
-and 8.07:1 on mobile, against a 4.5:1 minimum. **Re-measure whenever the hero
+against the actual hero image with the text hidden: worst case 7.22:1 on desktop
+and 8.28:1 on mobile, against a 4.5:1 minimum. **Re-measure whenever the hero
 photo or the hero copy changes** — not just the photo. Lengthening the copy
 pushes it further across the picture and dropped the desktop figure to 4.61:1,
 which is why the 38% and 68% stops in `.hero::after` are darker than they were.

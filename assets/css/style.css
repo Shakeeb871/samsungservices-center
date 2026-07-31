@@ -111,7 +111,7 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h5 {
+h1, h2, h3, h4, h5 {
   margin: 0 0 .65em;
   font-family: var(--font-display);
   font-weight: 800;
@@ -123,6 +123,7 @@ h1, h2, h3, h5 {
 h1 { font-size: clamp(2rem, 4.6vw, 3.4rem); }
 h2 { font-size: clamp(1.65rem, 3.6vw, 2.65rem); }
 h3 { font-size: clamp(1.15rem, 1.8vw, 1.4rem); }
+h4 { font-size: 1.02rem; }
 
 p { margin: 0 0 1.1rem; }
 p:last-child, ul:last-child, ol:last-child { margin-bottom: 0; }
@@ -405,17 +406,6 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   border-radius: 0;
 }
 
-/* A statement the reader has to be able to find, not a decoration: the
-   non-affiliation notice. Quiet, but set apart from the body copy by the rule
-   on the left rather than by a colour that would read as a warning. */
-.notice {
-  margin-top: 1.75rem;
-  padding-left: 1rem;
-  border-left: 3px solid var(--primary);
-  color: var(--ink-soft);
-  font-size: .95rem;
-}
-
 /* A run of plain body copy with no cards or grid around it. Measure is capped
    so a long paragraph does not run the full width of the container. */
 .prose { max-width: 68ch; }
@@ -509,17 +499,12 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .detail-body { padding: clamp(1.5rem, 2.5vw, 2.25rem); background: var(--bg-soft); }
 .detail-row.is-flipped { grid-template-columns: 1fr 400px; }
 .detail-row.is-flipped > img { order: 2; }
-.detail-body h3 { font-size: clamp(1.2rem, 2vw, 1.55rem); margin-bottom: .6rem; }
+.detail-body h3 { font-size: clamp(1.2rem, 2vw, 1.55rem); margin-bottom: .9rem; }
+/* the three sub-headings inside a detail row: Common X Problems,
+   What We Inspect and Repair, X Care Tips */
+.detail-body h4 { margin: 1.9rem 0 .5rem; color: var(--ink); }
+.detail-body h4:first-of-type { margin-top: 0; }
 .detail-body > p { font-size: .98rem; }
-.detail-body ul { list-style: none; padding: 0; margin: 1rem 0 0; }
-.detail-body ul li {
-  position: relative; padding-left: 1.5rem; margin-bottom: .8rem; font-size: .96rem;
-}
-.detail-body ul li::before {
-  content: ""; position: absolute; left: 0; top: .62em;
-  width: 8px; height: 8px; border-radius: 50%; background: var(--primary);
-}
-.detail-body ul li:last-child { margin-bottom: 0; }
 
 /* ==========================================================================
    12. Service areas
