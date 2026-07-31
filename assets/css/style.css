@@ -374,13 +374,6 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .hero h1 { max-width: 20ch; }
 .hero p { color: rgba(255, 255, 255, .9); max-width: 62ch; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.9rem; }
-.hero-trust {
-  display: flex; flex-wrap: wrap; gap: .6rem 1.6rem;
-  list-style: none; margin: 2.1rem 0 0; padding: 0;
-  font-size: .93rem; font-weight: 600; color: #fff;
-}
-.hero-trust li { display: flex; align-items: center; gap: .45rem; margin: 0; }
-.hero-trust svg { width: 17px; height: 17px; fill: var(--primary); flex: 0 0 auto; }
 
 /* ==========================================================================
    8. Split band — copy on the left, full-bleed image on the right
