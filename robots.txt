@@ -15,4 +15,8 @@
 User-agent: *
 Allow: /
 
+# The canonical URL of every page is extension-less with a trailing slash
+# (/services/). .htaccess 301s /services.html and /services onto it, so
+# there is no duplicate URL here that would need blocking.
+
 # Sitemap: https://example.com/sitemap.xml

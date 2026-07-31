@@ -13,25 +13,37 @@ engines**. See [section 3](#3-search-engine-blocking-development-phase) before l
 
 ## Pages
 
-| File | Purpose |
-| --- | --- |
-| `index.html` | Home — hero, intro, 7 service cards, why-us, 7 detail rows, coverage, 5-step process, FAQ, CTA |
-| `services.html` | All seven services in detail, anchored (`#washing-machine`, `#refrigerator`, …) |
-| `areas.html` | Coverage listed emirate by emirate |
-| `about.html` | Story, pillars, stats, why-us |
-| `contact.html` | Contact details and a client-validated booking form |
-| `blog.html` | Post listing (placeholder entries) |
-| `404.html` | Error page, served via `ErrorDocument` |
+| File | URL | Purpose |
+| --- | --- | --- |
+| `index.html` | `/` | Home — hero, intro, 7 service cards, why-us, 7 detail rows, coverage, 5-step process, FAQ, CTA |
+| `services.html` | `/services/` | All seven services in detail, anchored (`#washing-machine`, `#refrigerator`, …) |
+| `areas.html` | `/areas/` | Coverage listed emirate by emirate |
+| `about.html` | `/about/` | Story, pillars, stats, why-us |
+| `contact.html` | `/contact/` | Contact details and a validated booking form posting to `send.php` |
+| `blog.html` | `/blog/` | Post listing (placeholder entries) |
+| `404.html` | — | Error page, served via `ErrorDocument`; has no URL of its own |
+
+The URL column is the canonical form. `.htaccess` maps `/services/` onto
+`services.html` internally, and 301s both `/services.html` and `/services` onto
+it, so every page has exactly one address.
 
 ## Local preview
 
+The site can no longer be previewed over `file://` or a plain static server: asset
+paths are root-relative (`/assets/…`) and the pretty URLs need the rewrite rules,
+so either would give you an unstyled page and broken links. Run Apache over the
+repo instead:
+
 ```bash
-python3 -m http.server 8000    # then open http://localhost:8000
+apt-get install -y apache2
+a2enmod rewrite headers expires deflate
+# add a vhost with DocumentRoot = this folder and AllowOverride All, then
+apache2ctl start
+curl -o /dev/null -w '%{http_code} -> %{redirect_url}\n' http://127.0.0.1:8100/services.html
 ```
 
-Opening the files directly with `file://` also works. Either way the `.htaccess`
-rules — extension-less URLs, gzip, cache and security headers — only apply on
-Apache, so those behaviours cannot be tested locally. Verify them after deploying.
+That is also the only way to test the rest of `.htaccess` — redirects, gzip,
+caching and the security headers — before deploying.
 
 ## Design tokens
 
@@ -178,11 +190,23 @@ Do these in one commit, then deploy:
 6. Uncomment the `Sitemap:` line in `robots.txt` and the HTTPS redirect in
    `.htaccess`; pick a canonical www / non-www host there too.
 7. Enable HSTS in `.htaccess` **only after** HTTPS is confirmed working.
-8. Point the contact form at a real mail handler — see the marked spot in
-   `assets/js/main.js`. It validates client-side but sends nothing.
+8. Set `TO_EMAIL` and `FROM_EMAIL` at the top of `send.php`. `FROM_EMAIL` must be
+   an address on this domain, or the host's mail server will drop the message.
 9. Deploy, then submit the sitemap in Google Search Console and request indexing.
 
 Missing step 1 or 2 is the usual reason a brand-new site never ranks. Check both.
+
+**Confirm the URL scheme survived the deploy** — a host that ignores `.htaccess`
+serves the pretty URLs as 404s, and one that overrides `DirectoryIndex` breaks the
+home page:
+
+```bash
+for u in / /services/ /services.html /services /404.html /no-such-page; do
+  printf '%-18s ' "$u"
+  curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}\n' "https://your-domain.com$u"
+done
+# expect: 200 / 200 / 301 to /services/ / 301 to /services/ / 404 / 404
+```
 
 ---
 

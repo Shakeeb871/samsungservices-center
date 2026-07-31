@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Replace https://example.com with the live domain, and keep the URL form
-  identical to the <link rel="canonical"> in each page (with .html) —
+  identical to the <link rel="canonical"> in each page — extension-less,
+  with a trailing slash —
   a sitemap that lists a redirecting URL wastes crawl budget.
 
   Do not submit this to Search Console until the noindex blocks are removed;
@@ -15,31 +16,31 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://example.com/services.html</loc>
+    <loc>https://example.com/services/</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://example.com/contact.html</loc>
+    <loc>https://example.com/contact/</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://example.com/areas.html</loc>
+    <loc>https://example.com/areas/</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://example.com/about.html</loc>
+    <loc>https://example.com/about/</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://example.com/blog.html</loc>
+    <loc>https://example.com/blog/</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>

@@ -180,10 +180,50 @@ section must too.
 shift; below-the-fold images also take `loading="lazy" decoding="async"`. The hero
 is the exception — it stays eager with `fetchpriority="high"` and a `<link rel=preload>`.
 
-**Pages link to each other with the `.html` extension** and their `rel=canonical`
-matches. `.htaccess` also resolves extension-less URLs, but `.html` is the one
-canonical form so internal clicks never pass through a redirect. To change that,
-follow the three-step note in `.htaccess` section 2 — all three steps or none.
+## URLs
+
+**The canonical URL of every page is extension-less with a trailing slash** —
+`/`, `/services/`, `/contact/`. The files on disk stay flat (`services.html`) and
+`.htaccess` section 2 maps one onto the other. Three things follow, and getting
+any of them wrong breaks either the page or the SEO:
+
+- **Every internal link, canonical, `og:url`, sitemap entry and JSON-LD URL uses
+  the slash form.** `/services.html` and `/services` both 301 onto `/services/`,
+  so a link written the old way still lands — but it costs the visitor a redirect
+  and splits the ranking signals across two URLs until Google re-crawls. There is
+  no reason to write one.
+- **Asset and link paths are root-relative: `/assets/…`, not `assets/…`.** This is
+  not a style preference. Served at `/services/`, a relative `assets/css/style.css`
+  resolves to `/services/assets/css/style.css` and 404s, so the page arrives with
+  no stylesheet at all. Same for `/send.php` in the form action, `/favicon.ico`
+  and `/site.webmanifest`.
+- **The rewrite rules are order-dependent and every one carries
+  `RewriteCond %{ENV:REDIRECT_STATUS} ^$`.** Read the comment in `.htaccess`
+  before editing them. Short version: the redirects match on `THE_REQUEST`, so
+  the internal rewrite cannot feed itself back into them and loop; the
+  `REDIRECT_STATUS` guard stops the ErrorDocument subrequest from being
+  redirected instead of rendered. Both were found by running a real Apache
+  against this `.htaccess` — the second one only shows up on `/404.html`.
+
+**Adding a page** means: the file `foo.html`; links to it written `/foo/`; a
+self-canonical `https://host/foo/`; a `<loc>https://host/foo/</loc>` in
+`sitemap.xml`; and a `cp` line in `.cpanel.yml`. No `.htaccess` change — the
+rules are generic.
+
+`404.html` is the ErrorDocument and deliberately has **no** canonical and **no**
+`og:url`: it renders at whatever URL the visitor asked for, so any fixed URL on it
+would be a lie. Rule A in `.htaccess` also makes `/404`, `/404/` and `/404.html`
+answer with a real 404 status instead of 200 — that is what keeps it from being a
+soft 404, i.e. an indexable thin page.
+
+To check the rules after editing them, run a real Apache over the repo rather
+than trusting the regexes by eye:
+
+```bash
+apt-get install -y apache2 && a2enmod rewrite headers expires deflate
+# DocumentRoot at the repo, AllowOverride All, then:
+curl -o /dev/null -w '%{http_code} -> %{redirect_url}\n' http://127.0.0.1:8100/services.html
+```
 
 ## Search engines: currently blocked
 
