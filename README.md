@@ -4,9 +4,9 @@ Website for a Samsung home-appliance repair business serving the UAE. Hand-writt
 HTML, CSS and vanilla JavaScript — no build step, no dependencies, no external
 requests. Deploys to any shared cPanel host.
 
-**Status: development.** The layout, markup, SEO scaffolding and accessibility work
-are complete. All business content — phone number, email, address, photos, copy,
-stats — is placeholder, and the site is deliberately **blocked from search
+**Status: development.** The layout, markup, SEO scaffolding, accessibility work
+and the body copy are complete. The contact details, domain and photography are
+still placeholder, and the site is deliberately **blocked from search
 engines**. See [section 3](#3-search-engine-blocking-development-phase) before launch.
 
 ---
@@ -15,10 +15,10 @@ engines**. See [section 3](#3-search-engine-blocking-development-phase) before l
 
 | File | URL | Purpose |
 | --- | --- | --- |
-| `index.html` | `/` | Home — hero, intro, 7 service cards, why-us, 7 detail rows, coverage, 5-step process, FAQ, CTA |
-| `services.html` | `/services/` | All seven services in detail, anchored (`#washing-machine`, `#refrigerator`, …) |
+| `index.html` | `/` | Home — hero, intro, 7 service cards, what to expect, 7 problem lists, coverage, 6-step process, costs, FAQ, CTA |
+| `services.html` | `/services/` | What each service inspects and repairs, plus care tips, anchored (`#washing-machine`, `#refrigerator`, …) |
 | `areas.html` | `/areas/` | Coverage listed emirate by emirate |
-| `about.html` | `/about/` | Story, pillars, stats, why-us |
+| `about.html` | `/about/` | Who the business is, and what it is not |
 | `contact.html` | `/contact/` | Contact details and a validated booking form posting to `send.php` |
 | `blog.html` | `/blog/` | Post listing (placeholder entries) |
 | `404.html` | — | Error page, served via `ErrorDocument`; has no URL of its own |
@@ -52,12 +52,12 @@ The palette and type live in `:root` at the top of `assets/css/style.css`:
 | Token | Value | Used for |
 | --- | --- | --- |
 | `--primary` | `#2189ff` | icons, accents, anything on a dark background |
-| `--primary-dark` | `#0a6ede` | links, eyebrows, buttons that carry white text |
-| `--secondary` | `#323333` | headings and body ink |
-| `--btn` | `#010202` | primary button fill, header, footer, dark sections |
+| `--primary-dark` | `#0961c6` | links, eyebrows, blue surfaces that carry white text |
+| `--secondary` | `#323333` | every dark surface — dark sections, footer, page heads |
+| `--btn` | `#010202` | button fill, and nothing else |
 
 `#2189ff` measures **3.45:1** on white, below the WCAG AA minimum of 4.5:1, so it is
-never used for text — `--primary-dark` (4.89:1) is. Keep that split if you add
+never used for text — `--primary-dark` (5.9:1) is. Keep that split if you add
 colours.
 
 Typography uses Samsung's own faces first (`SamsungOne`, `Samsung Sharp Sans`) and
@@ -183,7 +183,7 @@ Do these in one commit, then deploy:
    `contact.html`.
 4. Replace the placeholder business details: `+971 50 000 0000` (in `tel:`, `wa.me`
    and visible text), `info@example.com`, the Business Bay address, the `#` social
-   links, the about-page stats.
+   links.
 5. Replace the placeholder images in `assets/img/` — keep the filenames and the
    aspect ratios (`hero.jpg` 16:9, `service-*.jpg` 10:7, `cta.jpg` 25:18,
    `og-image.jpg` 1200×630) and no markup needs to change.

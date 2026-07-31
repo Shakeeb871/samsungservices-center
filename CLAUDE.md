@@ -1,8 +1,50 @@
 # Samsung Services Center
 
 Static marketing site for a Samsung home-appliance repair business serving the UAE
-(Dubai, Abu Dhabi, Sharjah, Ajman, RAK, UAQ, Fujairah). Layout is built; all
-business content is placeholder and must be replaced before launch.
+(Dubai, Abu Dhabi, Sharjah, Ajman, RAK, UAQ, Fujairah). The body copy is the
+client's own. Contact details, the domain and the imagery are still placeholder
+and must be replaced before launch — see "Before going live".
+
+## The copy is deliberately careful — do not "improve" it
+
+The client's text qualifies almost everything: parts "should be matched" and may
+be genuine **or compatible**; the three-month warranty applies "only when it is
+stated on the invoice"; testing "does not guarantee that an unrelated component
+will not fail later"; a repair estimate comes **after** inspection.
+
+An earlier draft of this site promised "genuine parts", "90-day warranty",
+"fixed price before we start" and "same-day slots". All of that is gone, from
+the body copy, the meta descriptions and the JSON-LD (`priceRange` was dropped
+from `LocalBusiness` for the same reason). Do not reintroduce a firmer claim
+than the copy makes, anywhere — including in a meta description, an `alt`, a
+button label or a schema field.
+
+`Samsung Services Center is not affiliated with, authorised by or operated by
+Samsung Electronics.` appears once as `.notice` in the home-page split band, is
+restated in the client's own words on about.html and in the first FAQ, and sits
+in the footer of every page. That is intentional; it is a legal notice, not
+duplicate content.
+
+**Content lives in one place per sentence.** No paragraph of body copy appears
+on two pages — that was checked mechanically, not by eye:
+
+| Source section | Where it lives |
+| --- | --- |
+| Intro, disclaimer | index hero + split band |
+| Our Samsung Home Appliance Repair Services (overview ¶1) | index service cards |
+| …(overview ¶2) | services.html, leading each detail row |
+| What Customers Can Expect (6 items) | index `#why-us` |
+| Common *appliance* Problems (7 lists) | index `#explore` |
+| What We Inspect and Repair + Care Tips (7×) | services.html |
+| How Our Appliance Repair Process Works (6 steps) | index `#process` |
+| Samsung Appliance Repair Costs | index `#costs` |
+| About Samsung Services Center | about.html |
+| Coverage statement | areas.html page head |
+| Frequently Asked Questions (8) | index `#faq` + FAQPage JSON-LD |
+
+Repeated **labels** — the seven service names, "Explore Samsung Services in the
+UAE" — are navigation, and are expected on more than one page. Repeated
+**sentences** are not.
 
 ## Stack
 
@@ -14,12 +56,12 @@ strict CSP in `.htaccess` would block it and the host is shared cPanel.
 ## Layout
 
 ```
-index.html            Home: hero, split band, 7 service cards, why-us, 7 detail
-                      rows, areas, 5-step stepper, FAQ, CTA band
+index.html            Home: hero, split band, 7 service cards, what-to-expect,
+                      7 problem lists, areas, 6-step stepper, costs, FAQ, CTA
 services.html         All 7 services, one section each (#washing-machine, #ac-repair,
                       #refrigerator, #microwave, #dishwasher, #cooking-range, #dryer)
 areas.html            Coverage by emirate
-about.html            Story, pillars, stats, why-us
+about.html            Who the business is, and what it is not
 contact.html          Contact details + validated booking form
 blog.html             Post listing (placeholder entries)
 404.html              Error page, wired via ErrorDocument in .htaccess
@@ -80,8 +122,8 @@ in a rule; add a token. The palette is fixed and each colour has one job:
 | Token | Value | Where it goes |
 | --- | --- | --- |
 | `--primary` | `#2189ff` | icons, accents, the process band, active-nav underline |
-| `--primary-dark` | `#0a6ede` | blue **surfaces** that carry white text (top bar, CTA band) and all links |
-| `--primary-light` | `#7fbaff` | a blue accent sitting **on** a dark surface (eyebrows in dark sections) |
+| `--primary-dark` | `#0961c6` | blue **surfaces** that carry white text (top bar, CTA band), and links on a light background |
+| `--primary-light` | `#7fbaff` | a blue accent **on** a dark surface — eyebrows, and links in `.section-dark` / `.page-head` |
 | `--secondary` | `#323333` | every dark surface: dark sections, footer, inner page heads |
 | `--btn` | `#010202` | **buttons only** — nothing else |
 
@@ -91,7 +133,9 @@ the opposite of the brand.
 
 `--primary` (#2189ff) is only 3.45:1 on white and 3.67:1 on `--secondary`, so it
 must never carry small text on either. Use `--primary-dark` on white and
-`--primary-light` on dark. Text on the `#323333` surfaces uses `--on-dark`,
+`--primary-light` on dark — the default link colour is `--primary-dark`, so a
+link dropped into a dark section needs the override that `.page-head p a` and
+`.section-dark a:not(.btn)` provide. Text on the `#323333` surfaces uses `--on-dark`,
 `--on-dark-soft` and `--on-dark-muted`, all of which clear AA.
 
 **Everything is left-aligned.** No centred section heads, no centred hero, no
@@ -130,9 +174,12 @@ Two kinds of image, treated differently:
 **The hero overlay is contrast-critical.** `.hero::after` is weighted to the left
 on desktop so the photograph stays visible on the right, and switches to a
 vertical wash below 900px where the copy spans the full width. Both were measured
-against the actual hero image with the text hidden: worst case 5.92:1 on desktop
-and 8.07:1 on mobile, against a 4.5:1 minimum. **If the hero photo is ever
-swapped, re-measure** — a brighter picture will quietly drop the heading below AA.
+against the actual hero image with the text hidden: worst case 5.49:1 on desktop
+and 8.07:1 on mobile, against a 4.5:1 minimum. **Re-measure whenever the hero
+photo or the hero copy changes** — not just the photo. Lengthening the copy
+pushes it further across the picture and dropped the desktop figure to 4.61:1,
+which is why the 38% and 68% stops in `.hero::after` are darker than they were.
+`scratchpad/herocontrast.mjs` captures the crop and `herocontrast.py` measures it.
 
 **Nothing on this site is a circle.** Every icon tile, badge, social chip and
 floating action uses `--radius-icon` (7px). Do not write `border-radius: 50%` or
@@ -153,12 +200,18 @@ This is a standing rule, not a one-off for a single section.
   absent — so never move the open/close state out of the `open` attribute.
   `prefers-reduced-motion` skips the animation entirely.
 - `.steps` draws one continuous connector line via `.steps::before`, and the
-  opaque circles sit on top of it, which is what makes it read as separate
-  segments. Its `left`/`right` inset is
-  `calc((100% - 4 * var(--step-gap)) / 10)`, which is the exact centre of the
-  first and last circle **only for five equal columns**. The line is therefore
-  hidden below 1100px, where the grid drops to three columns. If you change the
-  number of steps, redo that maths or leave the line off.
+  opaque icon tiles sit on top of it, which is what makes it read as separate
+  segments. The line has to start and end at the centre of the first and last
+  tile, and the tiles are **left-aligned in their columns** (like everything
+  else on the site), so the insets are `--step-size / 2` on the left and
+  `one column − --step-size / 2` on the right. Both are derived from
+  `--step-count`, so changing the number of steps only means changing that one
+  token — set it on `.steps` and the grid and the line both follow. It used to
+  be hard-coded for five columns; going to six left the line hanging in mid-air
+  until it was rewritten. The line is hidden below 1100px, where the grid drops
+  to three columns and the maths no longer applies.
+- `.why-grid` is three across because there are six cards. Four across leaves a
+  ragged row of two.
 
 **The header is white, the top bar and footer are black.** Anything added to the
 header needs dark-on-light colours; anything added to the top bar or footer needs
@@ -166,7 +219,7 @@ light-on-dark. The logo PNG has a dark mark, so it sits bare on the white header
 but keeps a white plate in the footer (`.footer-logo`).
 
 **`#2189ff` is not a text colour on white** — it measures 3.45:1, below WCAG AA.
-Use `--primary-dark` (#0a6ede, 4.89:1) for links, eyebrows, and any button
+Use `--primary-dark` (#0961c6, 5.9:1) for links, eyebrows, and any button
 background that carries white text. Keep `--primary` for icons, accents and
 anything on a dark background. Same rule applies to any new colour: check it
 before you ship it.
@@ -256,7 +309,12 @@ If the site is on an addon domain, change `DEPLOYPATH` to that document root.
 
 Replace: the phone number `+971 50 000 0000` (appears in `tel:`, `wa.me` and
 visible text), `info@example.com`, the Business Bay address, every `example.com`
-URL in canonicals / Open Graph / sitemap / JSON-LD, the `#` social links, the
-placeholder images in `assets/img/`, the stats on about.html, the blog entries,
-and all body copy. Uncomment the HTTPS redirect and pick a canonical host in
-`.htaccess`, then lift the two noindex layers.
+URL in canonicals / Open Graph / sitemap / JSON-LD, the `#` social links, and
+the blog entries. Set `TO_EMAIL` and `FROM_EMAIL` in `send.php`. Uncomment the
+HTTPS redirect and pick a canonical host in `.htaccess`, then lift the two
+noindex layers.
+
+The **body copy is final** — it is the client's own text and is not a
+placeholder. The photography is stock and can be swapped, but re-measure the
+hero contrast if the hero shot changes, and keep the `-problems.webp` cut-outs
+transparent.

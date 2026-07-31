@@ -129,7 +129,6 @@ p:last-child, ul:last-child, ol:last-child { margin-bottom: 0; }
 ul, ol { margin: 0 0 1.1rem; padding-left: 1.25rem; }
 li { margin-bottom: .4rem; }
 strong, b { font-weight: 700; color: var(--ink); }
-small { font-size: .84rem; }
 
 a { color: var(--primary-dark); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 a:hover { color: var(--primary-darker); }
@@ -353,14 +352,18 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
   /* Weighted to the left, where the copy sits, so the photograph stays visible
-     on the right. Measured against the actual hero image: the darkest the white
-     text ever gets is 4.78:1, i.e. WCAG AA. Do not lighten these stops without
-     re-measuring — see the note in CLAUDE.md. */
+     on the right. Measured against the actual hero image with the text hidden:
+     worst case 5.49:1, against a 4.5:1 AA minimum. Do not lighten these stops
+     without re-measuring — see the note in CLAUDE.md.
+     The 38% stop was .78 while the hero carried a shorter block of copy; the
+     longer copy reaches further across the photograph, and at .78 the worst
+     case had fallen to 4.61:1 — still a pass, but with almost no headroom for
+     the next copy change. */
   background:
     linear-gradient(90deg,
       rgba(28, 30, 33, .90) 0%,
-      rgba(28, 30, 33, .78) 38%,
-      rgba(28, 30, 33, .45) 68%,
+      rgba(28, 30, 33, .84) 38%,
+      rgba(28, 30, 33, .52) 68%,
       rgba(28, 30, 33, .30) 100%),
     linear-gradient(0deg, rgba(10, 110, 222, .06), rgba(10, 110, 222, .06));
 }
@@ -401,6 +404,22 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   background: var(--bg-soft);
   border-radius: 0;
 }
+
+/* A statement the reader has to be able to find, not a decoration: the
+   non-affiliation notice. Quiet, but set apart from the body copy by the rule
+   on the left rather than by a colour that would read as a warning. */
+.notice {
+  margin-top: 1.75rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--primary);
+  color: var(--ink-soft);
+  font-size: .95rem;
+}
+
+/* A run of plain body copy with no cards or grid around it. Measure is capped
+   so a long paragraph does not run the full width of the container. */
+.prose { max-width: 68ch; }
+.prose > * + * { margin-top: 1.1rem; }
 
 /* ticked feature list */
 .tick-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
@@ -450,7 +469,9 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 /* ==========================================================================
    10. Why choose us
    ========================================================================== */
-.why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.75rem, 3vw, 2.75rem); }
+/* Three across, because there are six cards — four across leaves a ragged
+   row of two. Revisit if the number of cards changes. */
+.why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.75rem, 3vw, 2.75rem); }
 /* No frame, no border, no radius — the tinted icon tile carries the structure.
    The hatched corner went with the frame; it read as stray texture without it. */
 .why-card { height: 100%; }
@@ -463,7 +484,8 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 .why-icon svg { width: 28px; height: 28px; fill: var(--primary-dark); }
 .why-inner h3 { font-size: 1.12rem; margin-bottom: .5rem; }
-.why-inner p { font-size: .93rem; margin: 0; }
+.why-inner p { font-size: .93rem; margin: 0 0 .9rem; }
+.why-inner p:last-child { margin-bottom: 0; }
 
 /* ==========================================================================
    11. Explore / detail rows
@@ -518,29 +540,40 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .steps {
   --step-gap: clamp(.75rem, 2vw, 1.75rem);
   --step-size: 84px;
+  --step-count: 6;          /* keep in sync with the number of <li class="step"> */
   position: relative;
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(var(--step-count), 1fr);
   gap: var(--step-gap);
   list-style: none; margin: 0; padding: 0;
 }
-/* one continuous connector; the opaque circles hide it between themselves,
-   which reads as the segmented line in the reference.
-   With 5 equal columns the first and last circle centres sit at
-   (100% - 4 gaps) / 10 from each edge. */
+/* One continuous connector; the opaque tiles hide it between themselves, which
+   is what reads as a segmented line. It has to start and end at the centre of
+   the first and last tile.
+   The tiles are left-aligned in their columns, so the first centre is simply
+   half a tile in from the left. The last one is half a tile in from the left
+   edge of the final column, and that column is
+   (100% - (N-1) gaps) / N wide — hence the right inset below.
+   Driving both off --step-count means changing the number of steps cannot
+   silently leave the line hanging in mid-air, which is exactly what the old
+   hard-coded five-column version did. */
 .steps::before {
   content: "";
   position: absolute; z-index: 0;
   top: calc(var(--step-size) / 2 - 1px);
-  left: calc((100% - 4 * var(--step-gap)) / 10);
-  right: calc((100% - 4 * var(--step-gap)) / 10);
+  left: calc(var(--step-size) / 2);
+  right: calc((100% - (var(--step-count) - 1) * var(--step-gap)) / var(--step-count)
+              - var(--step-size) / 2);
   height: 2px;
   background: linear-gradient(90deg, var(--primary-light), var(--primary), var(--primary-light));
 }
-.step { position: relative; z-index: 1; margin: 0; text-align: center; }
+/* Left-aligned like everything else on the site — see CLAUDE.md. The tile
+   therefore sits at the left edge of its column, not in the middle of it,
+   which is what the ::before insets above are calculated against. */
+.step { position: relative; z-index: 1; margin: 0; }
 .step-mark {
   position: relative; display: block;
   width: var(--step-size); height: var(--step-size);
-  margin: 0 auto 1.4rem;
+  margin: 0 0 1.4rem;
 }
 .step-icon {
   display: grid; place-items: center;
@@ -713,6 +746,15 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .page-head { background: var(--secondary); color: var(--on-dark); padding-block: clamp(2.5rem, 5vw, 4rem); }
 .page-head h1 { color: #fff; margin-bottom: .5rem; }
 .page-head p { max-width: 68ch; margin: 0; }
+
+/* A link on a dark surface cannot use the default --primary-dark: #0961c6 on
+   #323333 is 1.4:1, unreadable. --primary-light is 6.3:1 on the same surface.
+   Scoped to the paragraph so it cannot reach the breadcrumb links above it,
+   which set their own colour; buttons bring their own foreground. */
+.page-head p a,
+.section-dark a:not(.btn) { color: var(--primary-light); }
+.page-head p a:hover,
+.section-dark a:not(.btn):hover { color: #fff; }
 .crumbs { margin-bottom: .9rem; font-size: .88rem; }
 .crumbs ol { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: 0; padding: 0; }
 .crumbs li { display: flex; align-items: center; gap: .4rem; margin: 0; color: var(--on-dark-muted); }
@@ -722,7 +764,6 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 
 /* generic content cards used on inner pages */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: var(--gap); }
-.card-grid.is-single { grid-template-columns: 1fr; }
 .card-grid.is-spaced { margin-bottom: clamp(2rem, 4vw, 3rem); }
 .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.75rem; height: 100%; }
 .card h3 { font-size: 1.12rem; }
@@ -735,9 +776,6 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 .form-hint { font-size: .94rem; }
 .card-icon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 1.1rem; background: var(--primary-tint); border-radius: var(--radius-icon); }
 .card-icon svg { width: 24px; height: 24px; fill: var(--primary-dark); }
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
-.stat strong { display: block; font-family: var(--font-display); font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 800; line-height: 1.1; color: #fff; }
-.stat span { font-size: .94rem; color: var(--on-dark); }
 
 /* ==========================================================================
    20. Utilities
@@ -749,7 +787,6 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 }
 /* spacing utilities — the CSP forbids inline style attributes, so anything
    that would have been style="margin-…" needs a class here instead */
-.mt-0 { margin-top: 0; }
 .mt-3 { margin-top: 1.25rem; }
 .mt-4 { margin-top: 1.5rem; }
 .mt-5 { margin-top: 2.5rem; }
@@ -760,7 +797,9 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
    21. Responsive
    ========================================================================== */
 @media (max-width: 1100px) {
-  .steps { grid-template-columns: repeat(3, 1fr); row-gap: 2.5rem; }
+  /* the connector is hidden below this width, so the column count is the
+     only thing that has to change — --step-count drives the grid. */
+  .steps { --step-count: 3; row-gap: 2.5rem; }
   .steps::before { display: none; }
   .svc-grid { grid-template-columns: repeat(2, 1fr); }
   .svc-invite { grid-column: span 2; }
@@ -827,10 +866,10 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 }
 
 @media (max-width: 720px) {
-  .steps { grid-template-columns: repeat(2, 1fr); }
+  .steps { --step-count: 2; }
   .topbar-list { gap: 1rem; row-gap: .25rem; font-size: .82rem; }
   .topbar-list li:nth-child(3) { display: none; }
-  .svc-grid, .why-grid, .stat-grid, .form-row { grid-template-columns: 1fr; }
+  .svc-grid, .why-grid, .form-row { grid-template-columns: 1fr; }
   .svc-invite { grid-column: span 1; padding-block: 1rem; }
   .svc-body { margin-inline: .75rem; }
   .faq-body { padding-left: 1.35rem; }
@@ -842,7 +881,7 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 
 @media (max-width: 460px) {
   /* single column: the badge reads better beside the text than above it */
-  .steps { grid-template-columns: 1fr; row-gap: 1.75rem; }
+  .steps { --step-count: 1; row-gap: 1.75rem; }
   .step { display: grid; grid-template-columns: 68px 1fr; gap: 0 1.1rem; text-align: left; }
   .step-mark { --step-size: 68px; grid-row: span 2; margin: 0; }
   .step-icon svg { width: 26px; height: 26px; }
