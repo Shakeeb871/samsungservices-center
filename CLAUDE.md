@@ -115,11 +115,17 @@ Two kinds of image, treated differently:
 
 - **Lifestyle shots** (`samsung-*-repair.webp`) — engineers and kitchens. Cropped
   with `object-fit: cover`; used in the hero, the split band and the service cards.
-- **Product cut-outs** (`samsung-*-problems.webp`) — one appliance on pure black,
-  used in the detail rows. These carry `class="is-product"`, which switches them to
-  `object-fit: contain` on a `#000` backdrop so the appliance is never cropped and
-  the letterbox matches the shot's own background. A replacement cut-out **must
-  also be on pure black**, or the padding will show as a mismatched band.
+- **Product cut-outs** (`samsung-*-problems.webp`) — a single appliance on a
+  **transparent** background (RGBA, alpha 0), used in the detail rows. They carry
+  `class="is-product"`, which sets `object-fit: contain` so the appliance is never
+  cropped, and a `transparent` background so it sits directly on whatever section
+  it is in — `--bg-soft` on the home page, white on services.html. Keep
+  replacements transparent; giving them a background of their own puts a visible
+  plate behind the appliance.
+
+  When checking one of these in Python, open it as RGBA. `Image.open(f).convert('RGB')`
+  discards the alpha channel and reports transparent pixels as `(0, 0, 0)`, which
+  reads as a black background when there is none.
 
 **The hero overlay is contrast-critical.** `.hero::after` is weighted to the left
 on desktop so the photograph stays visible on the right, and switches to a
