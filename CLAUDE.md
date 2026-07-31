@@ -111,6 +111,16 @@ a needless way to break an image. Every `<img>` carries the file's real pixel
 `width`/`height`; CSS `aspect-ratio` and `object-fit: cover` handle the framing, so
 a replacement photo of a different size only needs those two numbers updated.
 
+Two kinds of image, treated differently:
+
+- **Lifestyle shots** (`samsung-*-repair.webp`) — engineers and kitchens. Cropped
+  with `object-fit: cover`; used in the hero, the split band and the service cards.
+- **Product cut-outs** (`samsung-*-problems.webp`) — one appliance on pure black,
+  used in the detail rows. These carry `class="is-product"`, which switches them to
+  `object-fit: contain` on a `#000` backdrop so the appliance is never cropped and
+  the letterbox matches the shot's own background. A replacement cut-out **must
+  also be on pure black**, or the padding will show as a mismatched band.
+
 **The hero overlay is contrast-critical.** `.hero::after` is weighted to the left
 on desktop so the photograph stays visible on the right, and switches to a
 vertical wash below 900px where the copy spans the full width. Both were measured
