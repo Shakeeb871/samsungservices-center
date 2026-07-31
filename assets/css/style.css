@@ -505,6 +505,13 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .detail-body h4 { margin: 1.9rem 0 .5rem; color: var(--ink); }
 .detail-body h4:first-of-type { margin-top: 0; }
 .detail-body > p { font-size: .98rem; }
+/* These were buttons until the call-to-action buttons came out. As plain text
+   an inline link is only its line-height tall — 17px, under the 24px WCAG 2.2
+   minimum — so the block padding is doing real work here, not decoration. */
+.jump-link {
+  display: inline-block; padding-block: 4px;
+  font-weight: 600; text-decoration-thickness: 1px;
+}
 
 /* ==========================================================================
    12. Service areas

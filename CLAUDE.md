@@ -50,6 +50,25 @@ Repeated **labels** — the seven service names, "Explore Samsung Services in th
 UAE" — are navigation, and are expected on more than one page. Repeated
 **sentences** are not.
 
+**The site must not repeat itself, and there is a tool that measures it.**
+`scratchpad/redundancy.py` reports three things: phrases that recur three or
+more times, sentence pairs above 55% word overlap, and sentences that open the
+same way. It scored 112 when the first draft of the promotional copy ran one
+template through all seven appliances; it is 36 now, with zero near-duplicate
+sentences. What is left is inside the client's own symptom lists — several
+appliances genuinely share "an error message appearing on the control panel" —
+and in place names, neither of which can go without losing information.
+
+Run it after any copy change. If the score climbs, something is being said
+twice. Note that headings and link labels are excluded from the sentence
+comparison on purpose: naming the same appliance in the nav and in a section
+title is how a reader finds their way, not repetition.
+
+Where a client sentence had to be reworded to break a pattern, the original and
+the facts that must survive it are recorded in `coverage.py` under `REWORDED` —
+seventeen of them, each checked against the component list or claim it carried,
+so a rewrite cannot quietly drop a part from one of the long inspection lists.
+
 The service-card blurbs are the only marketing prose on the site that is not
 from the client's source document. They live in `content.py` as `promo`, and
 they are the one field that is **HTML rather than text** — the target keywords
