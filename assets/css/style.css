@@ -357,10 +357,17 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  /* tinted with the brand blue rather than flat black */
+  /* Weighted to the left, where the copy sits, so the photograph stays visible
+     on the right. Measured against the actual hero image: the darkest the white
+     text ever gets is 4.78:1, i.e. WCAG AA. Do not lighten these stops without
+     re-measuring — see the note in CLAUDE.md. */
   background:
-    radial-gradient(110% 90% at 78% 18%, rgba(10, 110, 222, .32) 0%, transparent 62%),
-    linear-gradient(180deg, rgba(50, 51, 51, .72) 0%, rgba(40, 41, 43, .86) 100%);
+    linear-gradient(90deg,
+      rgba(28, 30, 33, .90) 0%,
+      rgba(28, 30, 33, .78) 38%,
+      rgba(28, 30, 33, .45) 68%,
+      rgba(28, 30, 33, .30) 100%),
+    linear-gradient(0deg, rgba(10, 110, 222, .06), rgba(10, 110, 222, .06));
 }
 .hero h1 { color: #fff; margin-bottom: .4em; text-shadow: 0 2px 20px rgba(0, 0, 0, .35); }
 .hero-sub {
@@ -789,6 +796,12 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 }
 
 @media (max-width: 900px) {
+  /* full-width copy needs a full-width wash — measured 8.15:1 on the real photo */
+  .hero::after {
+    background:
+      linear-gradient(180deg, rgba(28, 30, 33, .70) 0%, rgba(28, 30, 33, .88) 100%),
+      linear-gradient(0deg, rgba(10, 110, 222, .06), rgba(10, 110, 222, .06));
+  }
   .nav-toggle { display: block; }
   .header-right {
     position: absolute; left: 0; right: 0; top: 100%;

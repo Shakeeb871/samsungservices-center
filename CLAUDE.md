@@ -27,7 +27,8 @@ blog.html             Post listing (placeholder entries)
 assets/css/style.css  Whole design system. 22 numbered sections, tokens in :root
 assets/js/main.js     Mobile nav, dropdown, header shadow, footer year,
                       FAQ accordion animation, form validation
-assets/img/           logo.png, hero.jpg, service-*.jpg, cta.jpg, og-image.jpg, icons
+assets/img/           logo.png, icons, og-image.jpg, and the real photography as
+                      samsung-*.webp (hero, split band, one per service)
 assets/fonts/README   How to self-host SamsungOne / Samsung Sharp Sans
 favicon.ico           Generated from the shield mark in the logo
 site.webmanifest      PWA metadata
@@ -103,6 +104,19 @@ border, 4px radius, and a 1px lift on hover. `.btn-sm` and `.btn-lg` sit either
 side. Do not scale them up for emphasis — use position and whitespace instead.
 Primary calls to action carry a trailing arrow:
 `<svg class="btn-arrow"><use href="#i-arrow"></use></svg>` inside the `.btn`.
+
+**Photography is `.webp`, named `samsung-<subject>.webp`.** Keep filenames
+kebab-case — a space becomes `%20` and an `&` has to be escaped in `src`, which is
+a needless way to break an image. Every `<img>` carries the file's real pixel
+`width`/`height`; CSS `aspect-ratio` and `object-fit: cover` handle the framing, so
+a replacement photo of a different size only needs those two numbers updated.
+
+**The hero overlay is contrast-critical.** `.hero::after` is weighted to the left
+on desktop so the photograph stays visible on the right, and switches to a
+vertical wash below 900px where the copy spans the full width. Both were measured
+against the actual hero image with the text hidden: worst case 5.92:1 on desktop
+and 8.07:1 on mobile, against a 4.5:1 minimum. **If the hero photo is ever
+swapped, re-measure** — a brighter picture will quietly drop the heading below AA.
 
 **Nothing on this site is a circle.** Every icon tile, badge, social chip and
 floating action uses `--radius-icon` (7px). Do not write `border-radius: 50%` or
