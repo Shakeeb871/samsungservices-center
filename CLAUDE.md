@@ -155,6 +155,17 @@ justified paragraphs, no centred cards. There is no `.center` modifier any more,
 and `.text-center` is deliberately defined as `text-align: left` so stale markup
 cannot re-centre anything. Do not add `text-align: center` to new components.
 
+**There are exactly three buttons in the body of the whole site**, and they are
+all on the home page: the two in the hero, and the one in the About band. Every
+other call-to-action button was removed at the client's request — the service
+cards, the Explore rows, the areas block and the closing CTA band on every page
+now carry their message without one. The CTA bands were kept; only their buttons
+went. Do not add a button back to a body section without asking.
+
+The exceptions, which are not CTA buttons and must stay: the contact page's
+phone and WhatsApp buttons (they *are* the contact details), its form submit,
+the header phone button, and the floating WhatsApp/call actions.
+
 **Buttons are small and quiet**: `.62rem 1.25rem`, `.88rem`, weight 600, 1px
 border, 4px radius, and a 1px lift on hover. `.btn-sm` and `.btn-lg` sit either
 side. Do not scale them up for emphasis — use position and whitespace instead.
