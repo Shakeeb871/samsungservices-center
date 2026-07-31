@@ -202,6 +202,13 @@
     });
   });
 
+  // Timestamp the render, so send.php can reject a form filled in under three
+  // seconds — no human does that, bots do it constantly.
+  var startedAt = document.getElementById('startedAt');
+  if (startedAt) startedAt.value = String(Date.now());
+
+  var submitBtn = form.querySelector('button[type="submit"]');
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -220,11 +227,48 @@
       return;
     }
 
-    // DEMO ONLY — no request is sent. Wire this to your mail handler:
-    // fetch('/send.php', { method: 'POST', body: new FormData(form) })
-    if (status) {
-      status.textContent = 'Form validated. This is a demo — connect it to your mail handler to actually send.';
-      status.className = 'form-status is-ok';
+    // Post to send.php without leaving the page. The form still has a real
+    // action and method, so it degrades to a normal submission without JS.
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.dataset.label = submitBtn.textContent;
+      submitBtn.textContent = 'Sending…';
     }
+    if (status) {
+      status.textContent = 'Sending your request…';
+      status.className = 'form-status';
+    }
+
+    var done = function (ok, message) {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitBtn.dataset.label || 'Send request';
+      }
+      if (status) {
+        status.textContent = message;
+        status.className = 'form-status ' + (ok ? 'is-ok' : 'is-error');
+      }
+      if (ok) {
+        form.reset();
+        if (startedAt) startedAt.value = String(Date.now());
+      }
+    };
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json', 'X-Requested-With': 'fetch' }
+    })
+      .then(function (res) {
+        return res.json().catch(function () {
+          return { ok: res.ok, message: res.ok
+            ? 'Thank you, your request has been received.'
+            : 'Something went wrong. Please call us instead.' };
+        });
+      })
+      .then(function (data) { done(!!data.ok, data.message); })
+      .catch(function () {
+        done(false, 'We could not reach the server. Please call or WhatsApp us instead.');
+      });
   });
 })();

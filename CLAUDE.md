@@ -144,7 +144,7 @@ This is a standing rule, not a one-off for a single section.
 - `.split` is a two-column band whose image bleeds to the viewport edge while the
   copy stays aligned to the site container. That alignment comes from
   `.split-body { max-width: calc(var(--wrap) / 2); margin-left: auto }` — not from
-  a `.container`, so do not wrap the body in one. `.split.is-flipped` mirrors it.
+  a `.container`, so do not wrap the body in one.
 - The FAQ is a real `<details>` element. `<details>` still cannot be transitioned
   in every browser, so `main.js` animates its height with the Web Animations API
   and calls `preventDefault()` on the summary click. Two consequences: that block

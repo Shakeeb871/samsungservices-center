@@ -28,7 +28,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<link rel="stylesheet" href="assets/css/style.css?v=10">
+<link rel="stylesheet" href="assets/css/style.css?v=14">
 </head>
 <body>
 
@@ -61,7 +61,7 @@
 </svg>
 
 <!-- =================================================================== TOP BAR -->
-<div class="topbar">
+<aside class="topbar" aria-label="Opening hours and contact details">
   <div class="container topbar-inner">
     <ul class="topbar-list">
       <li><svg aria-hidden="true"><use href="#i-clock"></use></svg> Open Mon–Sun, 8am–10pm</li>
@@ -77,13 +77,13 @@
       <li><a href="https://wa.me/971500000000" aria-label="Chat with us on WhatsApp"><svg aria-hidden="true"><use href="#i-wa"></use></svg></a></li>
     </ul>
   </div>
-</div>
+</aside>
 
 <!-- =================================================================== HEADER -->
 <header class="site-header">
   <div class="container header-inner">
     <a class="logo" href="index.html" aria-label="Samsung Services Center — home">
-      <img src="assets/img/logo.png" alt="Samsung Services Center" width="600" height="180" fetchpriority="high">
+      <img src="assets/img/logo.png" alt="Samsung Services Center" width="400" height="120" fetchpriority="high">
     </a>
 
     <button class="nav-toggle" type="button" id="navToggle"
@@ -181,7 +181,7 @@
           <h2>Request a diagnostic visit</h2>
           <p class="muted form-hint">Fields marked <span class="req">*</span> are required.</p>
 
-          <form id="bookingForm" novalidate action="#" method="post">
+          <form id="bookingForm" novalidate action="send.php" method="post">
             <div class="form-row">
               <div class="field">
                 <label for="name">Your name <span class="req" aria-hidden="true">*</span></label>
@@ -240,11 +240,19 @@
               <span class="field-error" id="messageError" role="alert"></span>
             </div>
 
+            <!-- Honeypot: hidden from people, so anything filling it in is a bot.
+                 Kept out of the tab order and announced to nobody. -->
+            <div class="hp" aria-hidden="true">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+            </div>
+            <input type="hidden" id="startedAt" name="started" value="0">
+
             <button class="btn btn-primary btn-block" type="submit">Send request</button>
             <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
             <p class="form-note muted">
-              This form is a front-end demo — it validates but does not send. Connect it to your
-              mail handler (see <code>assets/js/main.js</code>) before launch.
+              Your details go straight to our booking inbox. Set the recipient address in
+              <code>send.php</code> before launch.
             </p>
           </form>
         </div>
@@ -272,7 +280,7 @@
     <div class="footer-grid">
 
       <div>
-        <img class="footer-logo" src="assets/img/logo.png" alt="Samsung Services Center" width="600" height="180" loading="lazy">
+        <img class="footer-logo" src="assets/img/logo.png" alt="Samsung Services Center" width="400" height="120" loading="lazy">
         <p>Independent repair and service provider for Samsung home appliances across the UAE. Not affiliated with Samsung Electronics.</p>
         <ul class="social">
           <li><a href="#" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"></use></svg></a></li>
@@ -283,7 +291,7 @@
       </div>
 
       <nav aria-labelledby="ft-quick">
-        <h2 class="footer-head" id="ft-quick">Quick links</h2>
+        <p class="footer-head" id="ft-quick">Quick links</p>
         <ul class="footer-list">
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About us</a></li>
@@ -295,7 +303,7 @@
       </nav>
 
       <nav aria-labelledby="ft-services">
-        <h2 class="footer-head" id="ft-services">Our services</h2>
+        <p class="footer-head" id="ft-services">Our services</p>
         <ul class="footer-list">
           <li><a href="services.html#washing-machine">Washing machine repair</a></li>
           <li><a href="services.html#ac-repair">AC repair</a></li>
@@ -308,7 +316,7 @@
       </nav>
 
       <div>
-        <h2 class="footer-head">Contact info</h2>
+        <p class="footer-head">Contact info</p>
         <ul class="footer-contact">
           <li>
             <svg aria-hidden="true"><use href="#i-phone"></use></svg>
@@ -344,16 +352,16 @@
 </footer>
 
 <!-- ======================================================= FLOATING ACTIONS -->
-<div class="floaties">
+<nav class="floaties" aria-label="Quick contact">
   <a class="floatie floatie-wa" href="https://wa.me/971500000000" aria-label="Chat with us on WhatsApp">
     <svg aria-hidden="true"><use href="#i-wa"></use></svg>
   </a>
   <a class="floatie floatie-call" href="tel:+971500000000" aria-label="Call us now">
     <svg aria-hidden="true"><use href="#i-phone"></use></svg>
   </a>
-</div>
+</nav>
 
-<script src="assets/js/main.js?v=4" defer></script>
+<script src="assets/js/main.js?v=5" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
