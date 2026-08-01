@@ -818,13 +818,15 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 }
 .gr-summary-body { margin-right: auto; }
 /* The Google wordmark is not reproduced — this is the letter, in Google's
-   blue, next to the word itself. #1a73e8 is 4.5:1 on white. */
+   darker blue, next to the word itself. #1967d2 is 5.4:1 on white; the
+   lighter #1a73e8 measures 4.5:1, which is too close to the line for text
+   this small. */
 .gr-mark {
   display: grid; place-items: center; flex: none;
   width: 40px; height: 40px;
   background: #fff; border: 1px solid var(--line); border-radius: 50%;
   font-family: var(--font-sans); font-weight: 800; font-size: 1.3rem; line-height: 1;
-  color: #1a73e8;
+  color: #1967d2;
 }
 .gr-mark-lg { width: 54px; height: 54px; font-size: 1.7rem; }
 .gr-score { margin: 0; font-size: .93rem; color: var(--body); }
@@ -860,9 +862,18 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
   padding: clamp(1.4rem, 2.4vw, 1.9rem);
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
 }
-.review-head { display: flex; align-items: center; gap: .8rem; margin-bottom: .85rem; }
-.review-name { display: block; font-weight: 700; font-size: .97rem; color: var(--ink); }
-.review-meta { display: block; font-size: .84rem; color: var(--muted); }
+.review-head { display: flex; align-items: center; gap: .7rem; margin-bottom: .85rem; }
+/* the reviewer's initial in a circle, the way Google draws an account with no
+   profile photo; the G chip sits on the right as the source mark */
+.review-avatar {
+  display: grid; place-items: center; flex: none;
+  width: 38px; height: 38px;
+  background: var(--primary-dark); border-radius: 50%;
+  font-family: var(--font-sans); font-weight: 700; font-size: 1rem; line-height: 1;
+  color: #fff;
+}
+.review-name { margin-right: auto; font-weight: 700; font-size: .97rem; color: var(--ink); }
+.review-head .gr-mark { width: 28px; height: 28px; font-size: .95rem; }
 .review-rating { margin-bottom: .8rem; font-size: 1.05rem; }
 .review blockquote { margin: 0 0 1.2rem; font-size: .97rem; color: var(--ink); }
 .review-foot {
