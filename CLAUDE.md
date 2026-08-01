@@ -403,14 +403,31 @@ If the site is on an addon domain, change `DEPLOYPATH` to that document root.
 
 ## Before going live
 
-Replace: the phone number `+971 50 000 0000` (appears in `tel:`, `wa.me` and
-visible text), `info@example.com`, the Business Bay address, every `example.com`
-URL in canonicals / Open Graph / sitemap / JSON-LD, the `#` social links, and
-the blog entries. Set `TO_EMAIL` and `FROM_EMAIL` in `send.php`. Uncomment the
-HTTPS redirect and pick a canonical host in `.htaccess`, then lift the two
-noindex layers.
+Replace: the phone number `+971 50 000 0000` (appears in `tel:`, `wa.me`, the
+top bar, the footer, the hero, the floating call button and the three branch
+cards), `info@example.com`, every `example.com` URL in canonicals / Open Graph
+/ sitemap / JSON-LD, the `#` social links, and the blog entries. Set
+`TO_EMAIL` and `FROM_EMAIL` in `send.php`. Uncomment the HTTPS redirect and
+pick a canonical host in `.htaccess`, then lift the two noindex layers.
 
-The **body copy is final** — it is the client's own text and is not a
+The three branch addresses in `content.py`'s `BRANCHES` are real and already
+in place, in the top bar, on the contact page, in the branch cards beside the
+repair costs, and in the LocalBusiness schema.
+
+The **body copy is final**. It is the client's own text and is not a
 placeholder. The photography is stock and can be swapped, but re-measure the
 hero contrast if the hero shot changes, and keep the `-problems.webp` cut-outs
 transparent.
+
+## Copy: no em dashes
+
+There is not one em dash or en dash in the visible copy, and that is
+deliberate. The client reads a dash-joined clause as machine-written, so a
+sentence that wants one gets rewritten instead: a full stop, a comma, a
+colon, or a rephrase. Ranges are spelled out too — "Mon to Sun, 8am to 10pm",
+"Jumeirah 1 to 3" — rather than set with an en dash.
+
+`scratchpad/aitells.py` asserts this, along with a list of the usual
+machine-written giveaways ("not just X but Y", "when it comes to", "seamless",
+"designed to", "rest assured", and forty more). Run it after any copy change.
+Prose inside the Python build scripts is exempt; it never ships.

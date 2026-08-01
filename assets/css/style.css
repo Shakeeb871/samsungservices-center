@@ -716,7 +716,6 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .footer-bottom p { margin: 0; }
 .footer-bottom a { display: inline-block; padding-block: 4px; color: var(--on-dark-soft); text-decoration: none; }
 .footer-bottom a:hover { color: #fff; }
-.footer-legal { max-width: 78ch; margin-top: 1rem; font-size: .82rem; color: var(--on-dark-muted); }
 
 /* ==========================================================================
    18. Floating actions
