@@ -85,15 +85,13 @@ through `esc()`.
 ## Placeholders that must not be invented
 
 `scratchpad/team.py` and `scratchpad/legal.py` carry [SQUARE BRACKET] values —
-technician names and certifications, job examples with costs, customer reviews,
+technician names and certifications, customer reviews,
 the registered legal name, trade licence, workshop address and the privacy
 contact. **Do not fill any of them with something plausible.**
 
 A named technician with a made-up certification is a false credential. A review
 with a made-up customer name and date is a fake review, which is unlawful to
 publish in most markets and is precisely what an E-E-A-T audit exists to catch.
-Made-up job costs mislead on price.
-
 While they are unfilled, `team.py` has `DATA_IS_REAL = False`, which puts a
 visible amber "Not yet published" banner above each affected section and keeps
 `Review` / `AggregateRating` markup off the page — review schema over invented
@@ -122,8 +120,8 @@ strict CSP in `.htaccess` would block it and the host is shared cPanel.
 
 ```
 index.html            Home: hero, about band, 7 service cards, Explore (faults +
-                      diagnosis + care per appliance), recent jobs, reviews,
-                      areas, 6-step stepper, costs, FAQ, CTA
+                      diagnosis + care per appliance), reviews, areas,
+                      6-step stepper, costs, FAQ, CTA
 services.html         Appliance overviews, one section each (#washing-machine,
                       #ac-repair, #refrigerator, #microwave, #dishwasher,
                       #cooking-range, #dryer), each linking into Explore
