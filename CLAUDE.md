@@ -100,19 +100,24 @@ only once the real details are in.
 
 The reviews section on the home page is presented as **Google reviews**, with a
 "Verified Google review" badge and an aggregate score. The six review bodies in
-`team.py` are drafts written from a sample testimonial the client supplied, and
-the name / area / date on each is still bracketed. That badge raises the stakes:
-an unattributed entry under it is not just marketing copy, it is a fabricated
-third-party endorsement. Before `DATA_IS_REAL` is set, every entry has to be
-replaced with a review that actually exists on the Google Business Profile —
-that reviewer's name, the date Google shows, and their words — and
+`team.py` are drafts written from a sample testimonial the client supplied.
+The names on them are written copy, not attributions: no customer has been
+asked, and the client asked for the area and the date to be left off. That
+badge raises the stakes, because a badge is a claim about Google rather than
+about us, and an entry under it that is not on the profile is a fabricated
+third-party endorsement rather than marketing copy. Before `DATA_IS_REAL` is
+set, every entry has to be replaced with a review that actually exists on the
+Google Business Profile, carrying that reviewer's name and their words, and
 `GOOGLE_PROFILE_URL` has to point at the real profile, which is what turns the
 review count into a link a visitor can check.
 
 ## Dates are a claim, not a counter
 
-Every page carries a visible "Last updated" line and a `WebPage` node with
-`datePublished` / `dateModified`. Those dates are literals in
+Every page carries a `WebPage` node with `datePublished` / `dateModified`,
+which is the half search engines read. The footer no longer shows a visible
+date; the only visible ones left are on the about, privacy and terms pages,
+where a revision date is part of what the document is for. Those dates are
+literals in
 `scratchpad/build_dates.py`, not generated at build time, and the sitemap
 `lastmod` matches them.
 
