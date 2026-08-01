@@ -98,6 +98,17 @@ visible amber "Not yet published" banner above each affected section and keeps
 reviews is structured-data spam and can earn a manual action. Set it to `True`
 only once the real details are in.
 
+The reviews section on the home page is presented as **Google reviews**, with a
+"Verified Google review" badge and an aggregate score. The six review bodies in
+`team.py` are drafts written from a sample testimonial the client supplied, and
+the name / area / date on each is still bracketed. That badge raises the stakes:
+an unattributed entry under it is not just marketing copy, it is a fabricated
+third-party endorsement. Before `DATA_IS_REAL` is set, every entry has to be
+replaced with a review that actually exists on the Google Business Profile —
+that reviewer's name, the date Google shows, and their words — and
+`GOOGLE_PROFILE_URL` has to point at the real profile, which is what turns the
+review count into a link a visitor can check.
+
 ## Dates are a claim, not a counter
 
 Every page carries a visible "Last updated" line and a `WebPage` node with
@@ -135,7 +146,7 @@ blog.html             Post listing (placeholder entries)
 
 assets/css/style.css  Whole design system. 22 numbered sections, tokens in :root
 assets/js/main.js     Mobile nav, dropdown, header shadow, footer year,
-                      FAQ accordion animation, form validation
+                      FAQ accordion animation, reviews slider, form validation
 assets/img/           logo.png, icons, og-image.jpg, and the real photography as
                       samsung-*.webp (hero, split band, one per service)
 assets/fonts/README   How to self-host SamsungOne / Samsung Sharp Sans

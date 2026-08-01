@@ -809,14 +809,133 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 .person-detail ul { list-style: none; margin: 0; padding: 0; font-size: .93rem; }
 .person-detail li { margin-bottom: .25rem; }
 
-.review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+/* --- Google reviews: the rating summary, then the cards in a slider ------- */
+.gr-summary {
+  display: flex; align-items: center; flex-wrap: wrap; gap: .9rem 1.3rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  padding: 1.1rem 1.35rem;
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+}
+.gr-summary-body { margin-right: auto; }
+/* The Google wordmark is not reproduced — this is the letter, in Google's
+   blue, next to the word itself. #1a73e8 is 4.5:1 on white. */
+.gr-mark {
+  display: grid; place-items: center; flex: none;
+  width: 40px; height: 40px;
+  background: #fff; border: 1px solid var(--line); border-radius: 50%;
+  font-family: var(--font-sans); font-weight: 800; font-size: 1.3rem; line-height: 1;
+  color: #1a73e8;
+}
+.gr-mark-lg { width: 54px; height: 54px; font-size: 1.7rem; }
+.gr-score { margin: 0; font-size: .93rem; color: var(--body); }
+.gr-score strong { margin-right: .35rem; font-size: 1.55rem; color: var(--ink); }
+.gr-count { display: flex; align-items: center; gap: .45rem; margin: .2rem 0 0; font-size: .86rem; color: var(--muted); }
+.review-stars { color: #c77700; letter-spacing: .06em; }
+
+.slider { position: relative; }
+/* a real scroll container, so a swipe, a trackpad, the keyboard and the
+   scrollbar all page it even if the script never runs */
+/* contain: paint is not decoration. Without it Chromium keeps reporting the
+   off-screen cards in documentElement.scrollWidth, so the page measures as
+   ~850px wider than the viewport even though it cannot be scrolled sideways
+   — every "content wider than screen" test fails on a carousel that is in
+   fact clipping correctly. */
+.slider-viewport {
+  overflow-x: auto; overflow-y: hidden; contain: paint;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.slider-viewport::-webkit-scrollbar { width: 0; height: 0; }
+/* the focus ring comes from the global :where(..., [tabindex]):focus-visible
+   rule — the viewport carries tabindex="0" so a keyboard user can scroll it */
+
+.review-track {
+  display: grid; grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 2 * var(--gap)) / 3);
+  gap: var(--gap);
+  margin: 0; padding: 0; list-style: none;
+}
 .review {
+  display: flex; flex-direction: column;
+  scroll-snap-align: start;
   padding: clamp(1.4rem, 2.4vw, 1.9rem);
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
 }
-.review-stars { margin-bottom: .8rem; font-size: 1.05rem; color: #c77700; letter-spacing: .08em; }
-.review blockquote { margin: 0 0 1.1rem; font-size: .97rem; color: var(--ink); }
-.review-by { margin: 0; font-size: .86rem; color: var(--muted); }
+.review-head { display: flex; align-items: center; gap: .8rem; margin-bottom: .85rem; }
+.review-name { display: block; font-weight: 700; font-size: .97rem; color: var(--ink); }
+.review-meta { display: block; font-size: .84rem; color: var(--muted); }
+.review-rating { margin-bottom: .8rem; font-size: 1.05rem; }
+.review blockquote { margin: 0 0 1.2rem; font-size: .97rem; color: var(--ink); }
+.review-foot {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .8rem;
+  margin: auto 0 0; padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: .84rem; color: var(--muted);
+}
+/* the one green on the site, and only here: a verified mark reads as green or
+   it does not read at all. 6.6:1 on white. */
+.gr-badge { display: inline-flex; align-items: center; gap: .35rem; font-weight: 600; color: #0b6b3a; }
+.gr-badge svg { flex: none; width: 15px; height: 15px; fill: currentColor; }
+.review-appliance { margin-left: auto; }
+
+.slider-nav { display: flex; align-items: center; gap: .5rem; margin-top: clamp(1.25rem, 2.5vw, 1.75rem); }
+.slider-btn {
+  display: grid; place-items: center; flex: none;
+  width: 44px; height: 44px;
+  background: #fff; border: 1px solid var(--muted); border-radius: var(--radius-icon);
+  color: var(--ink); cursor: pointer;
+}
+.slider-btn:hover { background: var(--primary-tint); border-color: var(--primary-dark); color: var(--primary-dark); }
+.slider-btn svg { width: 18px; height: 18px; fill: currentColor; }
+/* #i-chevron points right, so only the previous button needs turning */
+[data-slider-prev] svg { transform: rotate(180deg); }
+.slider-dots { display: flex; align-items: center; margin-left: .35rem; }
+.slider-dot { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; background: none; border: 0; cursor: pointer; }
+.slider-dot::before { content: ""; width: 9px; height: 9px; background: var(--muted); border-radius: 50%; }
+.slider-dot[aria-current="true"]::before { width: 22px; background: var(--primary-dark); border-radius: 5px; }
+
+/* ==========================================================================
+   18c. Branch map — drawn, not embedded
+   --------------------------------------------------------------------------
+   No Google iframe: that would be a third-party request on the busiest page
+   and would need the CSP opened up. The outline is one path, the pins are
+   real HTML text over it, and each branch links out to Google Maps for
+   directions. The pin coordinates come from content.py's BRANCHES — if a
+   branch moves, both files change.
+   ========================================================================== */
+.costs-layout { display: grid; grid-template-columns: 1fr 400px; gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
+.map-card {
+  padding: clamp(1.25rem, 2.4vw, 1.75rem);
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+}
+.map-lead { margin-bottom: 1rem; font-size: .93rem; color: var(--body); }
+/* no padding here: the pins are positioned in per-cent of this box, so any
+   padding would slide them off the coastline */
+.map-plot { position: relative; max-width: 440px; margin-bottom: 1.35rem; background: #eef4fb; border-radius: var(--radius); } /* water */
+.map-svg { display: block; width: 100%; height: auto; }
+.map-land { fill: var(--primary-tint-2); stroke: var(--primary-dark); stroke-width: 3; stroke-linejoin: round; }
+.map-pin {
+  position: absolute; display: inline-flex; align-items: center; gap: .25rem;
+  margin: 0; white-space: nowrap;
+  transform: translate(-11px, -100%);
+}
+.map-pin svg { flex: none; width: 22px; height: 22px; fill: var(--primary-dark); }
+.map-pin span {
+  padding: .12rem .45rem;
+  background: #fff; border: 1px solid var(--line); border-radius: 999px;
+  font-family: var(--font-sans); font-size: .79rem; font-weight: 700; color: var(--ink);
+}
+/* Dubai and Sharjah are only a few pixels apart, so Dubai's label goes left */
+.map-pin-dubai { left: 72.1%; top: 34.1%; flex-direction: row-reverse; transform: translate(calc(-100% + 11px), -100%); }
+.map-pin-abu-dhabi { left: 58%; top: 52.3%; }
+.map-pin-sharjah { left: 77%; top: 26.3%; }
+
+.branch-list { margin: 0; padding: 0; list-style: none; }
+.branch + .branch { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.branch h3 { margin-bottom: .5rem; font-size: 1.02rem; }
+.branch-line { display: flex; gap: .5rem; margin-bottom: .25rem; font-size: .9rem; color: var(--body); }
+.branch-line svg { flex: none; width: 17px; height: 17px; margin-top: .3rem; fill: var(--primary-dark); }
+.branch-dir { margin: .55rem 0 0; font-size: .88rem; }
+.branch-line a, .branch-dir a { padding-block: .25rem; }
 
 /* ==========================================================================
    19b. Legal pages — a long numbered document with its own contents list
@@ -887,7 +1006,8 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
      only thing that has to change — --step-count drives the grid. */
   .steps { --step-count: 3; row-gap: 2.5rem; }
   .legal { grid-template-columns: 1fr; }
-  .review-grid { grid-template-columns: repeat(2, 1fr); }
+  .review-track { grid-auto-columns: calc((100% - var(--gap)) / 2); }
+  .costs-layout { grid-template-columns: 1fr; }
   .legal-toc { position: static; }
   .steps::before { display: none; }
   .svc-grid { grid-template-columns: repeat(2, 1fr); }
@@ -959,7 +1079,8 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
   .topbar-list { gap: 1rem; row-gap: .25rem; font-size: .82rem; }
   .topbar-list li:nth-child(3) { display: none; }
   .svc-grid, .why-grid, .form-row,
-  .team-grid, .review-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .review-track { grid-auto-columns: 100%; }
   .svc-invite { grid-column: span 1; padding-block: 1rem; }
   .svc-body { margin-inline: .75rem; }
   .faq-body { padding-left: 1.35rem; }

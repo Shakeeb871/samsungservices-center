@@ -157,6 +157,101 @@
     });
   });
 
+  /* ------------------------------------------------------------- sliders
+     The track is a real horizontal scroll container, so a swipe, a trackpad,
+     the arrow keys and the scrollbar page it whether or not this block runs.
+     What this adds is the previous/next buttons and the dots, which page it
+     by whole screens and wrap around at either end.
+     NOTE: must stay above the booking-form block, which returns early on
+     pages that have no form. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-slider]'), function (root) {
+    var viewport = root.querySelector('.slider-viewport');
+    var track = viewport && viewport.firstElementChild;
+    if (!viewport || !track || !track.children.length) return;
+
+    var prevBtn = root.querySelector('[data-slider-prev]');
+    var nextBtn = root.querySelector('[data-slider-next]');
+    var dotBox = root.querySelector('[data-slider-dots]');
+    var slides = Array.prototype.slice.call(track.children);
+    var dots = [];
+    var pages = 0;
+
+    // How many whole cards fit. offsetLeft is a layout position, so it is
+    // unaffected by how far the track is currently scrolled.
+    function perView() {
+      var w = slides[0].getBoundingClientRect().width;
+      if (!w) return 1;
+      return Math.max(1, Math.round(viewport.clientWidth / w));
+    }
+
+    function slideStart(i) { return slides[i].offsetLeft - slides[0].offsetLeft; }
+
+    function maxScroll() { return viewport.scrollWidth - viewport.clientWidth; }
+
+    function currentPage() {
+      var max = maxScroll();
+      if (max <= 1 || pages < 2) return 0;
+      if (viewport.scrollLeft >= max - 1) return pages - 1;
+      return Math.min(pages - 1, Math.round(viewport.scrollLeft / viewport.clientWidth));
+    }
+
+    function goTo(page) {
+      var target = ((page % pages) + pages) % pages;      // wrap both ways
+      var index = Math.min(target * perView(), slides.length - 1);
+      viewport.scrollTo({
+        left: Math.min(slideStart(index), maxScroll()),
+        behavior: reduceMotion.matches ? 'auto' : 'smooth'
+      });
+    }
+
+    function paint() {
+      var page = currentPage();
+      dots.forEach(function (dot, i) {
+        if (i === page) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+    }
+
+    function buildDots() {
+      var want = Math.ceil(slides.length / perView());
+      if (want === pages) { paint(); return; }
+      pages = want;
+      dots = [];
+      if (!dotBox) return;
+      dotBox.textContent = '';
+      for (var i = 0; i < pages; i++) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'slider-dot';
+        dot.setAttribute('aria-label', 'Go to page ' + (i + 1) + ' of ' + pages);
+        dot.addEventListener('click', (function (n) {
+          return function () { goTo(n); };
+        })(i));
+        dotBox.appendChild(dot);
+        dots.push(dot);
+      }
+      paint();
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { goTo(currentPage() - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { goTo(currentPage() + 1); });
+
+    var pending = false;
+    viewport.addEventListener('scroll', function () {
+      if (pending) return;
+      pending = true;
+      window.requestAnimationFrame(function () { pending = false; paint(); });
+    }, { passive: true });
+
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(buildDots, 150);
+    });
+
+    buildDots();
+  });
+
   /* --------------------------------------------------------- booking form */
   var form = document.getElementById('bookingForm');
   if (!form) return;
