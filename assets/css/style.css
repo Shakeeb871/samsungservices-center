@@ -781,42 +781,6 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 /* ==========================================================================
    18b. Team, job examples and reviews — the first-hand-experience blocks
    ========================================================================== */
-/* An unmissable banner while a section still holds placeholder people, jobs
-   or reviews. Publishing invented technicians or invented reviews is worse
-   than publishing an obviously unfinished section, so this is loud on purpose
-   and disappears the moment team.py's DATA_IS_REAL is set. */
-.draft-note {
-  margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
-  padding: .9rem 1.1rem;
-  background: #fff6e5;
-  border-left: 4px solid #b76e00;
-  border-radius: var(--radius);
-  color: #6b4300; font-size: .93rem;
-}
-.draft-note code { font-size: .88em; background: rgba(0,0,0,.06); padding: .1em .35em; border-radius: 3px; }
-
-.team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); }
-.person {
-  display: flex; flex-direction: column;
-  padding: clamp(1.5rem, 2.5vw, 2rem);
-  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-}
-.person-head h3 { margin-bottom: .2rem; }
-.person-role { font-size: .9rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 1.1rem; }
-.person-quote {
-  margin: 0 0 1.4rem; padding-left: 1rem;
-  border-left: 3px solid var(--primary);
-  color: var(--ink); font-size: .97rem;
-}
-.person-detail + .person-detail { margin-top: 1rem; }
-.person-detail h4 {
-  font-family: var(--font-sans); font-size: .79rem; font-weight: 800;
-  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
-  margin-bottom: .45rem;
-}
-.person-detail ul { list-style: none; margin: 0; padding: 0; font-size: .93rem; }
-.person-detail li { margin-bottom: .25rem; }
-
 /* --- Google reviews: the rating summary, then the cards in a slider ------- */
 .gr-summary {
   display: flex; align-items: center; flex-wrap: wrap; gap: .9rem 1.3rem;
@@ -957,6 +921,15 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 .branch-line a, .branch-dir a { padding-block: .25rem; }
 
 /* ==========================================================================
+   18d. About page rows — the copy with the matching photograph beside it
+   ========================================================================== */
+.about-row { display: grid; grid-template-columns: 420px 1fr; gap: clamp(1.75rem, 3.5vw, 3rem); align-items: start; }
+.about-row.is-flipped { grid-template-columns: 1fr 420px; }
+.about-row.is-flipped > img { order: 2; }
+.about-row > img { width: 100%; height: auto; border-radius: var(--radius); background: var(--bg-soft); }
+.about-row .prose { max-width: 62ch; }
+
+/* ==========================================================================
    19b. Legal pages — a long numbered document with its own contents list
    ========================================================================== */
 .legal { display: grid; grid-template-columns: 260px 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
@@ -1057,6 +1030,8 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 }
 
 @media (max-width: 900px) {
+  .about-row, .about-row.is-flipped { grid-template-columns: 1fr; }
+  .about-row.is-flipped > img { order: 0; }
   /* full-width copy needs a full-width wash — measured 8.15:1 on the real photo */
   .hero::after {
     background:
@@ -1096,8 +1071,7 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 @media (max-width: 720px) {
   .topbar-list { gap: 1rem; row-gap: .25rem; font-size: .82rem; }
   .topbar-list li:nth-child(3) { display: none; }
-  .svc-grid, .why-grid, .form-row,
-  .team-grid { grid-template-columns: 1fr; }
+  .svc-grid, .why-grid, .form-row { grid-template-columns: 1fr; }
   .review-track { grid-auto-columns: 100%; }
   .svc-invite { grid-column: span 1; padding-block: 1rem; }
   .svc-body { margin-inline: .75rem; }

@@ -84,19 +84,16 @@ through `esc()`.
 
 ## Placeholders that must not be invented
 
-`scratchpad/team.py` and `scratchpad/legal.py` carry [SQUARE BRACKET] values —
-technician names and certifications, customer reviews,
-the registered legal name, trade licence, workshop address and the privacy
-contact. **Do not fill any of them with something plausible.**
+`scratchpad/legal.py` carries [SQUARE BRACKET] values: the registered legal
+name, the trade licence, the workshop address and the privacy contact.
+**Do not fill any of them with something plausible.** They are business facts
+that only the client holds, and a made-up licence number on a legal page is
+worse than a visible gap.
 
-A named technician with a made-up certification is a false credential. A review
-with a made-up customer name and date is a fake review, which is unlawful to
-publish in most markets and is precisely what an E-E-A-T audit exists to catch.
-While they are unfilled, `team.py` has `DATA_IS_REAL = False`, which puts a
-visible amber "Not yet published" banner above each affected section and keeps
-`Review` / `AggregateRating` markup off the page — review schema over invented
-reviews is structured-data spam and can earn a manual action. Set it to `True`
-only once the real details are in.
+The named-technician section is gone from the about page at the client's
+request, so the technician placeholders went with it. If it ever comes back,
+the same rule applies: a named engineer with an invented certification is a
+false credential.
 
 The reviews section on the home page is presented as **Google reviews**, with a
 "Verified Google review" badge and an aggregate score. The six review bodies in
@@ -142,7 +139,7 @@ services.html         Appliance overviews, one section each (#washing-machine,
                       #ac-repair, #refrigerator, #microwave, #dishwasher,
                       #cooking-range, #dryer), each linking into Explore
 areas.html            Coverage by emirate
-about.html            The business, the engineers, and what to expect
+about.html            Six long-form sections, each with a photo, then what to expect
 privacy.html          Privacy policy, 10 numbered clauses
 terms.html            Terms of service, 14 numbered clauses
 contact.html          Contact details + validated booking form
