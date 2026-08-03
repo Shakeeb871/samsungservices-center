@@ -745,6 +745,8 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .page-head { background: var(--secondary); color: var(--on-dark); padding-block: var(--section-y); }
 .page-head h1 { color: #fff; margin-bottom: .5rem; }
 .page-head p { max-width: 68ch; margin: 0; }
+/* the about page leads with three paragraphs, so they need space between */
+.page-head p + p { margin-top: 1.1rem; }
 
 /* A link on a dark surface cannot use the default --primary-dark: #0961c6 on
    #323333 is 1.4:1, unreadable. --primary-light is 6.3:1 on the same surface.
