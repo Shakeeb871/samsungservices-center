@@ -100,6 +100,14 @@ AddDefaultCharset UTF-8
   RewriteCond %{DOCUMENT_ROOT}/$1.html -f
   RewriteRule ^(.+[^/])$ /$1/ [R=301,L,NE]
 
+  # D2. The four emirate pages were briefly published under /samsung-repair-*/
+  #     before the URL was changed to carry the phrase the page targets. These
+  #     are cheap insurance in case either a search engine or a link picked the
+  #     old path up; they can be deleted once the logs show nothing asking for
+  #     them.
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^samsung-repair-(dubai|abu-dhabi|sharjah|ajman)/?$ /samsung-service-center-$1/ [R=301,L,NE]
+
   # E. /services/ -> services.html, internally. No [R], so the browser keeps
   #    showing /services/ and the visitor never pays for a redirect.
   RewriteCond %{DOCUMENT_ROOT}/$1.html -f

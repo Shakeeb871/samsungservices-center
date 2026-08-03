@@ -24,10 +24,10 @@ deployment:
     - /bin/cp -R samsung-microwave-oven-repair.html $DEPLOYPATH
     - /bin/cp -R samsung-cooking-range-oven-repair.html $DEPLOYPATH
     - /bin/cp -R samsung-dryer-repair.html $DEPLOYPATH
-    - /bin/cp -R samsung-repair-ajman.html $DEPLOYPATH
-    - /bin/cp -R samsung-repair-sharjah.html $DEPLOYPATH
-    - /bin/cp -R samsung-repair-abu-dhabi.html $DEPLOYPATH
-    - /bin/cp -R samsung-repair-dubai.html $DEPLOYPATH
+    - /bin/cp -R samsung-service-center-ajman.html $DEPLOYPATH
+    - /bin/cp -R samsung-service-center-sharjah.html $DEPLOYPATH
+    - /bin/cp -R samsung-service-center-abu-dhabi.html $DEPLOYPATH
+    - /bin/cp -R samsung-service-center-dubai.html $DEPLOYPATH
     - /bin/cp -R samsung-dishwasher-repair.html $DEPLOYPATH
     - /bin/cp -R areas.html $DEPLOYPATH
     - /bin/cp -R blog.html $DEPLOYPATH

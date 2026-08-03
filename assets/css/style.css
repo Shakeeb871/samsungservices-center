@@ -290,7 +290,10 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 /* dropdown */
 .subnav {
   position: absolute; left: -14px; top: calc(100% + 10px); z-index: 10;
-  min-width: 292px; margin: 0;
+  /* 292px fitted the service names; "Samsung Service Center Abu Dhabi"
+     wrapped to two lines, so the panel sizes to its longest label now
+     and 292px is only the floor. */
+  min-width: 292px; width: max-content; max-width: min(360px, 90vw); margin: 0;
   /* no side padding: the hover highlight has to reach both edges of the panel */
   padding: .35rem 0;
   list-style: none; background: #fff;
