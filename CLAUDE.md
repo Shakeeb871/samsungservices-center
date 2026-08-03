@@ -164,21 +164,24 @@ samsung-ac-repair.html
 samsung-dishwasher-repair.html
 samsung-microwave-oven-repair.html
 samsung-cooking-range-oven-repair.html
-                      Long-form appliance pages, six of the seven appliances.
-                      Copy on the left, a sticky rail of service and site
-                      links on the right. All six render through
-                      scratchpad/servicepage.py from one data module each
-                      (wm, fridge, ac, dishwasher, microwave, cookingrange),
-                      so the layout, sidebar and schema cannot drift apart.
-                      The nav and footer links for those six appliances point
-                      here rather than at /services/#slug. The dryer is the
-                      one still going to /services/#dryer.
-                      Adding the seventh: write the data module, add two
-                      lines to buildall.sh and build_dates.py, a cp line in
-                      .cpanel.yml, a sitemap entry, repoint the nav/footer
-                      link, and add the URL to audit_browser.mjs, deadcss.mjs
-                      and spacing.mjs. pagecheck.py then proves every
-                      supplied sentence landed.
+samsung-dryer-repair.html
+                      Long-form appliance pages, one per appliance, all seven.
+                      Copy on the left, a sticky rail of sibling appliance
+                      pages and site links on the right. All seven render
+                      through scratchpad/servicepage.py from one data module
+                      each (wm, fridge, ac, dishwasher, microwave,
+                      cookingrange, dryer), so the layout, sidebar and schema
+                      cannot drift apart. Every appliance link in the nav,
+                      the footer, the sidebars and the services.html Service
+                      schema points at these pages; nothing on the site links
+                      to /services/#slug any more.
+                      Adding another: write the data module, add it to
+                      PAGE_FOR in servicepage.py, a line each in buildall.sh
+                      and build_dates.py, a cp line in .cpanel.yml, a sitemap
+                      entry, repoint the nav/footer link, and add the URL to
+                      audit_browser.mjs, deadcss.mjs and spacing.mjs.
+                      pagecheck.py then proves every supplied sentence
+                      landed.
 areas.html            Coverage by emirate
 about.html            Six long-form sections, each with a photo, then what to expect
 privacy.html          Privacy policy, 10 numbered clauses
@@ -466,7 +469,7 @@ transparent.
 
 Each one carries the client's own coverage section, and those sections list
 the same Dubai, Sharjah and Abu Dhabi districts in near-identical sentences.
-`scratchpad/redundancy.py` scores the site at 630 with six of them live,
+`scratchpad/redundancy.py` scores the site at 746 with all seven live,
 against 51 before any existed, and almost every pair it reports is a coverage
 or customer-care line rather than anything about the appliance itself.
 
@@ -474,8 +477,7 @@ This is the supplied copy and has been left alone. It is worth knowing that
 six service pages whose area sections read the same way is the shape Google
 treats as templated, so if rankings disappoint, those are the paragraphs to
 rewrite per appliance first — not the fault lists, which are genuinely
-different page to page. The score will climb again with the seventh page for
-the same reason; that is expected, not a regression.
+different page to page.
 
 ## Copy: no em dashes
 
