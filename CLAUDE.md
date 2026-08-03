@@ -122,6 +122,26 @@ Change them when the content actually changes. A date that bumps itself on
 every deploy is not a freshness signal — it is a lie that search engines learn
 to discount.
 
+## Every page except the home page opens on the same photograph
+
+`assets/img/samsung-home-appliances-repairer.webp` is the backdrop of the
+`.page-head` band on all nine inner pages. It is decorative — `alt=""`, the
+heading is the content — and it sits under a wash that is weighted to the left
+on desktop and vertical on mobile, mirroring the hero.
+
+**Do not lighten those stops without re-measuring.** `scratchpad/headcontrast.mjs`
+plus `headcontrast.py` screenshot each band with the copy hidden and report the
+worst contrast behind the real glyph line boxes; it is 6.14:1 today against the
+4.5 AA minimum. Two things that measurement gets wrong if you are not careful,
+both now handled: the floating call buttons are `position: fixed` and land in
+an element screenshot as if they were the photograph, and an element's box runs
+the full column width even when its text stops early, so the sample has to come
+from Range rects over the text nodes rather than from the element box.
+
+The file is cropped to the slice the band shows and shipped at three widths,
+because `object-fit: cover` was otherwise making every inner page download
+420px of image height that never appeared.
+
 ## Stack
 
 Hand-written HTML, one CSS file, one JS file. No framework, no build step, no
@@ -138,6 +158,10 @@ index.html            Home: hero, about band, 7 service cards, Explore (faults +
 services.html         Appliance overviews, one section each (#washing-machine,
                       #ac-repair, #refrigerator, #microwave, #dishwasher,
                       #cooking-range, #dryer), each linking into Explore
+samsung-washing-machine-repair.html
+                      Long-form service page: copy on the left, a sticky rail
+                      of service and site links on the right. The nav and
+                      footer "Washing machine repair" links point here
 areas.html            Coverage by emirate
 about.html            Six long-form sections, each with a photo, then what to expect
 privacy.html          Privacy policy, 10 numbered clauses

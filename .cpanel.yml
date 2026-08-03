@@ -18,6 +18,7 @@ deployment:
     - /bin/cp -R index.html $DEPLOYPATH
     - /bin/cp -R about.html $DEPLOYPATH
     - /bin/cp -R services.html $DEPLOYPATH
+    - /bin/cp -R samsung-washing-machine-repair.html $DEPLOYPATH
     - /bin/cp -R areas.html $DEPLOYPATH
     - /bin/cp -R blog.html $DEPLOYPATH
     - /bin/cp -R contact.html $DEPLOYPATH
