@@ -21,6 +21,8 @@ deployment:
     - /bin/cp -R samsung-washing-machine-repair.html $DEPLOYPATH
     - /bin/cp -R samsung-refrigerator-repair.html $DEPLOYPATH
     - /bin/cp -R samsung-ac-repair.html $DEPLOYPATH
+    - /bin/cp -R samsung-microwave-oven-repair.html $DEPLOYPATH
+    - /bin/cp -R samsung-cooking-range-oven-repair.html $DEPLOYPATH
     - /bin/cp -R samsung-dishwasher-repair.html $DEPLOYPATH
     - /bin/cp -R areas.html $DEPLOYPATH
     - /bin/cp -R blog.html $DEPLOYPATH
