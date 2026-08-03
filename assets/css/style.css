@@ -371,7 +371,11 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .hero .container { display: flex; flex-direction: column; align-items: flex-start; }
 .hero h1 { max-width: 20ch; }
 .hero p { color: rgba(255, 255, 255, .9); max-width: 62ch; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.9rem; }
+/* the four proof points under the hero copy: the tick list, on a dark ground */
+.hero-points { margin-top: 1.25rem; }
+.hero-points li { margin-bottom: .45rem; color: rgba(255, 255, 255, .92); }
+.hero-points svg { fill: var(--primary-light); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.6rem; }
 
 /* ==========================================================================
    8. Split band — copy on the left, full-bleed image on the right
@@ -462,6 +466,9 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 /* Three across, because there are six cards — four across leaves a ragged
    row of two. Revisit if the number of cards changes. */
 .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.75rem, 3vw, 2.75rem); }
+/* four cards read as 2x2; three-across leaves the fourth stranded on its own row.
+   The responsive rules in section 21 come later in the file and still win. */
+.why-grid-2 { grid-template-columns: repeat(2, 1fr); }
 /* No frame, no border, no radius — the tinted icon tile carries the structure.
    The hatched corner went with the frame; it read as stray texture without it. */
 .why-card { height: 100%; }
@@ -534,7 +541,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .steps {
   --step-gap: clamp(.75rem, 2vw, 1.75rem);
   --step-size: 84px;
-  --step-count: 6;          /* keep in sync with the number of <li class="step"> */
+  --step-count: 4;          /* keep in sync with the number of <li class="step"> */
   position: relative;
   display: grid; grid-template-columns: repeat(var(--step-count), 1fr);
   gap: var(--step-gap);
@@ -1014,7 +1021,7 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 @media (max-width: 1100px) {
   /* the connector is hidden below this width, so the column count is the
      only thing that has to change — --step-count drives the grid. */
-  .steps { --step-count: 3; row-gap: 2.5rem; }
+  .steps { --step-count: 2; row-gap: 2.5rem; }
   .legal { grid-template-columns: 1fr; }
   .review-track { grid-auto-columns: calc((100% - var(--gap)) / 2); }
   .costs-layout { grid-template-columns: 1fr; }
@@ -1085,7 +1092,6 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 }
 
 @media (max-width: 720px) {
-  .steps { --step-count: 2; }
   .topbar-list { gap: 1rem; row-gap: .25rem; font-size: .82rem; }
   .topbar-list li:nth-child(3) { display: none; }
   .svc-grid, .why-grid, .form-row,
