@@ -159,9 +159,16 @@ services.html         Appliance overviews, one section each (#washing-machine,
                       #ac-repair, #refrigerator, #microwave, #dishwasher,
                       #cooking-range, #dryer), each linking into Explore
 samsung-washing-machine-repair.html
-                      Long-form service page: copy on the left, a sticky rail
-                      of service and site links on the right. The nav and
-                      footer "Washing machine repair" links point here
+samsung-refrigerator-repair.html
+samsung-ac-repair.html
+samsung-dishwasher-repair.html
+                      Long-form appliance pages: copy on the left, a sticky
+                      rail of service and site links on the right. All four
+                      render through scratchpad/servicepage.py from one data
+                      module each (wm.py, fridge.py, ac.py, dishwasher.py),
+                      so the layout, sidebar and schema cannot drift apart.
+                      The nav and footer links for those four appliances
+                      point here rather than at /services/#slug
 areas.html            Coverage by emirate
 about.html            Six long-form sections, each with a photo, then what to expect
 privacy.html          Privacy policy, 10 numbered clauses
@@ -444,6 +451,20 @@ The **body copy is final**. It is the client's own text and is not a
 placeholder. The photography is stock and can be swapped, but re-measure the
 hero contrast if the hero shot changes, and keep the `-problems.webp` cut-outs
 transparent.
+
+## The four appliance pages repeat each other by design
+
+Each one carries the client's own coverage section, and those sections list
+the same Dubai, Sharjah and Abu Dhabi districts in near-identical sentences.
+`scratchpad/redundancy.py` scores the site at 317 because of it, against 51
+before those pages existed, and almost every pair it reports is a coverage or
+customer-care line rather than anything about the appliance itself.
+
+This is the supplied copy and has been left alone. It is worth knowing that
+four service pages whose area sections read the same way is the shape Google
+treats as templated, so if rankings disappoint, those are the paragraphs to
+rewrite per appliance first — not the fault lists, which are genuinely
+different page to page.
 
 ## Copy: no em dashes
 
