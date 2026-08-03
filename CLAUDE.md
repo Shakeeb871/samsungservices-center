@@ -183,20 +183,34 @@ samsung-dryer-repair.html
                       pagecheck.py then proves every supplied sentence
                       landed.
 areas.html            Coverage by emirate
-samsung-repair-dubai.html
-samsung-repair-abu-dhabi.html
-samsung-repair-sharjah.html
-samsung-repair-ajman.html
+samsung-service-center-dubai.html
+samsung-service-center-abu-dhabi.html
+samsung-service-center-sharjah.html
+samsung-service-center-ajman.html
                       One page per emirate, same left-copy / right-rail layout
                       as the appliance pages. Built from scratchpad/
                       locations.py, which holds the copy, and build_locations.py.
-                      Written per city, not templated: Dubai leads on tower
-                      access and the Jebel Ali workshop, Abu Dhabi on the
+                      The slug, the title, the H1 and the nav label all carry
+                      the phrase the page targets, "Samsung Service Center
+                      <city>"; the earlier /samsung-repair-<city>/ URLs 301
+                      onto these (.htaccess rule D2).
+                      Dubai is the client's own long-form copy, checked
+                      sentence by sentence against the source document by
+                      scratchpad/dubaicheck.py. The other three are written per
+                      city, not templated: Abu Dhabi leads on the
                       island/mainland split, Sharjah on being inside the
                       emirate, and Ajman states plainly that there is no
                       centre there and what that does and does not change.
                       Nothing about a city is invented — the addresses come
                       from BRANCHES and the districts from areas.html.
+                      build_locations.py composes each page from an ordered
+                      list of blocks. A city that supplies its own `blocks`
+                      gets exactly that order, which is how Dubai keeps the
+                      district list and the branch address inside the supplied
+                      copy instead of losing them. A paragraph may carry
+                      [[label|/path/]]; the marker is resolved after esc(), so
+                      the copy stays plain text and no source string is
+                      trusted as raw HTML.
 about.html            Six long-form sections, each with a photo, then what to expect
 privacy.html          Privacy policy, 10 numbered clauses
 terms.html            Terms of service, 14 numbered clauses
