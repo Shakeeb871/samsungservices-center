@@ -183,6 +183,20 @@ samsung-dryer-repair.html
                       pagecheck.py then proves every supplied sentence
                       landed.
 areas.html            Coverage by emirate
+samsung-repair-dubai.html
+samsung-repair-abu-dhabi.html
+samsung-repair-sharjah.html
+samsung-repair-ajman.html
+                      One page per emirate, same left-copy / right-rail layout
+                      as the appliance pages. Built from scratchpad/
+                      locations.py, which holds the copy, and build_locations.py.
+                      Written per city, not templated: Dubai leads on tower
+                      access and the Jebel Ali workshop, Abu Dhabi on the
+                      island/mainland split, Sharjah on being inside the
+                      emirate, and Ajman states plainly that there is no
+                      centre there and what that does and does not change.
+                      Nothing about a city is invented — the addresses come
+                      from BRANCHES and the districts from areas.html.
 about.html            Six long-form sections, each with a photo, then what to expect
 privacy.html          Privacy policy, 10 numbered clauses
 terms.html            Terms of service, 14 numbered clauses
@@ -469,8 +483,9 @@ transparent.
 
 Each one carries the client's own coverage section, and those sections list
 the same Dubai, Sharjah and Abu Dhabi districts in near-identical sentences.
-`scratchpad/redundancy.py` scores the site at 746 with all seven live,
-against 51 before any existed, and almost every pair it reports is a coverage
+`scratchpad/redundancy.py` scores the site at 887 with all seven live and the
+four emirate pages beside them, against 51 before any existed. Only one of the
+pairs it reports involves an emirate page, so that copy is doing its job, and almost every pair it reports is a coverage
 or customer-care line rather than anything about the appliance itself.
 
 This is the supplied copy and has been left alone. It is worth knowing that
