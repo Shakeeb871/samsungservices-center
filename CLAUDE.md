@@ -47,9 +47,15 @@ on two pages — checked mechanically by `scratchpad/coverage.py`, not by eye:
 | Coverage statement | areas.html page head |
 | Frequently Asked Questions (8) | index `#faq` + FAQPage JSON-LD |
 
-Repeated **labels** — the seven service names, "Explore Samsung Services in the
-UAE" — are navigation, and are expected on more than one page. Repeated
-**sentences** are not.
+Repeated **labels** — the seven service names, "We Service & Repair All Samsung
+Appliances Problems" — are navigation, and are expected on more than one page.
+Repeated **sentences** are not.
+
+That section title has changed once already. When it changes again, the
+sentence on services.html that points at it by name has to change with it, or
+the link promises a heading the destination does not carry; and the old string
+goes into `coverage.py`'s `SUPERSEDED` set, otherwise coverage reports it as a
+source unit that went missing.
 
 **Keyword density is measured too.** `scratchpad/density.py` reports how often
 each page says "Samsung". Anything at or above 3% is flagged; services.html hit
