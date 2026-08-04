@@ -194,23 +194,27 @@ samsung-service-center-ajman.html
                       the phrase the page targets, "Samsung Service Center
                       <city>"; the earlier /samsung-repair-<city>/ URLs 301
                       onto these (.htaccess rule D2).
-                      Dubai is the client's own long-form copy, checked
-                      sentence by sentence against the source document by
-                      scratchpad/dubaicheck.py. The other three are written per
-                      city, not templated: Abu Dhabi leads on the
-                      island/mainland split, Sharjah on being inside the
-                      emirate, and Ajman states plainly that there is no
-                      centre there and what that does and does not change.
-                      Nothing about a city is invented — the addresses come
-                      from BRANCHES and the districts from areas.html.
+                      Dubai and Abu Dhabi are the client's own long-form copy,
+                      each checked sentence by sentence against its source
+                      document by scratchpad/citycheck.py — the documents live
+                      beside it as *_supplied.txt. Sharjah and Ajman are still
+                      written per city, not templated: Sharjah leads on being
+                      inside the emirate, and Ajman states plainly that there
+                      is no centre there and what that does and does not
+                      change. Nothing about a city is invented — the addresses
+                      come from BRANCHES and the districts from areas.html.
                       build_locations.py composes each page from an ordered
                       list of blocks. A city that supplies its own `blocks`
-                      gets exactly that order, which is how Dubai keeps the
-                      district list and the branch address inside the supplied
-                      copy instead of losing them. A paragraph may carry
-                      [[label|/path/]]; the marker is resolved after esc(), so
-                      the copy stays plain text and no source string is
-                      trusted as raw HTML.
+                      gets exactly that order, which is how the two long pages
+                      keep the district list and the branch address inside the
+                      supplied copy instead of losing them. Inside a block, a
+                      plain string is a paragraph and a tuple is one of
+                      ('h3', title), ('ticks', [...]) or ('steps', [(title,
+                      [paras])]) — the last reuses .fault-list, so a numbered
+                      process gets the same badge as the fault entries. Any of
+                      those strings may carry [[label|/path/]]; the marker is
+                      resolved after esc(), so the copy stays plain text and no
+                      source string is trusted as raw HTML.
 about.html            Six long-form sections, each with a photo, then what to expect
 privacy.html          Privacy policy, 10 numbered clauses
 terms.html            Terms of service, 14 numbered clauses
