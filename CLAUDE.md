@@ -194,17 +194,18 @@ samsung-service-center-ajman.html
                       the phrase the page targets, "Samsung Service Center
                       <city>"; the earlier /samsung-repair-<city>/ URLs 301
                       onto these (.htaccess rule D2).
-                      Dubai, Abu Dhabi and Sharjah are the client's own
-                      long-form copy, each checked sentence by sentence
-                      against its source document by scratchpad/citycheck.py —
-                      the documents live beside it as *_supplied.txt. Ajman is
-                      still written here, and states plainly that there is no
-                      centre in the emirate and what that does and does not
-                      change. Nothing about a city is invented — the addresses
-                      come from BRANCHES and the districts from areas.html.
-                      Sharjah is the one page with no 'areas' block: its
-                      supplied copy names the districts itself, so the pin
-                      list underneath would print them twice.
+                      All four are the client's own long-form copy, each
+                      checked sentence by sentence against its source document
+                      by scratchpad/citycheck.py — the documents live beside
+                      it as *_supplied.txt.
+                      Sharjah and Ajman carry no 'areas' block: their supplied
+                      copy names the districts itself, so the pin list
+                      underneath would print them twice. Ajman carries no
+                      'centre' block either — BRANCHES has no Ajman address,
+                      and the paragraph the page used to carry ("We do not
+                      have a service centre in Ajman") contradicts the heading
+                      the client has since supplied. If an Ajman address ever
+                      arrives, add it to BRANCHES and put the block back.
                       build_locations.py composes each page from an ordered
                       list of blocks. A city that supplies its own `blocks`
                       gets exactly that order, which is how the two long pages
