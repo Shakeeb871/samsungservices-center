@@ -575,16 +575,34 @@ visible text on all twenty pages, driven by `content.py`'s `PHONE_HREF` /
 canonical, `og:url`, sitemap entry and JSON-LD `@id`; both indexing blocks
 are off.
 
+Two inboxes are live, and the site says which is which rather than listing
+both under one "Email" label:
+
+| Address | Where |
+| --- | --- |
+| `info@samsungservices-center.com` | footer "General", contact page "General enquiries", LocalBusiness `email`, the customer-service `contactPoint`, the privacy-policy contact, `send.php` `FROM_EMAIL` |
+| `support@samsungservices-center.com` | footer "Support", contact page "Existing repairs", the technical-support `contactPoint`, the terms complaints clause |
+
+`send.php` posts bookings to **both**, comma-separated. Nobody said which
+address owns the form, and a booking in the wrong inbox is still a booking
+while a booking in neither is a lost customer. `FROM_EMAIL` has to be a real
+mailbox on this domain or cPanel's mail server rejects the message, which is
+why it is `info@` rather than a `no-reply@` that may not exist; the customer's
+own address is on `Reply-To`.
+
+The Search Console tag
+(`google-site-verification` / `tNihezSQ...`) is on all twenty pages rather
+than only the home page, so verification holds whichever URL the property was
+created for. `golive.py` maintains it.
+
 **Still placeholder, and not to be invented:**
 
-- `info@example.com` — in the footer of all twenty pages, on the contact page,
-  and as `email` on the LocalBusiness node.
-- `TO_EMAIL` and `FROM_EMAIL` in `send.php`. Until these are real the booking
-  form posts into nothing, and it fails silently.
-- the four `#` social links in the footer and the top bar, six per page. The
-  WhatsApp one among them is real. Either the real profile URLs go in or the
-  dead icons come out; a link that scrolls the visitor to the top of the page
-  is worse than no icon.
+- `[REGISTERED LEGAL NAME]`, `[LICENCE NUMBER]` and `[REGISTERED ADDRESS]` in
+  `privacy.html` clause 1 and `terms.html` clause 1, and `[EMIRATE]` in
+  `terms.html` clause 13. These are live, indexable legal pages now, so the
+  gaps are public — but a made-up trade licence on a privacy policy is worse
+  than a visible gap, and the governing-law emirate is a legal choice rather
+  than a fact that can be read off the branch address.
 - the geo coordinates on the LocalBusiness node, and the blog entries.
 
 Not done on purpose: the HTTPS redirect and the canonical-host choice in

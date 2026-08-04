@@ -6,16 +6,22 @@
  * same data by fetch(), so the page does not reload — but the plain POST is the
  * fallback when JavaScript is off, which is why the form needs a real action.
  *
- * BEFORE LAUNCH: set TO_EMAIL below to the address that should receive bookings.
- * On cPanel that should be a mailbox on this domain; a Gmail address as the
- * recipient is fine, but the From must stay on-domain or the mail is rejected.
+ * Bookings go to both inboxes. The client gave two addresses without saying
+ * which owns the form, and a booking that lands in the wrong one is still a
+ * booking; a booking that lands in neither is a lost customer. mail() accepts
+ * a comma-separated list.
+ *
+ * FROM_EMAIL has to be a real mailbox on this domain or cPanel's mail server
+ * rejects the message, which is why it is info@ rather than a no-reply@
+ * address that may not exist. The customer's own address goes on Reply-To, so
+ * hitting reply in the inbox still answers them.
  */
 
 declare(strict_types=1);
 
 // ── configure ───────────────────────────────────────────────────────────────
-const TO_EMAIL   = 'info@example.com';        // ← replace with the real inbox
-const FROM_EMAIL = 'no-reply@example.com';    // ← must be on this domain
+const TO_EMAIL   = 'support@samsungservices-center.com, info@samsungservices-center.com';
+const FROM_EMAIL = 'info@samsungservices-center.com';   // must exist on this domain
 const SITE_NAME  = 'Samsung Services Center';
 const RATE_LIMIT_SECONDS = 30;                // one submission per visitor per 30s
 
