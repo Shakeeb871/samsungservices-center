@@ -194,15 +194,17 @@ samsung-service-center-ajman.html
                       the phrase the page targets, "Samsung Service Center
                       <city>"; the earlier /samsung-repair-<city>/ URLs 301
                       onto these (.htaccess rule D2).
-                      Dubai and Abu Dhabi are the client's own long-form copy,
-                      each checked sentence by sentence against its source
-                      document by scratchpad/citycheck.py — the documents live
-                      beside it as *_supplied.txt. Sharjah and Ajman are still
-                      written per city, not templated: Sharjah leads on being
-                      inside the emirate, and Ajman states plainly that there
-                      is no centre there and what that does and does not
+                      Dubai, Abu Dhabi and Sharjah are the client's own
+                      long-form copy, each checked sentence by sentence
+                      against its source document by scratchpad/citycheck.py —
+                      the documents live beside it as *_supplied.txt. Ajman is
+                      still written here, and states plainly that there is no
+                      centre in the emirate and what that does and does not
                       change. Nothing about a city is invented — the addresses
                       come from BRANCHES and the districts from areas.html.
+                      Sharjah is the one page with no 'areas' block: its
+                      supplied copy names the districts itself, so the pin
+                      list underneath would print them twice.
                       build_locations.py composes each page from an ordered
                       list of blocks. A city that supplies its own `blocks`
                       gets exactly that order, which is how the two long pages
