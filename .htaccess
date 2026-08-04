@@ -33,14 +33,36 @@ AddDefaultCharset UTF-8
   RewriteEngine On
   RewriteBase /
 
-  # Force HTTPS — uncomment once the SSL certificate is active in cPanel
-  # RewriteCond %{HTTPS} !=on
-  # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+  # ---- CANONICAL ORIGIN: https://samsungservices-center.com -------------
+  # Four spellings of every page were answering 200 in their own right:
+  # http and https, each with and without www. To a search engine that is
+  # four URLs carrying identical content with the link signals split across
+  # them. One origin wins and the other three 301 onto it, and it is the
+  # same one every <link rel="canonical">, og:url and sitemap entry names.
+  #
+  # Non-www was chosen because that is what those tags already say. To
+  # switch to www instead, both rules below change together, and so does
+  # HOST in scratchpad/golive.py.
+  #
+  # The www rule goes straight to https rather than keeping the scheme, so
+  # http://www/ costs one hop instead of two. Every case is one redirect.
+  #
+  # IF THE SITE STOPS LOADING after this deploys, the certificate does not
+  # cover the domain yet: comment out rule ii and run AutoSSL in cPanel.
+  # Rule i is safe either way.
 
-  # Canonical host: pick ONE and uncomment it, so www and non-www do not
-  # serve duplicate content to search engines.
-  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-  # RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+  # i. www -> non-www
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L,NE]
+
+  # ii. http -> https. X-Forwarded-Proto is checked too: behind a proxy or
+  #     CDN that terminates TLS, %{HTTPS} reads off at the origin and the
+  #     rule would redirect to itself forever.
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,NE]
 
   # ---- CANONICAL URL FORM: /page/ ---------------------------------------
   # One URL per page, extension-less, with a trailing slash:

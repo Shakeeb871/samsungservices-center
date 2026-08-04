@@ -2,8 +2,9 @@
 
 Static marketing site for a Samsung home-appliance repair business serving the UAE
 (Dubai, Abu Dhabi, Sharjah, Ajman, RAK, UAQ, Fujairah). The body copy is the
-client's own. Contact details, the domain and the imagery are still placeholder
-and must be replaced before launch — see "Before going live".
+client's own. The domain, the phone number and the three branch addresses are
+real and live; the email and the booking-form inbox are still placeholder —
+see "Before going live".
 
 ## The business is a Samsung-authorised repair centre
 
@@ -403,6 +404,15 @@ This is a standing rule, not a one-off for a single section.
 - `.why-grid` is three across because there are six cards. Four across leaves a
   ragged row of two.
 
+**There are no social links except WhatsApp.** The footer's row of four and
+two of the three in the top bar were all `href="#"`, which reads as a
+placeholder on a development site and as a link that scrolls you to the top of
+the page on a live one. Nobody has supplied the real profile URLs, so they were
+removed rather than invented. The top bar keeps the WhatsApp icon, which points
+at the real number. To put them back: a `<ul class="social">` under the footer
+logo, plus the three `.site-footer .social` rules noted in `style.css` where
+they used to be, and a `sameAs` array on the LocalBusiness node.
+
 **The header is white, the top bar and footer are black.** Anything added to the
 header needs dark-on-light colours; anything added to the top bar or footer needs
 light-on-dark. The logo PNG has a dark mark, so it sits bare on the white header
@@ -424,6 +434,32 @@ shift; below-the-fold images also take `loading="lazy" decoding="async"`. The he
 is the exception — it stays eager with `fetchpriority="high"` and a `<link rel=preload>`.
 
 ## URLs
+
+**One origin: `https://samsungservices-center.com`.** Before this was
+enforced, four spellings of every page each answered 200 in their own
+right: http and https, crossed with www and non-www. That is four URLs of
+identical content with the link signals split across them. Two rules at the
+top of `.htaccess` section 2 send the other three to the canonical one, and
+they are ordered so every case costs exactly one redirect: the www rule
+goes straight to `https://` rather than preserving the scheme, so
+`http://www/` does not take two hops.
+
+Non-www was chosen because that is what the canonical tags already said.
+Switching to www means changing both rules **and** `HOST` in
+`scratchpad/golive.py`, which is what writes the canonicals.
+
+If the site ever stops loading after a deploy, the first suspect is rule ii
+(`http -> https`) against a certificate that does not cover the domain.
+Comment out those three lines and run AutoSSL. Rule i is safe either way.
+
+Verify with a real Apache after touching any of it — the matrix that
+matters is the four host/scheme spellings of one deep page, not just the
+home page:
+
+```bash
+curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}\n' \
+  -H 'Host: www.samsungservices-center.com' http://127.0.0.1:8100/samsung-service-center-dubai/
+```
 
 **The canonical URL of every page is extension-less with a trailing slash** —
 `/`, `/services/`, `/contact/`. The files on disk stay flat (`services.html`) and
@@ -497,6 +533,29 @@ stay indexed. Put the noindex back instead, or use cPanel → Directory Privacy.
 `scratchpad/golive.py` is the script that did all of this. It is idempotent,
 so re-running it after a rebuild is safe and is the way to catch a page that
 came back from a builder with the old markup.
+
+## The build and check scripts
+
+`scratchpad/buildall.sh` regenerates every `<main>` from the content modules.
+Two scripts run **after** it, every time, because the builders rebuild pages
+from a skeleton and would otherwise undo them:
+
+```sh
+sh buildall.sh && python3 golive.py && python3 fixdead.py
+```
+
+- `golive.py` — the positive robots meta, the canonical host, the twitter card
+  fields, the share-image alt, the phone number, robots.txt and the
+  X-Robots-Tag removal. Idempotent; re-running it is how you catch a page that
+  came back from a builder with stale markup.
+- `fixdead.py` — strips the dead social links and puts `noindex` back on
+  `404.html`, which is the one page that should still carry it.
+
+Then the checks. `techseo.py` is the one that looks *between* pages, which is
+where the real problems live: a title repeated on two of them, a sitemap entry
+nothing links to, an internal link written in a form that 301s, an orphan page,
+a heading level skipped, a file `.cpanel.yml` never copies. `audit_static.py`
+and `audit_browser.mjs` look at one page at a time.
 
 ## Deployment
 
