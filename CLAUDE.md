@@ -2,9 +2,9 @@
 
 Static marketing site for a Samsung home-appliance repair business serving the UAE
 (Dubai, Abu Dhabi, Sharjah, Ajman, RAK, UAQ, Fujairah). The body copy is the
-client's own. The domain, the phone number and the three branch addresses are
-real and live; the email and the booking-form inbox are still placeholder —
-see "Before going live".
+client's own. The domain, the phone number, the two inboxes and the three
+branch addresses are all real and live. What is still placeholder is named in
+"Before going live", and none of it may be invented.
 
 ## The business is a Samsung-authorised repair centre
 
@@ -85,11 +85,17 @@ through `esc()`.
 
 ## Placeholders that must not be invented
 
-`scratchpad/legal.py` carries [SQUARE BRACKET] values: the registered legal
-name, the trade licence, the workshop address and the privacy contact.
-**Do not fill any of them with something plausible.** They are business facts
-that only the client holds, and a made-up licence number on a legal page is
-worse than a visible gap.
+`scratchpad/legal.py` still carries four [SQUARE BRACKET] values: the
+registered legal name, the trade licence, the registered address, and the
+emirate whose courts have jurisdiction. **Do not fill any of them with
+something plausible.** They are business facts that only the client holds, and
+a made-up licence number on a privacy policy is worse than a visible gap. The
+emirate is the same kind of thing: a legal choice, not something to be read
+off the branch address.
+
+The two contact placeholders that used to be here are filled — the privacy
+contact is `info@samsungservices-center.com` and the complaints address is
+`support@samsungservices-center.com`, both supplied by the client.
 
 The named-technician section is gone from the about page at the client's
 request, so the technician placeholders went with it. If it ever comes back,
