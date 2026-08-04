@@ -197,13 +197,13 @@ FileETag None
   Header unset Server
 </IfModule>
 
-# ---- 7. Search-engine blocking (DEVELOPMENT PHASE) ----------------------
-# Covers every response, including images and PDFs that a meta tag cannot
-# reach. DELETE this block at launch, together with the <meta name="robots">
-# lines in the .html files. See README.md section 3.
-<IfModule mod_headers.c>
-  Header always set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
-</IfModule>
+# ---- 7. Indexing --------------------------------------------------------
+# The X-Robots-Tag block that used to live here sent
+#   noindex, nofollow, noarchive, nosnippet, noimageindex
+# on every response while the site was in development. It is gone, and so
+# are the noindex meta tags on the pages: the two were always a pair, and
+# removing one without the other leaves the site half-blocked with no
+# visible symptom. Nothing here blocks any crawler now.
 # ------------------------------------------------------------------------
 
 # ---- 8. File protection -------------------------------------------------

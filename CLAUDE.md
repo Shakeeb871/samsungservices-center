@@ -108,6 +108,19 @@ Google Business Profile, carrying that reviewer's name and their words, and
 `GOOGLE_PROFILE_URL` has to point at the real profile, which is what turns the
 review count into a link a visitor can check.
 
+**`AggregateRating` is now published**, at the client's explicit request, and
+that is a second, larger step than the badge. `team.py`'s `PUBLISH_RATING`
+gates it; `build_meta.py` reads the value and the count straight off `REVIEWS`
+so the markup and the visible summary can never disagree, and it is what puts
+stars in a search result. Google's review-snippet guidelines require those
+ratings to be genuine, and a manual action for review spam lands on the
+client's own domain. Individual `Review` nodes are deliberately still **not**
+emitted: the stars come from the aggregate alone, and a `Review` node attaches
+a named person to a specific quote, which is a far more specific claim.
+Replacing the six drafts with real profile reviews is what makes the whole
+thing true; setting `PUBLISH_RATING = False` takes the markup back off without
+touching the visible section.
+
 ## Dates are a claim, not a counter
 
 Every page carries a `WebPage` node with `datePublished` / `dateModified`,
@@ -455,22 +468,35 @@ apt-get install -y apache2 && a2enmod rewrite headers expires deflate
 curl -o /dev/null -w '%{http_code} -> %{redirect_url}\n' http://127.0.0.1:8100/services.html
 ```
 
-## Search engines: currently blocked
+## Search engines: open, and nothing is blocked
 
-The site is in development and must not appear in search results. Two layers
-enforce it, and they come off **together** at launch:
+The two layers that used to hold the site out of the index are gone, and they
+came off together because either one left behind blocks the site with no
+visible symptom:
 
-1. `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">` in the
-   `<head>` of all seven pages
-2. the `X-Robots-Tag` block in `.htaccess` section 7 (covers images and PDFs that
-   a meta tag cannot reach)
+1. the `noindex` meta tag on every page, now
+   `<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">`.
+   Those three `max-*` values are opt-in, which is why they are stated rather
+   than left to the default.
+2. the `X-Robots-Tag` block in `.htaccess` section 7, removed. Section 7 is
+   now a comment recording what was there.
 
-`robots.txt` intentionally allows crawling. Do **not** change it to `Disallow: /` —
-a blocked crawler never reads the noindex, so URLs Google already knows would stay
-indexed. For a hard lock use cPanel → Directory Privacy instead.
+`robots.txt` names fifteen crawlers explicitly on top of `User-agent: *` —
+GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot-Extended and the
+rest — because some of them treat a specific record as the only one that
+applies to them, so a bare wildcard is not reliably read as permission. It
+also declares the sitemap, which is how non-Google crawlers find it.
 
-**Any new page needs the noindex meta tag too.** The full launch checklist is in
-README.md section 3.
+Do **not** set `Disallow: /` here if the site ever needs hiding again: a
+blocked crawler never reads the noindex, so URLs Google already knows would
+stay indexed. Put the noindex back instead, or use cPanel → Directory Privacy.
+
+**Any new page inherits the positive robots meta from the skeleton** —
+`newpages.py` clones `areas.html`. Check it is there before pushing.
+
+`scratchpad/golive.py` is the script that did all of this. It is idempotent,
+so re-running it after a rebuild is safe and is the way to catch a page that
+came back from a builder with the old markup.
 
 ## Deployment
 
@@ -484,12 +510,28 @@ If the site is on an addon domain, change `DEPLOYPATH` to that document root.
 
 ## Before going live
 
-Replace: the phone number `+971 50 000 0000` (appears in `tel:`, `wa.me`, the
-top bar, the footer, the hero, the floating call button and the three branch
-cards), `info@example.com`, every `example.com` URL in canonicals / Open Graph
-/ sitemap / JSON-LD, the `#` social links, and the blog entries. Set
-`TO_EMAIL` and `FROM_EMAIL` in `send.php`. Uncomment the HTTPS redirect and
-pick a canonical host in `.htaccess`, then lift the two noindex layers.
+Done: the phone number is `+971 50 619 1442` in `tel:`, `wa.me` and the
+visible text on all twenty pages, driven by `content.py`'s `PHONE_HREF` /
+`PHONE_TEXT`; the host is `https://samsungservices-center.com` in every
+canonical, `og:url`, sitemap entry and JSON-LD `@id`; both indexing blocks
+are off.
+
+**Still placeholder, and not to be invented:**
+
+- `info@example.com` — in the footer of all twenty pages, on the contact page,
+  and as `email` on the LocalBusiness node.
+- `TO_EMAIL` and `FROM_EMAIL` in `send.php`. Until these are real the booking
+  form posts into nothing, and it fails silently.
+- the four `#` social links in the footer and the top bar, six per page. The
+  WhatsApp one among them is real. Either the real profile URLs go in or the
+  dead icons come out; a link that scrolls the visitor to the top of the page
+  is worse than no icon.
+- the geo coordinates on the LocalBusiness node, and the blog entries.
+
+Not done on purpose: the HTTPS redirect and the canonical-host choice in
+`.htaccess` are still commented out. Turning on a forced HTTPS redirect
+before the host's SSL certificate covers the domain takes the site down, so
+that one needs confirming rather than assuming.
 
 The three branch addresses in `content.py`'s `BRANCHES` are real and already
 in place, in the top bar, on the contact page, in the branch cards beside the

@@ -1,22 +1,67 @@
-# ============================================================
-# DEVELOPMENT PHASE — site must stay out of search results.
+# Nothing on this site is blocked, to any crawler.
 #
-# Crawling is deliberately ALLOWED here. Blocking with "Disallow: /"
-# would stop crawlers from ever reading the noindex directive, so
-# already-known URLs could stay in the index. The noindex comes from
-# the <meta name="robots"> tag on every page plus the X-Robots-Tag
-# header in .htaccess.
+# The site was previously held out of search results by two things that had
+# to come off together: the noindex meta tag on every page and an
+# X-Robots-Tag header in .htaccess. Both are gone.
 #
-# AT LAUNCH: remove the noindex meta tags from all .html pages,
-# remove the X-Robots-Tag block from .htaccess, then uncomment the
-# Sitemap line below and update the host.
-# ============================================================
+# Crawling was always allowed here even during development, and for a
+# reason worth keeping in mind: "Disallow: /" would have stopped crawlers
+# reading the noindex, so URLs already known to Google would have stayed in
+# the index indefinitely.
 
 User-agent: *
+Allow: /
+
+# The AI crawlers are named as well as covered by the wildcard above. Some
+# of them treat an explicit record as the only one that applies to them, so
+# a bare "User-agent: *" is not reliably read as permission.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Bytespider
 Allow: /
 
 # The canonical URL of every page is extension-less with a trailing slash
 # (/services/). .htaccess 301s /services.html and /services onto it, so
 # there is no duplicate URL here that would need blocking.
 
-# Sitemap: https://example.com/sitemap.xml
+Sitemap: https://samsungservices-center.com/sitemap.xml
