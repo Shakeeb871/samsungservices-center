@@ -168,6 +168,30 @@ The file is cropped to the slice the band shows and shipped at three widths,
 because `object-fit: cover` was otherwise making every inner page download
 420px of image height that never appeared.
 
+## The favicon has a size floor
+
+Nothing blocks it — `robots.txt` allows every crawler, the `X-Robots-Tag`
+block is gone, and `.htaccess` section 8 explicitly grants `favicon.ico`
+alongside `robots.txt` and `sitemap.xml`. Verified with a real Apache:
+`/favicon.ico` and the three PNG sizes all answer 200 with no robots header.
+
+The thing that *does* stop a favicon appearing in a search result is its
+size. Google's requirement is a square whose sides are a multiple of 48px; it
+downsamples to 16x16 itself, but it will not upscale, so a 16x16 source gets
+dropped and the generic globe is shown. This site shipped a single-layer
+16x16 `favicon.ico` until 4 August.
+
+Now: `favicon.ico` holds 16, 32 and 48 layers, and the head links
+`favicon-32.png`, `favicon-48.png` and `favicon-96.png`. All of them are
+downscales from `apple-touch-icon.png` (180x180), which is the largest square
+copy of the shield mark in the repo — nothing is upscaled, which is also why
+there is no 192 even though the manifest convention likes one.
+
+`scratchpad/favicon.py` regenerates the set and asserts the 48 layer exists.
+Rerun it if the mark changes. Keep the transparency: Google composites the
+icon onto its own surface, and a white plate baked into the file shows as a
+white square in a dark-themed result.
+
 ## Stack
 
 Hand-written HTML, one CSS file, one JS file. No framework, no build step, no
