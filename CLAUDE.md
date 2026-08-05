@@ -147,13 +147,18 @@ touching the visible section.
 
 ## Dates are a claim, not a counter
 
-Every page carries a `WebPage` node with `datePublished` / `dateModified`,
-which is the half search engines read. The footer no longer shows a visible
-date; the only visible ones left are on the about, privacy and terms pages,
-where a revision date is part of what the document is for. Those dates are
-literals in
-`scratchpad/build_dates.py`, not generated at build time, and the sitemap
-`lastmod` matches them.
+**There is no visible date anywhere on the site**, and no `<time>` element.
+The "Last updated 31 July 2026" line on the about, privacy and terms page
+heads is gone, and so are the three dates on the blog cards, all at the
+client's request. `fixdead.py` strips them after every build, so a skeleton
+clone cannot bring one back, and the three CSS rules that styled them are
+removed.
+
+What stays is the `datePublished` / `dateModified` pair on every page's
+`WebPage` node. That is the half search engines actually read, it is not
+visible to a reader, and `sitemap.xml` takes its `<lastmod>` from it — remove
+it and the sitemap loses the one field Google does use. Those dates are
+literals in `scratchpad/build_dates.py`, not generated at build time.
 
 Change them when the content actually changes. A date that bumps itself on
 every deploy is not a freshness signal — it is a lie that search engines learn

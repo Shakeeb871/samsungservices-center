@@ -797,7 +797,8 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 a.card { text-decoration: none; color: var(--body); transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
 a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: translateY(-3px); }
 .card-title { font-size: 1.14rem; }
-.card-meta { font-size: .86rem; margin: 0; }
+/* .card-meta held the blog cards' dates, removed with them.
+   Was: font-size: .86rem; margin: 0; */
 .form-hint { font-size: .94rem; }
 
 /* ==========================================================================
@@ -1066,8 +1067,11 @@ a.card:hover { border-color: var(--primary); box-shadow: var(--shadow); transfor
 .legal-clause p { font-size: .98rem; }
 
 /* the "last updated" line under a page-head heading */
-.page-head-meta { margin-top: .9rem; font-size: .9rem; color: var(--on-dark-muted); }
-.page-head-meta time { color: var(--on-dark-soft); font-weight: 600; }
+/* .page-head-meta held the "Last updated <date>" line on the about,
+   privacy and terms page heads. All three are gone at the client's
+   request. Was:
+     .page-head-meta { margin-top: .9rem; font-size: .9rem; color: var(--on-dark-muted); }
+     .page-head-meta time { color: var(--on-dark-soft); font-weight: 600; } */
 
 /* ==========================================================================
    20. Utilities
