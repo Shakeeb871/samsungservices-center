@@ -190,7 +190,7 @@ ErrorDocument 403 /404.html
     Header set Cache-Control "public, max-age=300, must-revalidate"
   </FilesMatch>
 
-  <FilesMatch "\.(html|webmanifest|xml)$">
+  <FilesMatch "\.(html|webmanifest|xml|txt)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
 </IfModule>
@@ -233,7 +233,7 @@ FileETag None
 <FilesMatch "^(\.|composer\.|package.*\.json$|.*\.(md|yml|yaml|log|sql|bak|ini|sh)$)">
   Require all denied
 </FilesMatch>
-<FilesMatch "^(robots\.txt|sitemap\.xml|site\.webmanifest|favicon\.ico)$">
+<FilesMatch "^(robots\.txt|sitemap\.xml|llms(-full)?\.txt|site\.webmanifest|favicon\.ico)$">
   Require all granted
 </FilesMatch>
 

@@ -168,6 +168,39 @@ The file is cropped to the slice the band shows and shipped at three widths,
 because `object-fit: cover` was otherwise making every inner page download
 420px of image height that never appeared.
 
+## sitemap.xml and llms.txt are generated, not maintained
+
+Both are written by `scratchpad/build_sitemap.py` and `scratchpad/build_llms.py`
+from the finished pages, which is why they run at the **end** of
+`buildall.sh`, after `golive.py` and `fixdead.py`. Editing either file by hand
+lasts until the next build.
+
+**sitemap.xml** carries `<loc>` and `<lastmod>` and nothing else. `<priority>`
+and `<changefreq>` were on all nineteen entries with numbers somebody chose by
+feel; Google has said for years that it ignores both, so they are gone. That
+is not a missing feature, it is the difference between a sitemap that only
+says true things and one padded with fields nobody reads. `lastmod` comes from
+the page's own `WebPage.dateModified`, so the rule in "Dates are a claim, not
+a counter" governs it too. The image sitemap extension lists the 69 content
+photographs; icons, the logo and the share image are excluded because they are
+chrome, not something to offer to image search.
+
+**llms.txt** is the llmstxt.org convention: one markdown file at the root with
+a summary of the business and every page as a link plus a sentence on what it
+covers, short enough that a model can hold the whole index and decide what to
+fetch. **llms-full.txt** is the text of all nineteen pages in one file, about
+35,000 words, for when fetching them one at a time is not worth it. The
+summaries are each page's own meta description, so they cannot drift.
+
+The four unfilled legal placeholders are named explicitly in `llms.txt`. A
+model that reads `[LICENCE NUMBER]` off the privacy page and repeats it as
+fact is a worse outcome than one told plainly that the value is not published.
+Keep that paragraph in step with what is actually still bracketed.
+
+`techseo.py` asserts llms.txt lists every indexable page, that it points at
+llms-full.txt, and that `.cpanel.yml` copies both — a generator that quietly
+stops covering a page is exactly what that check is for.
+
 ## The favicon has a size floor
 
 Nothing blocks it — `robots.txt` allows every crawler, the `X-Robots-Tag`
