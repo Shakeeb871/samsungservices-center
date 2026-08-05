@@ -238,7 +238,7 @@ nodes that already exist.
 
 | Page | Nodes |
 | --- | --- |
-| index | WebPage, WebSite, LocalBusiness + HomeAndConstructionBusiness, FAQPage, HowTo |
+| index | WebPage, WebSite, LocalBusiness + HomeAndConstructionBusiness, FAQPage, HowTo, Service |
 | about | AboutPage, BreadcrumbList |
 | contact | ContactPage, BreadcrumbList |
 | services, blog | CollectionPage, BreadcrumbList (+ ItemList on services) |
@@ -266,6 +266,14 @@ Four things worth knowing before touching it:
   `build_sitemap.py` reads `dateModified` off it; both were matching the bare
   string `'WebPage'`, so a retyped node survived the strip and the page ended
   up with two. `techseo.py` now fails on more than one page-level node.
+- **The business has traded since 2010.** The client supplied the year; the
+  site had only said "for more than a decade" and named none. It is
+  `foundingDate` on the LocalBusiness node **and** the opening words of the
+  About band, so the markup is not the only place the claim exists — a
+  structured-data value with nothing visible behind it is the pattern Google
+  treats as unsupported. The old sentence is in `coverage.py`'s `SUPERSEDED`
+  set. Sixteen years is more than a decade, so nothing the sentence used to
+  claim has been weakened.
 - **What it deliberately does not emit**: `Review` nodes (see the reviews
   section above), any price or `priceRange` (the site says the estimate
   follows inspection), `geo` (still placeholder), and `speakable` (Google
