@@ -224,6 +224,48 @@ Keep that paragraph in step with what is actually still bracketed.
 llms-full.txt, and that `.cpanel.yml` copies both — a generator that quietly
 stops covering a page is exactly what that check is for.
 
+## Structured data
+
+`scratchpad/build_schema.py` runs over the finished HTML, so it reads what is
+really on each page rather than what a builder meant to put there. Everything
+it emits is either a fact already visible on the page or a link between two
+nodes that already exist.
+
+| Page | Nodes |
+| --- | --- |
+| index | WebPage, WebSite, LocalBusiness + HomeAndConstructionBusiness, FAQPage, HowTo |
+| about | AboutPage, BreadcrumbList |
+| contact | ContactPage, BreadcrumbList |
+| services, blog | CollectionPage, BreadcrumbList (+ ItemList on services) |
+| areas | CollectionPage, BreadcrumbList, ItemList of the four emirates |
+| 7 appliance pages | WebPage, BreadcrumbList, Service |
+| 4 emirate pages | WebPage, BreadcrumbList, Service (+ HowTo on three) |
+
+Four things worth knowing before touching it:
+
+- **It is one graph, not a pile.** Every page node links to its own
+  `BreadcrumbList` (`breadcrumb`), to the thing the page is about
+  (`mainEntity`) and to its lead photograph (`primaryImageOfPage`).
+  `techseo.py` resolves every `@id` reference against the nodes in the same
+  file, so a dangling pointer fails the build rather than sitting there.
+- **HowTo only where the page really lists steps.** Three emirate pages and
+  the home page carry an ordered list with a heading and a description per
+  item. The Dubai page's "How It Works" is prose, so it gets none — a HowTo
+  whose steps were invented from paragraphs is a lie in a machine-readable
+  field. Extracting them needs a depth-counting split on `<li>`, because a
+  step can contain a tick list and a non-greedy regex cuts the step's text in
+  half at the nested `</li>`.
+- **WebPage has subclasses, and three builders have to agree about it.**
+  `AboutPage`, `ContactPage` and `CollectionPage` are all WebPages.
+  `build_dates.py` strips "the WebPage node" before re-adding one and
+  `build_sitemap.py` reads `dateModified` off it; both were matching the bare
+  string `'WebPage'`, so a retyped node survived the strip and the page ended
+  up with two. `techseo.py` now fails on more than one page-level node.
+- **What it deliberately does not emit**: `Review` nodes (see the reviews
+  section above), any price or `priceRange` (the site says the estimate
+  follows inspection), `geo` (still placeholder), and `speakable` (Google
+  restricts it to news publishers).
+
 ## The favicon has a size floor
 
 Nothing blocks it — `robots.txt` allows every crawler, the `X-Robots-Tag`
@@ -237,16 +279,26 @@ downsamples to 16x16 itself, but it will not upscale, so a 16x16 source gets
 dropped and the generic globe is shown. This site shipped a single-layer
 16x16 `favicon.ico` until 4 August.
 
-Now: `favicon.ico` holds 16, 32 and 48 layers, and the head links
-`favicon-32.png`, `favicon-48.png` and `favicon-96.png`. All of them are
-downscales from `apple-touch-icon.png` (180x180), which is the largest square
-copy of the shield mark in the repo — nothing is upscaled, which is also why
-there is no 192 even though the manifest convention likes one.
+There is a second half to that, and it is the one that is easy to miss.
+**Order inside the `.ico` matters.** Pillow writes the directory
+smallest-first, so after 32 and 48 were added, entry 0 was still 16x16. A
+parser that reads the first entry rather than scanning for the largest sees
+16x16 and is straight back to the same problem. `favicon.py` writes the
+directory by hand, largest first — 48, 32, 16 — and asserts by reading the
+file back that entry 0 is a multiple of 48. Pillow still does the pixel
+encoding; only the ordering is ours.
 
-`scratchpad/favicon.py` regenerates the set and asserts the 48 layer exists.
-Rerun it if the mark changes. Keep the transparency: Google composites the
-icon onto its own surface, and a white plate baked into the file shows as a
-white square in a dark-themed result.
+The head links `favicon-32.png`, `-48`, `-96` and `-144`. Three of those are
+multiples of 48, which is the thing Google asks for; the 32 is there because
+browsers use it for the tab. All are downscales from `apple-touch-icon.png`
+(180x180), the largest square copy of the shield mark in the repo — nothing
+is upscaled, which is also why there is no 192 despite the manifest
+convention.
+
+`scratchpad/favicon.py` regenerates the whole set from that one master. Rerun
+it if the mark changes. Keep the transparency: Google composites the icon
+onto its own surface, and a white plate baked into the file shows as a white
+square in a dark-themed result.
 
 ## Stack
 

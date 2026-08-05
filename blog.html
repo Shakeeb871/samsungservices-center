@@ -33,6 +33,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/img/favicon-48.png">
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicon-96.png">
+<link rel="icon" type="image/png" sizes="144x144" href="/assets/img/favicon-144.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/css/style.css?v=58">
@@ -287,7 +288,7 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebPage",
+      "@type": "CollectionPage",
       "@id": "https://samsungservices-center.com/blog/#webpage",
       "url": "https://samsungservices-center.com/blog/",
       "name": "Samsung Repair Guides & Fault Notes | Service Center UAE",
@@ -299,7 +300,14 @@
       },
       "inLanguage": "en-AE",
       "datePublished": "2026-07-30",
-      "dateModified": "2026-07-31"
+      "dateModified": "2026-07-31",
+      "breadcrumb": {
+        "@id": "https://samsungservices-center.com/blog/#breadcrumb"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://samsungservices-center.com/assets/img/samsung-home-appliances-repairer.webp"
+      }
     },
     {
       "@type": "BreadcrumbList",
@@ -316,7 +324,8 @@
           "name": "Blog",
           "item": "https://samsungservices-center.com/blog/"
         }
-      ]
+      ],
+      "@id": "https://samsungservices-center.com/blog/#breadcrumb"
     }
   ]
 }
