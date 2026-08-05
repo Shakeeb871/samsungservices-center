@@ -91,13 +91,24 @@ through `esc()`.
 
 ## Placeholders that must not be invented
 
-`scratchpad/legal.py` still carries four [SQUARE BRACKET] values: the
-registered legal name, the trade licence, the registered address, and the
-emirate whose courts have jurisdiction. **Do not fill any of them with
-something plausible.** They are business facts that only the client holds, and
-a made-up licence number on a privacy policy is worse than a visible gap. The
-emirate is the same kind of thing: a legal choice, not something to be read
-off the branch address.
+`scratchpad/legal.py` carries one [SQUARE BRACKET] value: `[EMIRATE]` in
+terms clause 13, the emirate whose courts have jurisdiction. **Do not fill it
+with something plausible.** That is a legal choice, not a fact to be read off
+the branch address.
+
+Three others are gone, removed at the client's request rather than filled: the
+registered legal name, the trade licence and the registered address. The two
+clauses that carried them were rewritten to work without them, and both still
+do their job under the name the whole site trades under:
+
+> Samsung Service Center is the controller of the personal data described
+> here.
+
+> They are an agreement between you, the customer, and Samsung Service Center.
+
+If the real values ever arrive, they belong back in those two sentences.
+`llms.txt` states that the business does not publish them, so that paragraph
+has to change at the same time.
 
 The two contact placeholders that used to be here are filled — the privacy
 contact is `info@samsungservices-center.com` and the complaints address is
@@ -174,6 +185,18 @@ Both are written by `scratchpad/build_sitemap.py` and `scratchpad/build_llms.py`
 from the finished pages, which is why they run at the **end** of
 `buildall.sh`, after `golive.py` and `fixdead.py`. Editing either file by hand
 lasts until the next build.
+
+**A browser opening sitemap.xml gets `sitemap.xsl` applied** and sees a
+readable table. That is not decoration: Chrome's built-in XML viewer styles
+itself with an *inline* stylesheet, and this site's CSP sets
+`style-src 'self'`, so Chrome refuses it and falls back to an unstyled wall of
+blue text that looks broken to anyone who opens the URL. Crawlers ignore the
+`<?xml-stylesheet?>` instruction and parse the XML underneath, so none of it
+changes what Google reads — verified by parsing the file back after every
+build. The CSS lives in `assets/css/sitemap.css` for the same reason the rest
+of the site has no inline styles, and `.htaccess` declares `text/xsl`
+explicitly because `nosniff` is on and an `.xsl` served as `text/plain` would
+put the unstyled view straight back.
 
 **sitemap.xml** carries `<loc>` and `<lastmod>` and nothing else. `<priority>`
 and `<changefreq>` were on all nineteen entries with numbers somebody chose by

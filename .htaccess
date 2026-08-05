@@ -26,6 +26,9 @@ AddDefaultCharset UTF-8
   AddType application/manifest+json .webmanifest
   AddType font/woff2               .woff2
   AddType application/xml          .xml
+  # nosniff is on, so an .xsl served as text/plain is refused and the
+  # sitemap falls back to the unstyled view this exists to replace.
+  AddType text/xsl                 .xsl
 </IfModule>
 
 # ---- 2. URLs ------------------------------------------------------------
@@ -233,7 +236,7 @@ FileETag None
 <FilesMatch "^(\.|composer\.|package.*\.json$|.*\.(md|yml|yaml|log|sql|bak|ini|sh)$)">
   Require all denied
 </FilesMatch>
-<FilesMatch "^(robots\.txt|sitemap\.xml|llms(-full)?\.txt|site\.webmanifest|favicon\.ico)$">
+<FilesMatch "^(robots\.txt|sitemap\.xml|sitemap\.xsl|llms(-full)?\.txt|site\.webmanifest|favicon\.ico)$">
   Require all granted
 </FilesMatch>
 

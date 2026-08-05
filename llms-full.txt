@@ -9,11 +9,10 @@ and the Northern Emirates are covered by the same technicians. Open Mon to Sun,
 info@samsungservices-center.com, existing repairs
 support@samsungservices-center.com.
 
-Things this site does not state, and which should not be inferred: the
-registered legal name, the trade licence number, the registered address, and
-the emirate whose courts govern the terms. Those appear as bracketed
-placeholders on the privacy and terms pages because the values have not been
-published yet.
+The business trades as Samsung Service Center. It does not publish a separate
+registered legal name, a trade licence number or a registered address, and
+none of those should be inferred. The terms name the United Arab Emirates as
+the governing law; the specific emirate is not stated.
 
 Every page below is reproduced from the live site. Each page opens at level 1 with its title; its own headings sit one level below that, so the structure of the page survives the conversion.
 
@@ -4048,7 +4047,7 @@ On this page
 
 ### 01 Who is responsible for your data
 
-Samsung Service Center, trading as [REGISTERED LEGAL NAME] under trade licence [LICENCE NUMBER], registered at [REGISTERED ADDRESS], is the controller of the personal data described here. That means we decide what is collected and why.
+Samsung Service Center is the controller of the personal data described here. That means we decide what is collected and why.
 
 Questions about this policy, or about the data we hold on you, go to info@samsungservices-center.com or the phone number in the footer of this site.
 
@@ -4151,7 +4150,7 @@ On this page
 
 ### 01 Who these terms are between
 
-They are an agreement between you, the customer, and Samsung Service Center, trading as [REGISTERED LEGAL NAME] under trade licence [LICENCE NUMBER].
+They are an agreement between you, the customer, and Samsung Service Center.
 
 Booking a visit by phone, WhatsApp, or the form on this site means you accept them.
 

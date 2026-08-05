@@ -1,0 +1,77 @@
+/* Styles for the XSLT-rendered view of sitemap.xml. Kept out of the main
+   stylesheet: that file is 58 kb of site design, and this page needs a table
+   and nothing else. Same tokens, so the two do not look like different sites.
+
+   It is a separate file rather than a <style> block inside sitemap.xsl
+   because the site's CSP sets style-src 'self', which drops inline styles.
+   That is the whole reason this view exists — see the comment in sitemap.xsl. */
+
+:root {
+  --primary-dark: #0961c6;
+  --secondary: #323333;
+  --line: #e3e6ea;
+  --bg-soft: #f6f8fa;
+  --muted: #5b6470;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: clamp(1.5rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2rem);
+  background: #fff;
+  color: var(--secondary);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+.wrap { max-width: 1100px; margin: 0 auto; }
+
+.eyebrow {
+  margin: 0 0 .35rem;
+  font-size: .78rem; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--primary-dark);
+}
+
+h1 { margin: 0 0 .6rem; font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.2; }
+
+.lead { max-width: 72ch; margin: 0 0 2rem; color: var(--muted); }
+
+a { color: var(--primary-dark); }
+a:hover { text-decoration: none; }
+
+/* The URL column is long; on a narrow screen the table scrolls inside its own
+   box rather than making the page scroll sideways. */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-size: .95rem;
+}
+
+thead th {
+  padding: .7rem .9rem;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: .8rem; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+  white-space: nowrap;
+}
+
+tbody td { padding: .65rem .9rem; border-bottom: 1px solid var(--line); }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) { background: #fbfcfd; }
+
+td a { word-break: break-all; }
+
+.c-num { width: 1%; text-align: right; white-space: nowrap; color: var(--muted); }
+.c-date { width: 1%; white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 640px) {
+  thead .c-date, tbody .c-date { display: none; }
+  table { font-size: .88rem; }
+}
