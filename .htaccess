@@ -29,6 +29,16 @@ AddDefaultCharset UTF-8
   # nosniff is on, so an .xsl served as text/plain is refused and the
   # sitemap falls back to the unstyled view this exists to replace.
   AddType text/xsl                 .xsl
+  # Same reasoning for the favicon, and it matters more here. A host whose
+  # mime.types has no .ico entry hands the file back as text/plain or
+  # application/octet-stream; nosniff then forbids treating it as an image,
+  # and the icon fails for browsers and for Google alike while the file
+  # itself is perfectly valid on disk. There is no console warning on a
+  # favicon, so the only symptom is the generic globe in search results.
+  # image/x-icon is the spelling every browser and crawler has accepted for
+  # twenty years; image/vnd.microsoft.icon is the registered name and is
+  # what a correctly configured host already sends.
+  AddType image/x-icon             .ico
 </IfModule>
 
 # ---- 2. URLs ------------------------------------------------------------
@@ -191,6 +201,28 @@ ErrorDocument 403 /404.html
   # request and gets a 304 (a few hundred bytes) unless the file really changed.
   <FilesMatch "\.(css|js)$">
     Header set Cache-Control "public, max-age=300, must-revalidate"
+  </FilesMatch>
+
+  # The icons are the one set of images that IS edited in place — there is
+  # only ever one /favicon.ico, and replacing the artwork replaces the file
+  # at the same URL. So the rule above the CSS block applies to them word
+  # for word: "immutable" is a promise never to re-check, and a cache that
+  # picked up a bad icon is entitled to serve it for a year and never ask
+  # again. That is not theoretical here. This site did ship a broken
+  # favicon — a lone 16x16 layer, below the size Google will use — and it
+  # went out with max-age=31536000, immutable on it. Fixing the file does
+  # not reach anything still holding that promise.
+  #
+  # A day of caching with revalidation keeps the icon effectively free
+  # (it is fetched once per visit at most, and a revalidation that finds no
+  # change is a 304 of a few hundred bytes) while making a replacement
+  # actually take effect.
+  #
+  # This block must stay AFTER the images block: both match favicon.ico,
+  # and for two `Header set` directives on the same header the last one to
+  # run wins.
+  <FilesMatch "^(favicon\.ico|favicon-\d+\.png|apple-touch-icon\.png)$">
+    Header set Cache-Control "public, max-age=86400, must-revalidate"
   </FilesMatch>
 
   <FilesMatch "\.(html|webmanifest|xml|txt)$">

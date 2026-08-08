@@ -279,12 +279,18 @@ Four things worth knowing before touching it:
   follows inspection), `geo` (still placeholder), and `speakable` (Google
   restricts it to news publishers).
 
-## The favicon has a size floor
+## The favicon: four separate things had to be right
 
 Nothing blocks it — `robots.txt` allows every crawler, the `X-Robots-Tag`
 block is gone, and `.htaccess` section 8 explicitly grants `favicon.ico`
 alongside `robots.txt` and `sitemap.xml`. Verified with a real Apache:
 `/favicon.ico` and the three PNG sizes all answer 200 with no robots header.
+
+That is worth stating plainly because "Google is not showing our icon" reads
+like something is blocked, and on this site it never was. Four things went
+wrong instead, in the file and in the way it was served, and each one on its
+own is enough to produce the generic globe. Check all four before assuming a
+fifth.
 
 The thing that *does* stop a favicon appearing in a search result is its
 size. Google's requirement is a square whose sides are a multiple of 48px; it
@@ -298,8 +304,35 @@ smallest-first, so after 32 and 48 were added, entry 0 was still 16x16. A
 parser that reads the first entry rather than scanning for the largest sees
 16x16 and is straight back to the same problem. `favicon.py` writes the
 directory by hand, largest first — 48, 32, 16 — and asserts by reading the
-file back that entry 0 is a multiple of 48. Pillow still does the pixel
-encoding; only the ordering is ours.
+file back that entry 0 is a multiple of 48.
+
+Third: **the layers are uncompressed DIBs, not PNGs.** Pillow encodes every
+`.ico` layer as a PNG. That is legal, but PNG-in-ICO was introduced for the
+256x256 layer and is only universally understood there; at 16, 32 and 48 the
+form every icon toolchain emits is a plain 32-bit BMP, and a decoder that
+assumes BMP below 256 reads the PNG signature as a bitmap header and gets
+noise. Nothing here proved Google's decoder is one of those — this is an
+unknown removed, not a diagnosed bug, and it costs about 8 KB. `favicon.py`
+now writes the DIBs itself (`BITMAPINFOHEADER` with `biHeight` doubled for
+the AND mask, BGRA rows bottom-up), asserts no layer starts with a PNG
+signature, and decodes each layer back to compare it pixel for pixel against
+the resize it came from.
+
+Fourth, and the one most likely to make a *fixed* icon still look broken:
+**the icons must not be cached `immutable`.** They were, for a year, by the
+images rule in `.htaccess` section 5. `immutable` means "never re-check", so
+every cache that picked up the broken 16x16 file is entitled to serve it
+until 2026 and never ask again. Replacing the file does not reach any of
+them. There is now a `FilesMatch` for `favicon.ico`, `favicon-NN.png` and
+`apple-touch-icon.png` at `max-age=86400, must-revalidate`, placed *after*
+the images block because both match and the last `Header set` wins. Every
+other image keeps the year: a new photograph gets a new filename, the
+favicon never does.
+
+There is also an `AddType image/x-icon .ico` in section 1. Section 6 sets
+`nosniff`, so on a host whose `mime.types` has no `.ico` entry the file comes
+back as `text/plain`, the browser refuses to treat it as an image, and there
+is no console warning to tell you — the only symptom is the generic globe.
 
 The head links `favicon-32.png`, `-48`, `-96` and `-144`. Three of those are
 multiples of 48, which is the thing Google asks for; the 32 is there because
@@ -312,6 +345,13 @@ convention.
 it if the mark changes. Keep the transparency: Google composites the icon
 onto its own surface, and a white plate baked into the file shows as a white
 square in a dark-themed result.
+
+Last thing, and it is process rather than code: Google refreshes a site's
+favicon when it recrawls the **home page**, not when the icon file changes.
+There is no way to submit an icon. After deploying, request indexing for the
+home page in Search Console and expect days, not minutes. Until the deploy
+actually runs in cPanel, none of the above is on the server at all — the
+repo being correct proves nothing about what Google fetched.
 
 ## Stack
 
