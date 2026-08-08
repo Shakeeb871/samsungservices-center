@@ -184,6 +184,50 @@ The file is cropped to the slice the band shows and shipped at three widths,
 because `object-fit: cover` was otherwise making every inner page download
 420px of image height that never appeared.
 
+This image is also the LCP element of every inner page, which is why what
+loads alongside it matters — see below.
+
+## "Above the fold" is a property of the phone, not of the markup
+
+`/services/` failed Core Web Vitals for a while and the reason was one line in
+`build_content.py`: `loading = 'eager' if i < 3 else 'lazy'` on the service
+cards, with the comment "the first row sits above the fold on this page". On
+desktop that is true — three cards side by side at 743px, above a 900px fold.
+On a 412x915 phone they stack, so card 1 starts at 705px and cards 2 and 3 at
+1044px and 1384px, entirely off-screen. Google scores the phone.
+
+Measured on throttled Slow 4G, the cost was not subtle:
+
+| eager cards | LCP on /services/ |
+|---|---|
+| 3 (as written) | 3.09s — fails |
+| 1 | 2.84s — still fails |
+| 0 | 2.21s — passes |
+
+The resource timings are what settle it. Card 1 is requested in the same
+millisecond as the LCP image and holds 75 kB of a 1.6 Mbit pipe while it
+downloads; the page-head image finishes at 2775ms on `/services/` against
+1139ms on a city page, which is the identical image at the identical priority
+with nothing competing. All that contention bought was a 200px sliver of card 1
+at the bottom edge of the screen.
+
+So: **the only eager images on any page are the logo and the `.page-head`
+backdrop.** Everything else is lazy, including images a desktop shows above the
+fold — Chrome fetches a lazy image straight away when it is already within
+about a viewport of the scroll position, so desktop loses nothing measurable.
+
+`scratchpad/gaudit.mjs` measures LCP and CLS on nine pages under PageSpeed
+Insights' own mobile emulation (412x915 at DPR 2.625, 4x CPU, Slow 4G). Run it
+after anything that changes what a page loads. Every page passes today: worst
+LCP 2.21s against the 2.5s threshold, CLS 0.000 everywhere.
+
+One thing it flags that is not a fault: images whose largest `srcset` rung is
+bigger than a phone needs. At DPR 2.625 a full-width image needs about 1080px
+and the ladder is 480 / 800 / full, so the browser jumps to the full file. A
+~1200px rung would serve that case more cheaply. Nine images have no ladder at
+all (`-problems` set, the team photo, the home hero) — they are all lazy or
+already small, which is why this is a saving rather than a problem.
+
 ## sitemap.xml and llms.txt are generated, not maintained
 
 Both are written by `scratchpad/build_sitemap.py` and `scratchpad/build_llms.py`
