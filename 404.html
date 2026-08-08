@@ -8,10 +8,12 @@
 <meta name="description" content="The page you were looking for could not be found. Browse our Samsung appliance repair services or contact us directly.">
 <meta name="google-site-verification" content="tNihezSQiFuOEX_jL2M56iMHpOOZ42WP1F3y0MFG_Ic">
 
-<meta name="robots" content="noindex, follow">
-<!-- The error document renders at whatever URL was requested, so it has
-     no URL of its own to be indexed under. Every other page on the site
-     is index, follow. -->
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<!-- Open to crawlers, exactly like every other page on the site. What keeps
+     this document out of the index is rule A in .htaccess: it makes the page
+     answer a real 404 status, and a 404 does not get indexed whatever its
+     meta tags say. That rule is now the only thing doing that job — if it
+     ever goes, this page turns into a soft 404. See CLAUDE.md. -->
 
 <meta name="theme-color" content="#0a6ede">
 

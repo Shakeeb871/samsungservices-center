@@ -488,7 +488,7 @@ assets/img/           logo.png, icons, og-image.jpg, and the real photography as
 assets/fonts/README   How to self-host SamsungOne / Samsung Sharp Sans
 favicon.ico           Generated from the shield mark in the logo
 site.webmanifest      PWA metadata
-.htaccess             URLs, error docs, compression, caching, security headers, noindex
+.htaccess             URLs, error docs, compression, caching, security headers
 .cpanel.yml           cPanel Git Version Control deploy tasks
 robots.txt            Crawl-allowed on purpose — see "Search engines" below
 sitemap.xml           Canonical URL list (still example.com)
@@ -771,6 +771,29 @@ stay indexed. Put the noindex back instead, or use cPanel → Directory Privacy.
 **Any new page inherits the positive robots meta from the skeleton** —
 `newpages.py` clones `areas.html`. Check it is there before pushing.
 
+### Nothing on this site carries a restrictive robots directive
+
+Not one page, and that includes `404.html`. It is worth being explicit about
+because it used to be the single exception, and it was removed on request.
+
+All twenty pages now carry the identical value, and `techseo.py` fails the
+build if any of them carries `noindex` again. Two other places were checked
+and cleared at the same time: no response carries an `X-Robots-Tag` header,
+and `sitemap.xsl` no longer emits a directive either — that stylesheet only
+ever runs in a browser, since Google reads `/sitemap.xml` as XML and never
+applies the XSLT, so the directive that used to sit there was never read by
+the crawler it was aimed at.
+
+**What keeps the error page out of the index now is its HTTP status, not a
+meta tag.** Rule A in `.htaccess` makes `/404.html`, `/404/` and any unknown
+path answer a real `404`, and Google does not index a 404 whatever its meta
+tags say. That was always the stronger of the two protections; it is now the
+only one. `techseo.py` asserts rule A is present for exactly this reason — a
+check on the meta tag would have gone on passing while the thing that
+actually does the work went missing. If rule A is ever removed, `/404.html`
+becomes a soft 404 — a 200 response reading "Page not found", which is an
+indexable thin page — and the meta tag has to come back with it.
+
 `scratchpad/golive.py` is the script that did all of this. It is idempotent,
 so re-running it after a rebuild is safe and is the way to catch a page that
 came back from a builder with the old markup.
@@ -789,8 +812,9 @@ sh buildall.sh && python3 golive.py && python3 fixdead.py
   fields, the share-image alt, the phone number, robots.txt and the
   X-Robots-Tag removal. Idempotent; re-running it is how you catch a page that
   came back from a builder with stale markup.
-- `fixdead.py` — strips the dead social links and puts `noindex` back on
-  `404.html`, which is the one page that should still carry it.
+- `fixdead.py` — strips the dead social links, the dead top-bar links, the
+  "View all" nav rows and the visible dates. It used to put a `noindex` back
+  on `404.html` too; that was removed on request, and no page carries one now.
 
 Then the checks. `techseo.py` is the one that looks *between* pages, which is
 where the real problems live: a title repeated on two of them, a sitemap entry

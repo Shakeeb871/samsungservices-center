@@ -26,7 +26,11 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>XML Sitemap | Samsung Services Center</title>
-        <meta name="robots" content="noindex, follow"/>
+        <!-- No robots meta here. This stylesheet only ever runs in a browser:
+             Google reads /sitemap.xml as XML and never applies the XSLT, so a
+             directive placed here was never seen by the crawler it was aimed
+             at. Removed along with the one on 404.html so that nothing this
+             site serves carries an indexing restriction. -->
         <link rel="icon" href="/favicon.ico" sizes="any"/>
         <link rel="stylesheet" href="/assets/css/sitemap.css"/>
       </head>
